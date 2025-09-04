@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dikran Meliksetian - Portfolio</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS & Tailwind Configuration -->
+    <style>
+        /* Base font settings */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* A very light gray background */
+        }
+
+        /* Custom gradient for the hero section */
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+
+        /* Styling for section headers */
+        .section-header {
+            @apply text-3xl font-bold text-slate-800 mb-8 text-center;
+        }
+
+        /* Card hover effect */
+        .card-hover {
+            @apply transition-transform duration-300 ease-in-out;
+        }
+        .card-hover:hover {
+            @apply -translate-y-2;
+        }
+
+    </style>
+    <script>
+        // Tailwind custom theme configuration
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'brand-dark': '#1e3a8a', /* A deep, professional blue */
+                        'brand-light': '#3b82f6', /* A brighter, modern blue */
+                        'slate-800': '#1e293b',
+                        'slate-600': '#475569',
+                        'slate-100': '#f1f5f9',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="text-slate-600">
+
+    <!-- =================================================== -->
+    <!-- HEADER & NAVIGATION                                 -->
+    <!-- =================================================== -->
+    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-md">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <!-- Name/Logo -->
+            <a href="index.html" class="text-xl font-bold text-brand-dark">Dikran Meliksetian, Ph.D.</a>
+
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden text-2xl">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <!-- Desktop Navigation Links -->
+            <ul class="hidden md:flex space-x-6 text-sm font-medium">
+                <li><a href="index.html#about" class="hover:text-brand-light transition-colors">About</a></li>
+                <li><a href="index.html#journey" class="hover:text-brand-light transition-colors">Career Journey</a></li>
+                <li><a href="index.html#innovations" class="hover:text-brand-light transition-colors">Innovations</a></li>
+                <li><a href="index.html#academic" class="hover:text-brand-light transition-colors">Academic</a></li>
+                <li><a href="index.html#contact" class="hover:text-brand-light transition-colors">Contact</a></li>
+            </ul>
+        </nav>
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden">
+            <ul class="flex flex-col items-center py-4 space-y-4 text-sm font-medium bg-white border-t">
+                <li><a href="index.html#about" class="hover:text-brand-light transition-colors">About</a></li>
+                <li><a href="index.html#journey" class="hover:text-brand-light transition-colors">Career Journey</a></li>
+                <li><a href="index.html#innovations" class="hover:text-brand-light transition-colors">Innovations</a></li>
+                <li><a href="index.html#academic" class="hover:text-brand-light transition-colors">Academic</a></li>
+                <li><a href="index.html#contact" class="hover:text-brand-light transition-colors">Contact</a></li>
+            </ul>
+        </div>
+    </header>
+
+
+    <!-- =================================================== -->
+    <!-- HERO SECTION                                        -->
+    <!-- =================================================== -->
+    <section id="hero" class="gradient-bg text-white py-20 md:py-32">
+        <div class="container mx-auto px-6 text-center">
+            <img src="https://placehold.co/150x150/FFFFFF/1e3a8a?text=DM" alt="Dikran Meliksetian" class="w-32 h-32 md:w-40 md:h-40 rounded-full mx-auto mb-6 border-4 border-white/50 shadow-lg">
+            <h1 class="text-4xl md:text-5xl font-extrabold mb-3">A Career in Innovation</h1>
+            <p class="text-lg md:text-xl max-w-3xl mx-auto opacity-90">From IBM Master Inventor and Chief Architect to exploring the frontiers of Quantum Computing as an Adjunct Professor.</p>
+        </div>
+    </section>
+
+    <main>
+
+        <!-- =================================================== -->
+        <!-- ABOUT ME SECTION                                    -->
+        <!-- =================================================== -->
+        <section id="about" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="section-header">About Me</h2>
+                <div class="grid md:grid-cols-3 gap-10 items-center">
+                    <!-- Narrative Column -->
+                    <div class="md:col-span-2 space-y-4 text-lg">
+                        <p>My career has been dedicated to innovation—from software and cloud computing to machine learning and AI. After a long and rewarding journey at IBM as a Senior Technical Staff Member and Chief Architect, I've returned to my academic roots, having previously served on the faculties at Syracuse University and the South Dakota School of Mines and Technology.</p>
+                        <p>Throughout my time in the industry, I had the privilege of leading global teams, mentoring the next generation of technical talent in places like China and Brazil, and translating complex business needs into elegant, impactful technology solutions. Now, I am channeling that passion into the classroom and my personal research into the fascinating world of Quantum Computing.</p>
+                    </div>
+                    <!-- Recognition Column -->
+                    <div class="bg-slate-100 p-6 rounded-lg shadow-md space-y-4">
+                        <h3 class="text-xl font-bold text-slate-800 mb-3 border-b-2 border-brand-light pb-2">Professional Recognition</h3>
+                        <ul class="space-y-3">
+                            <li class="flex items-center"><i class="fas fa-award text-brand-dark w-6"></i><span>IBM Master Inventor</span></li>
+                            <li class="flex items-center"><i class="fas fa-trophy text-brand-dark w-6"></i><span>3x IBM Outstanding Technical Achievement Awards</span></li>
+                            <li class="flex items-center"><i class="fas fa-medal text-brand-dark w-6"></i><span>Senior Member, ACM</span></li>
+                            <li class="flex items-center"><i class="fas fa-certificate text-brand-dark w-6"></i><span>Life Member, IEEE & Computer Society</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================== -->
+        <!-- CAREER JOURNEY SECTION                              -->
+        <!-- =================================================== -->
+        <section id="journey" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="section-header">Career Journey Highlights</h2>
+                <!-- Timeline Container -->
+                <div class="relative wrap overflow-hidden p-10 h-full">
+                    <div class="border-2-2 absolute border-opacity-20 border-gray-700 h-full border" style="left: 50%"></div>
+                    <!-- Right Side -->
+                    <div class="mb-8 flex justify-between items-center w-full right-timeline">
+                        <div class="order-1 w-5/12"></div>
+                        <div class="z-20 flex items-center order-1 bg-brand-dark shadow-xl w-8 h-8 rounded-full">
+                            <h1 class="mx-auto font-semibold text-sm text-white">1</h1>
+                        </div>
+                        <div class="order-1 bg-brand-light rounded-lg shadow-xl w-5/12 px-6 py-4 card-hover">
+                            <h3 class="font-bold text-white text-lg">Pioneering Grid & Cloud Computing</h3>
+                            <p class="text-sm text-white/90 leading-snug tracking-wide">As an "evangelist" for IBM's intraGrid, I led the technical vision that evolved into key Tivoli products, shaping the future of distributed computing.</p>
+                        </div>
+                    </div>
+                    <!-- Left Side -->
+                    <div class="mb-8 flex justify-between flex-row-reverse items-center w-full left-timeline">
+                        <div class="order-1 w-5/12"></div>
+                        <div class="z-20 flex items-center order-1 bg-brand-dark shadow-xl w-8 h-8 rounded-full">
+                            <h1 class="mx-auto text-white font-semibold text-sm">2</h1>
+                        </div>
+                        <div class="order-1 bg-white rounded-lg shadow-xl w-5/12 px-6 py-4 card-hover">
+                            <h3 class="font-bold text-slate-800 text-lg">Global Leadership & Innovation</h3>
+                            <p class="text-sm text-slate-600 leading-snug tracking-wide">As Chief Architect for IBM's China Development Lab, I built new teams for Hadoop and Cloud, mentoring a new generation of technical talent in Shanghai.</p>
+                        </div>
+                    </div>
+                    <!-- Right Side -->
+                    <div class="mb-8 flex justify-between items-center w-full right-timeline">
+                        <div class="order-1 w-5/12"></div>
+                        <div class="z-20 flex items-center order-1 bg-brand-dark shadow-xl w-8 h-8 rounded-full">
+                            <h1 class="mx-auto font-semibold text-sm text-white">3</h1>
+                        </div>
+                        <div class="order-1 bg-brand-light rounded-lg shadow-xl w-5/12 px-6 py-4 card-hover">
+                            <h3 class="font-bold text-white text-lg">Transforming IT with Analytics & AI</h3>
+                            <p class="text-sm text-white/90 leading-snug tracking-wide">Led global teams in transforming the PriSM analytics tool and served as Chief Architect for AI services like Exploration with Watson (ExW) for the mining industry.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================== -->
+        <!-- INNOVATIONS & PATENTS SECTION                       -->
+        <!-- =================================================== -->
+        <section id="innovations" class="py-20 bg-white">
+            <div class="container mx-auto px-6">
+                <h2 class="section-header">Innovations & Intellectual Property</h2>
+                <div class="text-center max-w-3xl mx-auto mb-12">
+                    <p class="text-lg">As an IBM Master Inventor, I hold more than 50 patents for innovations spanning cloud computing, data management, and security. This portfolio represents a career dedicated to solving complex technical challenges. Below are a few selected examples.</p>
+                </div>
+                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Patent Card 1 -->
+                    <div class="bg-slate-100 p-6 rounded-lg shadow-md card-hover">
+                        <i class="fas fa-cloud text-3xl text-brand-light mb-3"></i>
+                        <h3 class="font-bold text-slate-800 text-lg mb-2">Grid & Cloud Deployment</h3>
+                        <p class="text-sm">Created methods for deploying platform-dependent applications in diverse grid environments, enabling greater flexibility and resource utilization.</p>
+                    </div>
+                    <!-- Patent Card 2 -->
+                    <div class="bg-slate-100 p-6 rounded-lg shadow-md card-hover">
+                        <i class="fas fa-shield-halved text-3xl text-brand-light mb-3"></i>
+                        <h3 class="font-bold text-slate-800 text-lg mb-2">CSRF Attack Prevention</h3>
+                        <p class="text-sm">Developed systems and methods to enforce Cross-Site Request Forgery (CSRF) compliance on applications, enhancing web security.</p>
+                    </div>
+                    <!-- Patent Card 3 -->
+                    <div class="bg-slate-100 p-6 rounded-lg shadow-md card-hover">
+                        <i class="fas fa-sitemap text-3xl text-brand-light mb-3"></i>
+                        <h3 class="font-bold text-slate-800 text-lg mb-2">Automated Topology Formation</h3>
+                        <p class="text-sm">Invented a system for automated topology formation in dynamic distributed environments, simplifying network management and scaling.</p>
+                    </div>
+                </div>
+                <div class="text-center mt-12">
+                    <a href="patents.html" class="inline-block bg-brand-dark text-white font-bold py-3 px-6 rounded-lg hover:bg-brand-light transition-colors">View Full Patent Portfolio</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================================================== -->
+        <!-- ACADEMIC PURSUITS SECTION                           -->
+        <!-- =================================================== -->
+        <section id="academic" class="py-20">
+            <div class="container mx-auto px-6">
+                <h2 class="section-header">Academic Pursuits</h2>
+                <div class="grid md:grid-cols-2 gap-10">
+                    <!-- Teaching Experience -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Teaching Experience</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <h4 class="font-semibold text-slate-700">Adjunct Faculty, University of New Haven</h4>
+                                <p class="text-sm">Electrical & Computer Engineering and Computer Science Department (2023-Present)</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-700">Adjunct Faculty, New York Institute of Technology</h4>
+                                <p class="text-sm">Computer Science Department (2022-Present)</p>
+                            </div>
+                             <div>
+                                <h4 class="font-semibold text-slate-700">Research Fellow, Syracuse University</h4>
+                                <p class="text-sm">Electrical and Computer Engineering Department (1995-1999)</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-700">Assistant Professor, South Dakota School of Mines & Technology</h4>
+                                <p class="text-sm">Electrical and Computer Engineering Department (1992–1994)</p>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-slate-700">Instructor, American University of Beirut</h4>
+                                <p class="text-sm">Electrical and Computer Engineering (1985–1988)</p>
+                            </div>
+                             <div class="pt-4">
+                                <h4 class="font-semibold text-slate-700">Selected Courses Taught</h4>
+                                <p class="text-sm">Computer Networks, C/C++/Java/Python, Software Engineering, Microprocessors, Random Signal Analysis, Theoretical Concepts of Computers and Computations.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Key Publications -->
+                    <div>
+                        <h3 class="text-2xl font-bold text-slate-800 mb-4">Selected Publications</h3>
+                        <ul class="space-y-3 list-disc list-inside">
+                            <li><span class="font-semibold">"Design and Implementation of an Enterprise Grid",</span> IBM System Journal, 2004.</li>
+                            <li><span class="font-semibold">"Design of a Distributed Video Management System",</span> IEEE Transactions on Multimedia, 2000.</li>
+                            <li><span class="font-semibold">"Optimal Routing Algorithm and the Diameter of the Cube-Connected Cycles",</span> IEEE Transactions on Parallel and Distributed Systems, 1993.</li>
+                            <li><span class="font-semibold">Co-Author, "Electric Circuits: Student Study Guide",</span> McGraw Hill, 1995.</li>
+                        </ul>
+                        <div class="mt-8">
+                             <a href="publications.html" class="inline-block bg-brand-dark text-white font-bold py-3 px-6 rounded-lg hover:bg-brand-light transition-colors">View All Publications</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- =================================================== -->
+    <!-- CONTACT & FOOTER                                    -->
+    <!-- =================================================== -->
+    <footer id="contact" class="bg-slate-800 text-slate-100 py-16">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-3xl font-bold mb-4">Get In Touch</h2>
+            <p class="max-w-xl mx-auto mb-8">I am always open to discussing new ideas, research opportunities, or interesting projects in the quantum computing space. Feel free to reach out.</p>
+            <div class="flex justify-center items-center space-x-6 text-lg mb-8">
+                 <a href="mailto:dsmeliks@gmail.com" class="flex items-center space-x-2 hover:text-brand-light transition-colors">
+                    <i class="fas fa-envelope"></i>
+                    <span>dsmeliks@gmail.com</span>
+                </a>
+                 <div class="flex items-center space-x-2">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Newtown, CT</span>
+                </div>
+            </div>
+            <p class="text-sm text-slate-400">&copy; <span id="year"></span> Dikran Meliksetian. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+
+    <!-- =================================================== -->
+    <!-- JAVASCRIPT                                          -->
+    <!-- =================================================== -->
+    <script>
+        // --- Mobile Menu Toggle ---
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        // Close mobile menu when a link is clicked
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Check if the link is an internal anchor link
+                if (link.getAttribute('href').startsWith('#')) {
+                     mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+
+        // --- Set current year in footer ---
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
+
