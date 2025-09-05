@@ -1,156 +1,538 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Patent Portfolio - Dikran Meliksetian</title>
-
-    <!-- Tailwind CSS -->
+    <title>Full Patent Portfolio - Dikran Meliksetian</title>
     <script src="https://cdn.tailwindcss.com"></script>
-
-    <!-- Font Awesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-
-    <!-- Google Fonts: Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
-
-    <!-- Custom CSS & Tailwind Configuration -->
     <style>
-        body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
-    </style>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        'brand-dark': '#1e3a8a', 'brand-light': '#3b82f6',
-                        'slate-800': '#1e293b', 'slate-600': '#475569',
-                    }
-                }
-            }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
         }
-    </script>
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+    </style>
 </head>
+<body class="text-slate-700">
 
-<body class="text-slate-600">
-
-    <!-- Header -->
-    <header class="bg-white/80 backdrop-blur-lg sticky top-0 z-50 shadow-md">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-xl font-bold text-brand-dark">Dikran Meliksetian, Ph.D.</a>
-            <a href="index.html" class="text-sm font-medium hover:text-brand-light transition-colors">&larr; Back to Home</a>
-        </nav>
+    <header class="gradient-bg text-white shadow-md">
+        <div class="container mx-auto px-6 py-12">
+            <h1 class="text-4xl font-extrabold">Patent Portfolio</h1>
+            <p class="text-lg opacity-90 mt-2">A comprehensive list of awarded patents.</p>
+            <a href="index.html" class="inline-block mt-6 text-sm bg-white/20 px-4 py-2 rounded-full hover:bg-white/30 transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Back to Main Portfolio
+            </a>
+        </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="py-20">
-        <div class="container mx-auto px-6">
-            <h1 class="text-4xl font-bold text-slate-800 text-center mb-2">Patent Portfolio</h1>
-            <p class="text-center text-lg mb-12">A comprehensive list of granted patents.</p>
-
-            <div class="bg-white p-8 rounded-lg shadow-lg overflow-x-auto">
-                <table class="w-full text-sm text-left">
-                    <thead class="text-xs text-slate-700 uppercase bg-slate-100">
-                        <tr>
-                            <th scope="col" class="px-6 py-3">Title</th>
-                            <th scope="col" class="px-6 py-3">Date Granted</th>
-                            <th scope="col" class="px-6 py-3">Patent Number</th>
-                            <th scope="col" class="px-6 py-3">Country</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"APPARATUS, SYSTEM, AND METHOD FOR LOGICALLY PACKAGING AND DELIVERING A SERVICE OFFERING"</td><td class="px-6 py-4">17-Apr-2017</td><td class="px-6 py-4">9626632</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">METHOD AND SYSTEM FOR WEB PAGE BREADCRUMB</td><td class="px-6 py-4">03-Apr-2017</td><td class="px-6 py-4">9613151</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">PROVIDING CONTENT-AWARE INPUT DATA</td><td class="px-6 py-4">22-Nov-2016</td><td class="px-6 py-4">9501207</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Method and System for Intelligent Input Assistant</td><td class="px-6 py-4">19-Jul-2016</td><td class="px-6 py-4">1643002</td><td class="px-6 py-4">Korea, Republic of</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Cluster Management in Shared Nothing Cluster</td><td class="px-6 py-4">16-May-2016</td><td class="px-6 py-4">9342390</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Method and System for Intelligent Input Assistant</td><td class="px-6 py-4">28-Apr-2016</td><td class="px-6 py-4">5924859</td><td class="px-6 py-4">Japan</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Device for Preventing CSRF attack</td><td class="px-6 py-4">06-Oct-2015</td><td class="px-6 py-4">9154570</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Providing Context-Aware Input Data</td><td class="px-6 py-4">11-Aug-2015</td><td class="px-6 py-4">9104439</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Automated Topology Formation in Dynamic Distributed Environments</td><td class="px-6 py-4">28-Apr-2015</td><td class="px-6 py-4">9021065</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Method and Device for Preventing CSRF attack</td><td class="px-6 py-4">31-Mar-2015</td><td class="px-6 py-4">8997222</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">System and Method to Enforce CSRF Compliance on Non-Compliant Application</td><td class="px-6 py-4">24-Sept-2014</td><td class="px-6 py-4">ZL201010580357.3</td><td class="px-6 py-4">China</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Reusing Software Development Assets</td><td class="px-6 py-4">5-Aug-2014</td><td class="px-6 py-4">8799854</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Storing Downloadable Content On A Plurality Of Enterprise Storage System (Ess) Cells"</td><td class="px-6 py-4">15-Jul-2014</td><td class="px-6 py-4">8782372</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Capturing Central Processing Unit (Cpu) Utilization For A Virtual Machine"</td><td class="px-6 py-4">24-Jun-2014</td><td class="px-6 py-4">8762993</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td><td class="px-6 py-4">18-Jun-2014</td><td class="px-6 py-4">1730638</td><td class="px-6 py-4">United Kingdom</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td><td class="px-6 py-4">18-Jun-2014</td><td class="px-6 py-4">602005043933.1</td><td class="px-6 py-4">Germany</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">System And Method For Context Sensitive Content Management</td><td class="px-6 py-4">17-Jun-2014</td><td class="px-6 py-4">8756487</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td><td class="px-6 py-4">8-Apr-2014</td><td class="px-6 py-4">2559232</td><td class="px-6 py-4">Canada</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Deploying A Platform Dependent Application In A Grid Environment"</td><td class="px-6 py-4">28-Jan-2014</td><td class="px-6 py-4">2637749</td><td class="px-6 py-4">Canada</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System"</td><td class="px-6 py-4">11-Jul-2013</td><td class="px-6 py-4">I401574</td><td class="px-6 py-4">Taiwan</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Method And Apparatus For Generating Context-Aware Generic Workflow Applications</td><td class="px-6 py-4">26-Feb-2013</td><td class="px-6 py-4">8386407</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">A Method And System For Validating The Consistence Of Configuration Of Reusable Asset And Solution</td><td class="px-6 py-4">23-Jan-2013</td><td class="px-6 py-4">ZL200810127443.1</td><td class="px-6 py-4">China</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments"</td><td class="px-6 py-4">26-Dec-2012</td><td class="px-6 py-4">ZL200580034745.9</td><td class="px-6 py-4">China</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">A Method To Implement Dynamic Breadcrumbs In Web Based Application</td><td class="px-6 py-4">19-Dec-2012</td><td class="px-6 py-4">ZL200910140990.8</td><td class="px-6 py-4">China</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Storing Downloadable Content On A Plurality Of Enterprise Storage System (Ess) Cells"</td><td class="px-6 py-4">11-Dec-2012</td><td class="px-6 py-4">8332609</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Method And System For Employing A Multiple Layer Cache Mechanism To Enhance Performance Of A Multi-User Information Retrieval System</td><td class="px-6 py-4">4-Dec-2012</td><td class="px-6 py-4">8326828</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Managing Applications In A Shared Computer Infrastructure"</td><td class="px-6 py-4">9-Oct-2012</td><td class="px-6 py-4">8286157</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Deploying A Platform Dependent Application In A Grid Environment"</td><td class="px-6 py-4">7-Sep-2012</td><td class="px-6 py-4">5078916</td><td class="px-6 py-4">Japan</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Capturing Central Processing Unit (Cpu) Utilization For A Process On A Virtual Machine"</td><td class="px-6 py-4">24-Jul-2012</td><td class="px-6 py-4">8230419</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments"</td><td class="px-6 py-4">12-Jun-2012</td><td class="px-6 py-4">8200789</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Deploying A Platform Dependent Application In A Grid Environment"</td><td class="px-6 py-4">14-Feb-2012</td><td class="px-6 py-4">8117611</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System"</td><td class="px-6 py-4">16-Dec-2011</td><td class="px-6 py-4">4886690</td><td class="px-6 py-4">Japan</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Managing Applications In A Shared Computer Infrastructure"</td><td class="px-6 py-4">16-Nov-2011</td><td class="px-6 py-4">ZL200610057783.2</td><td class="px-6 py-4">China</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">"Computerized System, Method And Program Product For Managing An Enterprise Storage System"</td><td class="px-6 py-4">11-Oct-2011</td><td class="px-6 py-4">I350459</td><td class="px-6 py-4">Taiwan</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System"</td><td class="px-6 py-4">31-Aug-2011</td><td class="px-6 py-4">ZL200580009702.5</td><td class="px-6 py-4">China</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td><td class="px-6 py-4">5-Jul-2011</td><td class="px-6 py-4">7975270</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System"</td><td class="px-6 py-4">28-Feb-2011</td><td class="px-6 py-4">1019982</td><td class="px-6 py-4">"Korea, Republic of"</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td><td class="px-6 py-4">21-Nov-2010</td><td class="px-6 py-4">I333621</td><td class="px-6 py-4">Taiwan</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Memory Efficient Xml Shredded With Partial Commit</td><td class="px-6 py-4">2-Nov-2010</td><td class="px-6 py-4">7827210</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Storing Downloadable Content On A Plurality Of Enterprise Storage System (Ess) Cells"</td><td class="px-6 py-4">29-Sep-2010</td><td class="px-6 py-4">985690</td><td class="px-6 py-4">"Korea, Republic of"</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td><td class="px-6 py-4">17-Sep-2010</td><td class="px-6 py-4">4587183</td><td class="px-6 py-4">Japan</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Computational Linguistic Statements For Providing An Autonomic Computing Environment</td><td class="px-6 py-4">31-Aug-2010</td><td class="px-6 py-4">7788082</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Optimized Concurrent Data Download Within A Grid Computing Environment</td><td class="px-6 py-4">3-Aug-2010</td><td class="px-6 py-4">2569925</td><td class="px-6 py-4">Canada</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments"</td><td class="px-6 py-4">28-Jul-2010</td><td class="px-6 py-4">1810447</td><td class="px-6 py-4">Switzerland</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments"</td><td class="px-6 py-4">28-Jul-2010</td><td class="px-6 py-4">1810447</td><td class="px-6 py-4">France</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments"</td><td class="px-6 py-4">28-Jul-2010</td><td class="px-6 py-4">1810447</td><td class="px-6 py-4">United Kingdom</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments"</td><td class="px-6 py-4">28-Jul-2010</td><td class="px-6 py-4">1810447</td><td class="px-6 py-4">Netherlands</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments"</td><td class="px-6 py-4">28-Jul-2010</td><td class="px-6 py-4">1810447</td><td class="px-6 py-4">Sweden</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments"</td><td class="px-6 py-4">28-Jul-2010</td><td class="px-6 py-4">6.02005E+11</td><td class="px-6 py-4">Germany</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td><td class="px-6 py-4">3-Jun-2010</td><td class="px-6 py-4">276331</td><td class="px-6 py-4">Mexico</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Computerized System, Method And Program Product For Managing An Enterprise Storage System"</td><td class="px-6 py-4">29-Mar-2010</td><td class="px-6 py-4">951257</td><td class="px-6 py-4">"Korea, Republic of"</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td><td class="px-6 py-4">29-Jan-2010</td><td class="px-6 py-4">940976</td><td class="px-6 py-4">"Korea, Republic of"</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing Environment"</td><td class="px-6 py-4">8-Dec-2009</td><td class="px-6 py-4">7631098</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">"Method, Computer Program Product, And System Of Optimized Data Translation From Relational Data Storage To Hierarchical Structure"</td><td class="px-6 py-4">27-Jan-2009</td><td class="px-6 py-4">7483890</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Storing Downloadable Content On A Plurality Of Enterprise Storage System (Ess) Cells"</td><td class="px-6 py-4">10-Dec-2008</td><td class="px-6 py-4">ZL200580023477.0</td><td class="px-6 py-4">China</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Method And System For Instant Messaging Bots Specification Using State Transition Methodology And Xml</td><td class="px-6 py-4">18-Nov-2008</td><td class="px-6 py-4">7454469</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Proram Product For Capturing Central Processing Unit (Cpu) Utilization For A Virtual Machine"</td><td class="px-6 py-4">22-Oct-2008</td><td class="px-6 py-4">ZL200610075338.9</td><td class="px-6 py-4">China</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Method And Apparatus For End-To-End Content Publishing System Using Xml With An Object Dependency Graph</td><td class="px-6 py-4">5-Aug-2008</td><td class="px-6 py-4">7409634</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Computerized System, Method And Program Product For Managing An Enterprise Storage System"</td><td class="px-6 py-4">23-Jul-2008</td><td class="px-6 py-4">ZL200480034331.1</td><td class="px-6 py-4">China</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td><td class="px-6 py-4">23-Apr-2008</td><td class="px-6 py-4">ZL200580004524.7</td><td class="px-6 py-4">China</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">Memory Efficient Xml Shredding With Partial Commit</td><td class="px-6 py-4">22-Apr-2008</td><td class="px-6 py-4">7363317</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Computational Linguistic Statements For Providing An Autonomic Computing Environment</td><td class="px-6 py-4">5-Feb-2008</td><td class="px-6 py-4">7328156</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System"</td><td class="px-6 py-4">19-Dec-2007</td><td class="px-6 py-4">6.02005E+11</td><td class="px-6 py-4">Germany</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System"</td><td class="px-6 py-4">19-Dec-2007</td><td class="px-6 py-4">1766936</td><td class="px-6 py-4">France</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System"</td><td class="px-6 py-4">19-Dec-2007</td><td class="px-6 py-4">1766936</td><td class="px-6 py-4">United Kingdom</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Multiple Attribute Object Comparison Based On Quantitative Distance Measurement</td><td class="px-6 py-4">16-Oct-2007</td><td class="px-6 py-4">7284012</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, System And Program Product For Storing Downloadable Content On A Plurality Of Enterprise Storage System (Ess) Cells"</td><td class="px-6 py-4">2-Oct-2007</td><td class="px-6 py-4">7277985</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">"Computerized System, Method And Program Product For Managing An Enterprise Storage System"</td><td class="px-6 py-4">19-Jun-2007</td><td class="px-6 py-4">7234032</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, Computer Program Product, And System Converting Relational Data Into Hierarchical Data Structure Based Upon Tagging Trees"</td><td class="px-6 py-4">15-May-2007</td><td class="px-6 py-4">7219102</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Managing Processing Within Computing Environments Including Initiation Of Virtual Machines</td><td class="px-6 py-4">4-Apr-2007</td><td class="px-6 py-4">ZL200410077877.7</td><td class="px-6 py-4">China</td></tr>
-                        <tr class="bg-white border-b"><td class="px-6 py-4 font-medium">"Method, Computer Program Product, And System Of Optimized Data Translation From Relational Data Storage To Hierarchical Structure"</td><td class="px-6 py-4">27-Feb-2007</td><td class="px-6 py-4">7185024</td><td class="px-6 py-4">United States</td></tr>
-                        <tr class="bg-slate-50 border-b"><td class="px-6 py-4 font-medium">Method And Apparatus For End-To-End Content Publishing System Using Xml With An Object Dependency Graph</td><td class="px-6 py-4">11-Jul-2006</td><td class="px-6 py-4">7076728</td><td class="px-6 py-4">United States</td></tr>
-                    </tbody>
-                </table>
+    <main class="container mx-auto px-6 py-16">
+        <!-- Search Bar Section -->
+        <div class="mb-12">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400"></i>
+                </div>
+                <input type="text" id="patentSearch" placeholder="Search by title, patent number, or country..." class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm shadow-sm">
             </div>
+             <p id="noResultsMessage" class="text-center text-slate-500 mt-8 hidden">No patents found matching your search.</p>
+        </div>
+
+        <!-- Patents Table -->
+        <div class="overflow-x-auto bg-white rounded-lg shadow">
+            <table class="min-w-full divide-y divide-gray-200" id="patentTable">
+                <thead class="bg-slate-100">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">Title</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">Date Granted</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">Patent Number</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-slate-600 uppercase tracking-wider">Country</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    <!-- Each tr is a patent-item that the script will filter -->
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">APPARATUS, SYSTEM, AND METHOD FOR LOGICALLY PACKAGING AND DELIVERING A SERVICE OFFERING</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">17-Apr-2017</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">9626632</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">METHOD AND SYSTEM FOR WEB PAGE BREADCRUMB</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">03-Apr-2017</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">9613151</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">PROVIDING CONTENT-AWARE INPUT DATA</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">22-Nov-2016</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">9501207</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method and System for Intelligent Input Assistant</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">19-Jul-2016</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">1643002</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Korea, Republic of</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Cluster Management in Shared Nothing Cluster</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">16-May-2016</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">9342390</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method and System for Intelligent Input Assistant</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">28-Apr-2016</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">5924859</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Japan</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Device for Preventing CSRF attack</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">06-Oct-2015</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">9154570</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Providing Context-Aware Input Data</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">11-Aug-2015</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">9104439</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Automated Topology Formation in Dynamic Distributed Environments</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">28-Apr-2015</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">9021065</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method and Device for Preventing CSRF attack</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">31-Mar-2015</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8997222</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">System and Method to Enforce CSRF Compliance on Non-Compliant Application</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">24-Sept-2014</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">ZL201010580357.3</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">China</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Reusing Software Development Assets</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">5-Aug-2014</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8799854</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Storing Downloadable Content On A Plurality Of Enterprise Storage System (Ess) Cells</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">15-Jul-2014</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8782372</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Capturing Central Processing Unit (Cpu) Utilization For A Virtual Machine</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">24-Jun-2014</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8762993</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">18-Jun-2014</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">1730638</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United Kingdom</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">18-Jun-2014</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">602005043933.1</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Germany</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">System And Method For Context Sensitive Content Management</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">17-Jun-2014</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8756487</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8-Apr-2014</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">2559232</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Canada</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Deploying A Platform Dependent Application In A Grid Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">28-Jan-2014</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">2637749</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Canada</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">11-Jul-2013</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">I401574</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Taiwan</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method And Apparatus For Generating Context-Aware Generic Workflow Applications</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">26-Feb-2013</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8386407</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">A Method And System For Validating The Consistence Of Configuration Of Reusable Asset And Solution</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">23-Jan-2013</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">ZL200810127443.1</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">China</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">26-Dec-2012</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">ZL200580034745.9</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">China</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">A Method To Implement Dynamic Breadcrumbs In Web Based Application</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">19-Dec-2012</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">ZL200910140990.8</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">China</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Storing Downloadable Content On A Plurality Of Enterprise Storage System (Ess) Cells</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">11-Dec-2012</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8332609</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method And System For Employing A Multiple Layer Cache Mechanism To Enhance Performance Of A Multi-User Information Retrieval System</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">4-Dec-2012</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8326828</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Managing Applications In A Shared Computer Infrastructure</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">9-Oct-2012</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8286157</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Deploying A Platform Dependent Application In A Grid Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7-Sep-2012</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">5078916</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Japan</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Capturing Central Processing Unit (Cpu) Utilization For A Process On A Virtual Machine</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">24-Jul-2012</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8230419</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">12-Jun-2012</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8200789</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Deploying A Platform Dependent Application In A Grid Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">14-Feb-2012</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8117611</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">16-Dec-2011</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">4886690</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Japan</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Managing Applications In A Shared Computer Infrastructure</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">16-Nov-2011</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">ZL200610057783.2</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">China</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Computerized System, Method And Program Product For Managing An Enterprise Storage System</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">11-Oct-2011</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">I350459</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Taiwan</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">31-Aug-2011</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">ZL200580009702.5</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">China</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">5-Jul-2011</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7975270</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">28-Feb-2011</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">1019982</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Korea, Republic of</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">21-Nov-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">I333621</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Taiwan</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Memory Efficient Xml Shredded With Partial Commit</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">2-Nov-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7827210</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Storing Downloadable Content On A Plurality Of Enterprise Storage System (Ess) Cells</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">29-Sep-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">985690</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Korea, Republic of</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">17-Sep-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">4587183</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Japan</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Computational Linguistic Statements For Providing An Autonomic Computing Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">31-Aug-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7788082</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Optimized Concurrent Data Download Within A Grid Computing Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">3-Aug-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">2569925</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Canada</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">28-Jul-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">1810447</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Switzerland</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">28-Jul-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">1810447</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">France</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">28-Jul-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">1810447</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United Kingdom</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">28-Jul-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">1810447</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Netherlands</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">28-Jul-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">1810447</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Sweden</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Automated Topology Formation In Dynamic Distributed Environments</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">28-Jul-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">6.02005E+11</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Germany</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">3-Jun-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">276331</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Mexico</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Computerized System, Method And Program Product For Managing An Enterprise Storage System</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">29-Mar-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">951257</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Korea, Republic of</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">29-Jan-2010</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">940976</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Korea, Republic of</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">8-Dec-2009</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7631098</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, Computer Program Product, And System Of Optimized Data Translation From Relational Data Storage To Hierarchical Structure</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">27-Jan-2009</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7483890</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Storing Downloadable Content On A Plurality Of Enterprise Storage System (Ess) Cells</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">10-Dec-2008</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">ZL200580023477.0</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">China</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method And System For Instant Messaging Bots Specification Using State Transition Methodology And Xml</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">18-Nov-2008</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7454469</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Proram Product For Capturing Central Processing Unit (Cpu) Utilization For A Virtual Machine</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">22-Oct-2008</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">ZL200610075338.9</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">China</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method And Apparatus For End-To-End Content Publishing System Using Xml With An Object Dependency Graph</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">5-Aug-2008</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7409634</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Computerized System, Method And Program Product For Managing An Enterprise Storage System</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">23-Jul-2008</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">ZL200480034331.1</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">China</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Facilitating Allocation Of Resources In A Heterogeneous Computing Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">23-Apr-2008</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">ZL200580004524.7</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">China</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Memory Efficient Xml Shredding With Partial Commit</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">22-Apr-2008</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7363317</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Computational Linguistic Statements For Providing An Autonomic Computing Environment</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">5-Feb-2008</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7328156</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">19-Dec-2007</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">6.02005E+11</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">Germany</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">19-Dec-2007</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">1766936</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">France</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Optimized Concurrent Data Download Within A Grid Computing System</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">19-Dec-2007</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">1766936</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United Kingdom</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Multiple Attribute Object Comparison Based On Quantitative Distance Measurement</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">16-Oct-2007</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7284012</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, System And Program Product For Storing Downloadable Content On A Plurality Of Enterprise Storage System (Ess) Cells</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">2-Oct-2007</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7277985</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Computerized System, Method And Program Product For Managing An Enterprise Storage System</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">19-Jun-2007</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7234032</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, Computer Program Product, And System Converting Relational Data Into Hierarchical Data Structure Based Upon Tagging Trees</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">15-May-2007</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7219102</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Managing Processing Within Computing Environments Including Initiation Of Virtual Machines</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">4-Apr-2007</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">ZL200410077877.7</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">China</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method, Computer Program Product, And System Of Optimized Data Translation From Relational Data Storage To Hierarchical Structure</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">27-Feb-2007</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7185024</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                    <tr class="patent-item">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-slate-900">Method And Apparatus For End-To-End Content Publishing System Using Xml With An Object Dependency Graph</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">11-Jul-2006</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">7076728</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">United States</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
     </main>
 
-    <!-- Footer -->
-    <footer class="bg-slate-800 text-slate-100 py-16 mt-20">
+    <footer class="bg-slate-800 text-slate-100 py-12 mt-16">
         <div class="container mx-auto px-6 text-center">
             <p class="text-sm text-slate-400">&copy; <span id="year"></span> Dikran Meliksetian. All Rights Reserved.</p>
         </div>
     </footer>
-
+    
     <script>
+        // --- Patent Search Functionality ---
+        const searchInput = document.getElementById('patentSearch');
+        const patentTable = document.getElementById('patentTable');
+        const patentItems = patentTable.getElementsByClassName('patent-item');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+
+        searchInput.addEventListener('keyup', function(event) {
+            const searchTerm = event.target.value.toLowerCase();
+            let visibleCount = 0;
+
+            for (let i = 0; i < patentItems.length; i++) {
+                const item = patentItems[i];
+                const textContent = item.textContent || item.innerText;
+                
+                if (textContent.toLowerCase().includes(searchTerm)) {
+                    item.style.display = '';
+                    visibleCount++;
+                } else {
+                    item.style.display = 'none';
+                }
+            }
+
+            // Show or hide the "no results" message
+            if (visibleCount === 0) {
+                noResultsMessage.style.display = 'block';
+            } else {
+                noResultsMessage.style.display = 'none';
+            }
+        });
+
+        // --- Set current year in footer ---
         document.getElementById('year').textContent = new Date().getFullYear();
     </script>
-
 </body>
 </html>
 
