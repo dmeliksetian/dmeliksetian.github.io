@@ -1,0 +1,95 @@
+---
+title: "Teaching"
+page-layout: full
+format:
+  html:
+    css: styles.css
+---
+
+## Teaching Philosophy
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-8}
+I believe education should mirror the collaborative environments where true innovation occurs.
+My approach is modeled on the dynamic, innovative teams I led at IBM, where individuals of all skill levels learn implicitly from one another.
+It's not just a matter of imprinting facts, but of fostering a conversation where students discover and appreciate concepts for themselves.
+This philosophy of mutual discovery through discussion was central to how I mentored and coached junior team members across the globe.
+**My objective is to foster these collaborative, discovery-oriented learning environments in every course I teach.**
+:::
+
+::: {.g-col-12 .g-col-md-4}
+::: {.callout-tip appearance="minimal" icon="false"}
+## <i class="fas fa-quote-left"></i>
+"As a teacher or a technical lead, I get the most satisfaction when I see a student or a colleague reach that moment of sudden insight or discovery."
+:::
+:::
+
+:::
+
+---
+
+## Academic Experience
+
+I currently serve as Adjunct Faculty at the **University of New Haven** (2023–Present).
+
+### Previous Appointments
+
+* **New York Institute of Technology** (2022)
+    * Adjunct Faculty, Computer Science Department
+* **Syracuse University** (1995–1999)
+    * Research Fellow, Electrical and Computer Engineering Department
+* **South Dakota School of Mines & Technology** (1992–1994)
+    * Assistant Professor, Electrical and Computer Engineering Department
+* **American University of Beirut** (1985–1988)
+    * Instructor, Electrical and Computer Engineering
+
+---
+
+## Recent Courses
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6 .g-col-lg-4}
+### Intro to Quantum Computing
+**Focus:** Quantum Algorithms & Qiskit
+
+A cross-listed course exploring the quantum frontier. Topics include superposition, entanglement, and implementing algorithms like Grover’s and Shor’s using Python and the IBM Quantum Platform.
+:::
+
+::: {.g-col-12 .g-col-md-6 .g-col-lg-4}
+### Database Systems
+**Focus:** Architecture & Internals
+
+A graduate survey of database internals, examining advanced normalization, transaction management, schema refinement, and security protocols alongside practical SQL implementation.
+:::
+
+::: {.g-col-12 .g-col-md-6 .g-col-lg-4}
+### Theoretical Concepts
+**Focus:** Automata & Complexity
+
+A rigorous investigation into system capabilities and limitations, moving from mathematical logic and proofs to automata theory, Turing Machines, and computational complexity.
+:::
+
+::: {.g-col-12 .g-col-md-6 .g-col-lg-4}
+### Databases and SQL
+**Focus:** Design & Implementation
+
+A comprehensive introduction to data management, bridging conceptual Entity-Relationship modeling with practical SQL database creation, query optimization, and normalization.
+:::
+
+::: {.g-col-12 .g-col-md-6 .g-col-lg-4}
+### Discrete Mathematics
+**Focus:** Logic & Proofs
+
+The mathematical backbone of computer science, establishing the logic, set theory, counting techniques, and probability concepts required for analyzing algorithms and computing systems.
+:::
+
+::: {.g-col-12 .g-col-md-6 .g-col-lg-4}
+### Introduction to Computing
+**Focus:** Computational Thinking
+
+A team-based exploration of problem-solving. Students solve algorithmic puzzles—like the “Frogs and Toads” game and Nim—and study cryptography and data representation.
+:::
+
+:::

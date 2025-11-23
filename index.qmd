@@ -1,0 +1,160 @@
+---
+title: "Home"
+page-layout: full
+---
+
+# A Career in Innovation {style="text-align: center; margin-bottom: 2rem;"}
+
+![](portrait.png){width=150 fig-align="center" style="border-radius: 50%;"}
+
+<p class="lead" style="text-align: center;">
+From IBM Master Inventor and Chief Architect to exploring the frontiers of Quantum Computing as an Adjunct Professor.
+</p>
+
+---
+
+## About Me
+
+My career has been dedicated to innovation—from software and cloud computing to machine learning and AI. After a long and rewarding journey at IBM as a Senior Technical Staff Member and Chief Architect, I've returned to my academic roots, having previously served on the faculties at Syracuse University and the South Dakota School of Mines and Technology.
+
+Throughout my time in the industry, I had the privilege of leading global teams, mentoring the next generation of technical talent in places like China and Brazil, and translating complex business needs into elegant, impactful technology solutions. Now, I am channeling that passion into the classroom and my personal research into the fascinating world of Quantum Computing.
+
+## Professional Recognition & Certifications
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6 .text-start}
+### Professional Recognition
+* **IBM Master Inventor**
+* 3x IBM Outstanding Technical Achievement Awards
+* Senior Member, ACM
+* Life Member, IEEE & Computer Society
+:::
+
+::: {.g-col-12 .g-col-md-6 .text-start}
+### Certifications
+* Qiskit Global Summer School - Quantum Excellence
+* Quantum Business Foundations
+* Basics of Quantum Information
+* Intro to Cybersecurity Tools & Cyber Attacks
+:::
+
+:::
+
+---
+
+## Career Journey Highlights
+
+### 1. Pioneering Grid & Cloud Computing
+As an "evangelist" for IBM's intraGrid, I led the technical vision that evolved into key Tivoli products, shaping the future of distributed computing.
+
+### 2. Global Leadership & Innovation
+As Chief Architect for IBM's China Development Lab, I built new teams for Hadoop and Cloud, mentoring a new generation of technical talent in Shanghai.
+
+### 3. Transforming IT with Analytics & AI
+Led global teams in transforming the PriSM analytics tool and served as Chief Architect for AI services like Exploration with Watson (ExW) for the mining industry.
+
+---
+
+## Innovations & Intellectual Property
+
+As an IBM Master Inventor, I hold more than 50 patents. This portfolio represents a career dedicated to solving complex technical challenges.
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-4}
+### Grid & Cloud Deployment
+Created methods for deploying platform-dependent applications in diverse grid environments, enabling greater flexibility and resource utilization.
+:::
+
+::: {.g-col-12 .g-col-md-4}
+### CSRF Attack Prevention
+Developed systems and methods to enforce Cross-Site Request Forgery (CSRF) compliance on applications, enhancing web security.
+:::
+
+::: {.g-col-12 .g-col-md-4}
+### Automated Topology Formation
+Invented a system for automated topology formation in dynamic distributed environments, simplifying network management and scaling.
+:::
+
+:::
+
+::: {.text-center}
+[View Full Patent Portfolio](patents.qmd){.btn .btn-primary role="button"}
+:::
+
+---
+
+## Academic Pursuits
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6 .text-start}
+### Teaching Experience
+* **University of New Haven** (2023–Present)
+* **New York Institute of Technology** (2022)
+* **Syracuse University** (1995–1999)
+* **South Dakota School of Mines & Tech** (1992–1994)
+* **American University of Beirut** (1985–1988)
+:::
+
+::: {.g-col-12 .g-col-md-6 .text-start}
+### Selected Publications
+* "Design and Implementation of an Enterprise Grid", *IBM System Journal*, 2004.
+* "Design of a Distributed Video Management System", *IEEE Transactions on Multimedia*, 2000.
+* "Optimal Routing Algorithm and the Diameter of the Cube-Connected Cycles", *IEEE Transactions on Parallel and Distributed Systems*, 1993.
+* Co-Author, "Electric Circuits: Student Study Guide", *McGraw Hill*, 1995.
+:::
+
+:::
+::: {.text-center}
+[View All Publications](publications.qmd){.btn .btn-primary role="button"}
+:::
+
+---
+
+## Quantum Explorations
+
+My current intellectual passion lies at the intersection of classical and quantum computing.
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-4}
+### An Architect's View on Qubits
+Moving from the certainty of classical bits to the probabilistic nature of qubits is a profound paradigm shift. It challenges every assumption about state management and error correction I've built over a career.
+:::
+
+::: {.g-col-12 .g-col-md-4}
+### First Steps with Qiskit
+Running my first simple algorithm on an IBM quantum simulator was a fascinating experience. It's one thing to read about superposition and entanglement; it's another to see their effects.
+:::
+
+::: {.g-col-12 .g-col-md-4}
+### The Future is Hybrid
+I believe the near-term future isn't purely quantum. The most exciting potential lies in hybrid systems where classical machines handle data and control flow, offloading specific calculations to quantum co-processors.
+:::
+
+:::
+
+---
+
+## Contact
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+### Academic Inquiries
+**University of New Haven** *Office:* Maxcy Hall 120D  
+*Phone:* (203) 479-4945  
+
+[<i class="bi bi-envelope"></i> Dmeliksetian@newhaven.edu](mailto:Dmeliksetian@newhaven.edu)
+:::
+
+::: {.g-col-12 .g-col-md-6}
+### Personal & Consulting
+**Dikran Meliksetian, Ph.D.** *Connect for research collaborations, speaking engagements, or consulting opportunities.*
+
+[<i class="bi bi-envelope"></i> dikran.s.meliksetian@gmail.com](mailto:dikran.s.meliksetian@gmail.com)
+:::
+
+:::

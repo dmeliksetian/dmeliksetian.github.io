@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Full List of Publications - Dikran Meliksetian</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+        .gradient-bg {
+            background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+        }
+        .publication-category {
+             @apply text-2xl font-bold text-slate-800 mt-12 mb-6 border-b-2 border-slate-200 pb-3;
+        }
+    </style>
+</head>
+<body class="text-slate-700">
+
+    <header class="gradient-bg text-white shadow-md">
+        <div class="container mx-auto px-6 py-12">
+            <h1 class="text-4xl font-extrabold">Publications</h1>
+            <p class="text-lg opacity-90 mt-2">A comprehensive list of books, journal articles, and conference papers.</p>
+            <a href="index.html" class="inline-block mt-6 text-sm bg-white/20 px-4 py-2 rounded-full hover:bg-white/30 transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>Back to Main Portfolio
+            </a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-16">
+        <!-- Search Bar Section -->
+        <div class="mb-12">
+            <div class="relative">
+                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                    <i class="fas fa-search text-gray-400"></i>
+                </div>
+                <input type="text" id="publicationSearch" placeholder="Search by title, author, or publication..." class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm shadow-sm">
+            </div>
+             <p id="noResultsMessage" class="text-center text-slate-500 mt-8 hidden">No publications found matching your search.</p>
+        </div>
+        
+        <div id="publicationsList" class="space-y-8">
+            <!-- Books -->
+            <div>
+                <h2 class="publication-category">Books</h2>
+                <ul class="space-y-4">
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Norman Balabanian and Dikran S. Meliksetian, <span class="font-semibold text-slate-800">Electric Circuits: Student Study Guide</span>, McGraw Hill 1995.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Dikran S. Meliksetian, <span class="font-semibold text-slate-800">Solution Manual for Electric Circuits</span> to accompany the textbook Electric Circuits by Norman Balabanian, McGraw Hill, 1994.</li>
+                </ul>
+            </div>
+
+            <!-- Journals -->
+            <div>
+                <h2 class="publication-category">Journals</h2>
+                <ul class="space-y-4">
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Dikran S Meliksetian et al, “Design and Implementation of an Enterprise Grid”, <span class="font-semibold text-slate-800">IBM System Journal</span> special issue on Grid Computing, Volume 43, Number 4, 2004.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Dikran S. Meliksetian, Fang-Kuo Yu and C. Y. Roger Chen, “Design of a Distributed Video Management System”, <span class="font-semibold text-slate-800">IEEE Transactions on Multimedia</span>, Vol. 2, No. 1, pp. 62-69, 2000.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">M. N. Ayyaz, Dikran S. Meliksetian, and C. Y. Roger Chen, “Partitionable multistage interconnection networks. Dynamic subcube migration”, <span class="font-semibold text-slate-800">Journal of Telecommunication Systems</span>, Vol. 13, pp. 45-67, 2000.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">M. N. Ayyaz, Dikran S. Meliksetian, and C. Y. Roger Chen, “Partitionable multistage interconnection networks. Task Migration Issues”, <span class="font-semibold text-slate-800">Journal of Telecommunication Systems</span>, Vol. 10, No. 1/2, pp 79-106, 1998.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">C. Y. Roger Chen, G. A. Makhoul and Dikran S. Meliksetian, “A Queueing Analysis of the Performance of DQDB”, <span class="font-semibold text-slate-800">ACM/IEEE Transactions on Networking</span>, Vol. 3, No. 6, pp. 872-881, December 1995.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">C. Y. Roger Chen, Dikran S. Meliksetian, Martin Cheng-Sheng Chang, Larry J. Liu, “Design of a Multimedia Object-Oriented DBMS”, <span class="font-semibold text-slate-800">ACM/Springer Multimedia Systems</span>, Vol. 3, No. 5/6, pp. 217- 227, 1995.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Bradley S. Carlson, C. Y. Roger Chen and Dikran S. Meliksetian, “Dual Eulerian properties of plane multigraphs'', <span class="font-semibold text-slate-800">SIAM Journal of Discrete Mathematics</span>, Vol. 8, No. 1, pp. 33-50, February 1995.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Dikran S. Meliksetian and C. Y. Roger Chen, “Optimal Routing Algorithm and the Diameter of the Cube-Connected Cycles ”, <span class="font-semibold text-slate-800">IEEE Transactions on Parallel and Distributed Systems</span>, No 10, pp. 1172-1178, October 1993.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Dikran S. Meliksetian and C. Y. Roger Chen, “A Markov-Modulated Bernoulli Process Approximation for the Analysis of Banyan Networks,” <span class="font-semibold text-slate-800">ACM Journal on Performance Evaluation Revue</span>, Special Issue on the 1993 ACM Sigmetrics Conference, Vol. 21, No. 1, pp. 183-194, 1993.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Dikran S. Meliksetian and C. Y. Roger Chen, “Performance Analysis of Communications in Static Interconnection Networks”, <span class="font-semibold text-slate-800">ACM Journal on Performance Evaluation Revue</span>, Special Issue on the 1992 ACM Sigmetrics Conference, Vol. 20, No. 1, pp. 249-250, 1992.</li>
+                </ul>
+            </div>
+
+            <!-- Web Publications -->
+            <div>
+                <h2 class="publication-category">Web Publications</h2>
+                <ul class="space-y-4">
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Richard Ferri, Moon J. Kim, & Dikran S. Meliksetian “Grid Computing” <span class="font-semibold text-slate-800">Websphere Journal</span>, Vol. 2, Issue 7, July 2003.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Chen Shu, Nianjun Zhou, Dikran Meliksetian, “Leverage XSLT to build applications,” <span class="font-semibold text-slate-800">IBM developerWorks</span>, March 2003.</li>
+                </ul>
+            </div>
+
+            <!-- Conferences -->
+            <div>
+                <h2 class="publication-category">Conferences</h2>
+                <ul class="space-y-4">
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Lucas C. Villa Real, Bruno Silva, Dikran S. Meliksetian, Kaique Sacchi. 2019. Large-scale 3D geospatial processing made possible. In <span class="font-semibold text-slate-800">SIGSPATIAL ’19</span>. ACM, New York, NY, USA. Pages 199–208.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Rajesh Jaluka, Dikran Meliksetian and Manish Gupta, “Enterprise IT as a Service: Transforming the Delivery Model of IT Services”, accepted for publication and oral presentation <span class="font-semibold text-slate-800">Fifth International Conference on Cloud Computing in Emerging Markets (CCEM)</span> October 2016.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">M. Buco, D. Rosu, D. Meliksetian, F. Wu and N. Anerousis, “Effort Instrumentation and management in service delivery environments”, <span class="font-semibold text-slate-800">Conference on Network and Service Management (CNSM)</span> January 2012.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">N. Zhou, D. S. Meliksetian, J. P. Prost and I. Boutboul, “Optimal Information Gathering Scheme over a Scalable Grid Information Services Architecture”, <span class="font-semibold text-slate-800">International Conference on Web Information Systems and Technologies (WEBIST)</span> April 2006.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Nianjun Zhou, George Mihaila, and Dikran Meliksetian, “XML Data Mediator - Integrated solution for XML Roundtrip from XML to Relational”, <span class="font-semibold text-slate-800">13th World Wide Web Conference Poster Presentation</span>, May 2004.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Louis Weitzman, Sara Elo Dean, Dikran Meliksetian, Nianjun Zhou, Kapil Gupta, and Jessica Wu, “Transforming the Content Management Process at ibm.com,” <span class="font-semibold text-slate-800">CHI 2002 | AIGA Experience Design Forum</span>, 2002.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Nianjun Zhou, Dikran Meliksetian, Louis Weitzman, Sara Elo Dean, Jeff Milton, Peter Davis, Jessica Wu, “XML Content Management: Challenges and Solutions,” <span class="font-semibold text-slate-800">XML Europe 2001</span>, 2001.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Jose Antonio del Cano, Dikran S. Meliksetian and C. Y. Roger Chen, “Dynamic Swizzling: Towards the Integration of Persistent Objects in the Internet”, <span class="font-semibold text-slate-800">Proceedings IEEE COMPSAC</span>, 1997.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Tacettin Köprülü, Dikran Meliksetian, and C. Y. Roger Chen, “Smoothing Algorithms for the delivery of Compressed Video,” <span class="font-semibold text-slate-800">Proceedings 1997 IEEE International Conference on Communications</span>, vol. 3, pp. 1330-1334, 1997.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Mansour Zuair, Dikran S. Meliksetian and C.Y. Roger Chen, “New Architecture for MPEG-2 Real-Time Encoding”, <span class="font-semibold text-slate-800">Proceedings SPIE</span>, Vol. 3021, pp. 170-181, 1997.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Kubilay Cardakli, Tacettin Köprülü, Dikran Meliksetian, and C. Y. Roger Chen, “Message Reduction Rules (MR2): a methodology to streamline intelligent message based, distributed multimedia applications,” <span class="font-semibold text-slate-800">Proceedings SPIE</span>, Vol. 3020, pp. 56-67, 1997.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Wei-Chih Tseng, Dikran S. Meliksetian and C. Y. Roger Chen, “An Efficient Application-Independent Visualization Engine for Information with Complex Data Structure,” <span class="font-semibold text-slate-800">Proceedings of SPIE</span>, Vol. 3017, pp. 220-231, 1997.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">C. Y. Roger Chen, Dikran S. Meliksetian and Mark D. Foresti, “Management of Distributed Multimedia Information,” <span class="font-semibold text-slate-800">Proceedings of the 1996 Sixth Annual Dual-Use Technologies and Applications Conference</span>, pp. 109-114, June 1996.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Dikran S. Meliksetian, C. Y. Roger Chen, Chung-Cheng Kuo, and Larry J. Liu, “Collaboration System,” <span class="font-semibold text-slate-800">Proceedings of the 1996 Sixth Annual Dual-Use Technologies and Applications Conference</span>, pp. 115-118, June 1996.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Dikran S. Meliksetian, et. al., “Design and Implementation of an Object-Oriented Geographical Information System,” <span class="font-semibold text-slate-800">Proceedings of the 1996 Sixth Annual Dual-Use Technologies and Applications Conference</span>, pp. 181-184, June 1996.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Scott M. Huse, D. S. Meliksetian, C. Y. Roger Chen, “Prediction-Based Routing for Cell-Switched Networks,” <span class="font-semibold text-slate-800">Proceedings of the 1996 International Phoenix Conference on Computers and Communications</span>, pp. 459-465, 1996.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Mansour Zuair, Dikran S. Meliksetian and C.Y. Roger Chen, “Computational Analysis of MPEG-2 Encoding Algorithm”, <span class="font-semibold text-slate-800">Digest of Technical Papers IEEE International Conference on Consumer Electronics</span>, page 32, 1996.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Bradley S. Carlson, C. Y. Roger Chen and Dikran S. Meliksetian, “Transistor Chaining in CMOS Leaf Cells of Planar Topology”, <span class="font-semibold text-slate-800">Proceedings Sixth Great Lakes Symposium on VLSI</span>, pp. 194-199, 1996.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Frank F. Kuo, Dikran S. Meliksetian and C. Y. Roger Chen, “Resource Management Issues of a Video Server,” <span class="font-semibold text-slate-800">Proceedings of SPIE</span>, Vol. 2916, pp. 290-300, 1996.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">C. Y. Roger Chen, Dikran S. Meliksetian, Martin Cheng-Sheng Chang, “Collaboration System for Classroom Instruction”, <span class="font-semibold text-slate-800">Proceedings SPIE</span>, Vol. 2617, pp. 44-55, 1996.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">C. Y. Roger Chen, Dikran S. Meliksetian, Martin Cheng-Sheng Chang, Larry J. Liu, “Techniques for Video Indexing”, <span class="font-semibold text-slate-800">Proceedings SPIE</span>, Vol. 2617, pp. 70-80 1996.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Mowcheng Lee, C. Y. Roger Chen, and Dikran S. Meliksetian “Throughput Analysis of Interconnecting CSMA/CD LANs with Switching Hubs”, <span class="font-semibold text-slate-800">Proceedings of the IEEE 14th Annual International Phoenix Conference on Computers and Communications</span>, pp. 522-528, 1995.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Michael J. Batchelder and Dikran S. Meliksetian, “Personal Electronics Laboratory”, <span class="font-semibold text-slate-800">ASEE 1994 Annual Conference Proceedings</span>, Vol. 2, pp. 2136-2140, 1994.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Michael J. Batchelder and Dikran S. Meliksetian, “Programmable Logic Devices in Undergraduate Digital Design Courses”, <span class="font-semibold text-slate-800">Proceedings of the 25th Southeastern Symposium on Circuit Theory</span>, pp. 416-417, 1993.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">C. Y. Roger Chen, George A. Makhoul and Dikran S. Meliksetian, “A Queueing Approach to the Performance Analysis of DQDB”, <span class="font-semibold text-slate-800">Proceedings of the Eleventh International Phoenix Conference on Computers and Communications</span>, pp. 612-619, 1992.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Bradley S. Carlson, C. Y. Roger Chen and Dikran S. Meliksetian, “An Efficient Algorithm for the Identification of Dual Eulerian Graphs and its Application to Cell Layout”, <span class="font-semibold text-slate-800">Proceedings of the IEEE International Symposium on Circuits and Systems</span>, pp. 2248-2251, 1992.</li>
+                    <li class="publication-item p-4 bg-white rounded-lg shadow-sm">Dikran S. Meliksetian and C. Y. Roger Chen, “Communication Aspects of the Cube-Connected Cycles,” <span class="font-semibold text-slate-800">Proceedings 1990 International Conference on Parallel Processing</span>, Vol. I, pp. 579-580, 1990.</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-slate-800 text-slate-100 py-12 mt-16">
+        <div class="container mx-auto px-6 text-center">
+            <p class="text-sm text-slate-400">&copy; <span id="year"></span> Dikran Meliksetian. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Publication Search Functionality ---
+        const searchInput = document.getElementById('publicationSearch');
+        const publicationsList = document.getElementById('publicationsList');
+        const publicationItems = publicationsList.getElementsByClassName('publication-item');
+        const categoryHeadings = publicationsList.querySelectorAll('.publication-category');
+        const noResultsMessage = document.getElementById('noResultsMessage');
+
+        searchInput.addEventListener('keyup', function(event) {
+            const searchTerm = event.target.value.toLowerCase();
+            let totalVisibleCount = 0;
+
+            // Iterate over each category (Books, Journals, etc.)
+            categoryHeadings.forEach(heading => {
+                const list = heading.nextElementSibling;
+                const items = list.getElementsByClassName('publication-item');
+                let categoryVisibleCount = 0;
+
+                // Filter items within the category
+                for (let i = 0; i < items.length; i++) {
+                    const item = items[i];
+                    const textContent = item.textContent || item.innerText;
+                    
+                    if (textContent.toLowerCase().includes(searchTerm)) {
+                        item.style.display = 'block';
+                        categoryVisibleCount++;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                }
+
+                // Hide the category heading if no items in it are visible
+                if (categoryVisibleCount === 0) {
+                    heading.style.display = 'none';
+                } else {
+                    heading.style.display = 'block';
+                }
+                
+                totalVisibleCount += categoryVisibleCount;
+            });
+
+            // Show or hide the global "no results" message
+            if (totalVisibleCount === 0) {
+                noResultsMessage.style.display = 'block';
+            } else {
+                noResultsMessage.style.display = 'none';
+            }
+        });
+
+        // --- Set current year in footer ---
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
+

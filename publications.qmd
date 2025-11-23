@@ -1,0 +1,29 @@
+---
+title: "Publications"
+page-layout: full
+format:
+  html:
+    css: styles.css
+listing:
+  contents: publications.yml
+  type: table
+  categories: true        # Adds the sidebar filter (Books, Journals, etc.)
+  sort: "year desc"       # Newest papers first
+  filter-ui: true         # Search bar
+  sort-ui: true           # Sort dropdowns
+  page-size: 20
+  fields: [year, title, authors, venue]
+  field-display-names:
+    year: "Year"
+    title: "Title"
+    authors: "Authors"
+    venue: "Publication / Venue"
+---
+
+A comprehensive list of books, journal articles, and conference papers. 
+Use the **Categories** sidebar on the right to filter by type (Journals, Conferences, etc.).
+
+::: {.callout-note}
+## Note
+This list is automatically generated from my academic records.
+:::

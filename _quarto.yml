@@ -1,0 +1,47 @@
+project:
+  type: website
+  output-dir: docs   
+
+website:
+  title: "Dikran Meliksetian, Ph.D."
+  
+  navbar:
+    left:
+      - href: index.qmd
+        text: Home
+      - href: teaching.qmd    
+        text: Teaching       
+      - href: blog.qmd
+        text: Blog
+      - href: patents.qmd
+        text: Patents
+      - href: publications.qmd
+        text: Publications
+    right:
+      - icon: linkedin
+        href: https://linkedin.com/in/your-profile
+      - icon: github
+        href: https://github.com/dmeliksetian
+      - icon: envelope
+        href: mailto:dikran.s.meliksetian@gmail.com
+
+  page-footer:
+    center:
+      - text: "© 2025 Dikran Meliksetian"
+      - href: mailto:dikran.s.meliksetian@gmail.com
+        text: "Contact"
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    page-layout: full
+    css: styles.css
+
+comments:
+  giscus:
+    repo: dmeliksetian/dmeliksetian.github.io
+    category: General
+    mapping: title
+    input-position: top
+    reactions-enabled: true

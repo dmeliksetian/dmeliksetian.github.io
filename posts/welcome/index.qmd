@@ -1,0 +1,28 @@
+---
+title: "Welcome to My Research Blog"
+author: "Dikran Meliksetian, Ph.D."
+date: "2025-11-23"
+categories: [Quantum Computing, Generative AI, Innovation, Productivity]
+image: "quantum-bloch.jpg" 
+description: "Exploring the frontiers of Quantum Computing, the architecture of innovation, and how Generative AI is fundamentally altering professional workflows."
+---
+
+Welcome to my personal research blog.
+
+After a career driving technical strategy as a Chief Architect and IBM Master Inventor, and now investigating the frontiers of computer science in academia, I find that the most interesting problems lie at the intersection of theory and practice.
+
+## Focus Areas
+
+This blog serves as a digital notebook for my ongoing research and intellectual explorations. You can expect technical deep dives and reflections on:
+
+1.  **Quantum Frontiers & QML:** Exploring the transition from classical to quantum architectures. I will be discussing developments in Quantum Error Correction and Qiskit, with a specific focus on how **AI and Machine Learning** are being used to optimize quantum circuits and mitigate noise.
+
+2.  **The Architecture of Innovation:** Reflections on patenting, system design, and the methodologies that turn abstract ideas into scalable technologies. I will explore how Generative AI acts as a catalyst for invention and how it is fundamentally altering the software development lifecycle.
+
+3.  **The AI-Augmented Workflow:** Beyond the technology itself, I am interested in the *meta-analysis* of work. How are Large Language Models (LLMs) changing the way we code, write, and research? I will be documenting how AI is reshaping my own professional practices—from accelerating code generation to assisting in complex problem decomposition.
+
+## Join the Conversation
+
+I intend for this space to foster discussion with fellow researchers, industry practitioners, and anyone fascinated by the capabilities and limitations of computing systems.
+
+I welcome your insights and feedback on these topics.

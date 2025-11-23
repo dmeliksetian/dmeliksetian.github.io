@@ -1,0 +1,24 @@
+---
+title: "Patent Portfolio"
+format:
+  html:
+    css: styles.css
+listing:
+  contents: patents.yml    # Points to your data file
+  type: table              # Automatically builds a table
+  fields: [title, date, number, country]
+  field-display-names:
+    title: "Title"
+    date: "Date Granted"
+    number: "Patent Number"
+    country: "Country"
+  sort: "date desc"        # Default sort order
+  filter-ui: true          # Adds the Search Bar automatically
+  sort-ui: true            # Adds the Sort dropdown automatically
+  page-size: 10            # Pagination
+---
+
+## Overview
+
+As an IBM Master Inventor, I hold patents spanning cloud computing, data management, and security.
+

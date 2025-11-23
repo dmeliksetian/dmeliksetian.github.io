@@ -1,0 +1,245 @@
+- title: "Large-scale 3D geospatial processing made possible"
+  authors: "Lucas C. Villa Real, Bruno Silva, Dikran S. Meliksetian, Kaique Sacchi"
+  venue: "SIGSPATIAL ’19 (ACM)"
+  year: "2019"
+  categories: ["Conferences"]
+
+- title: "Enterprise IT as a Service: Transforming the Delivery Model of IT Services"
+  authors: "Rajesh Jaluka, Dikran Meliksetian, Manish Gupta"
+  venue: "Fifth International Conference on Cloud Computing in Emerging Markets (CCEM)"
+  year: "2016"
+  categories: ["Conferences"]
+
+- title: "Effort Instrumentation and management in service delivery environments"
+  authors: "M. Buco, D. Rosu, D. Meliksetian, F. Wu, N. Anerousis"
+  venue: "Conference on Network and Service Management (CNSM)"
+  year: "2012"
+  categories: ["Conferences"]
+
+- title: "Optimal Information Gathering Scheme over a Scalable Grid Information Services Architecture"
+  authors: "N. Zhou, D. S. Meliksetian, J. P. Prost, I. Boutboul"
+  venue: "International Conference on Web Information Systems and Technologies (WEBIST)"
+  year: "2006"
+  categories: ["Conferences"]
+
+- title: "Design and Implementation of an Enterprise Grid"
+  authors: "Dikran S. Meliksetian and others"
+  venue: "IBM Systems Journal (Vol 43, No 4)"
+  year: "2004"
+  categories: ["Journals"]
+
+- title: "XML Data Mediator - Integrated solution for XML Roundtrip from XML to Relational"
+  authors: "Nianjun Zhou, George Mihaila, Dikran Meliksetian"
+  venue: "13th World Wide Web Conference Poster Presentation"
+  year: "2004"
+  categories: ["Conferences"]
+
+- title: "Grid Computing"
+  authors: "Richard Ferri, Moon J. Kim, Dikran S. Meliksetian"
+  venue: "Websphere Journal, Vol. 2, Issue 7"
+  year: "2003"
+  categories: ["Web Publications"]
+
+- title: "Leverage XSLT to build applications"
+  authors: "Chen Shu, Nianjun Zhou, Dikran Meliksetian"
+  venue: "IBM developerWorks"
+  year: "2003"
+  categories: ["Web Publications"]
+
+- title: "Transforming the Content Management Process at ibm.com"
+  authors: "Louis Weitzman, Sara Elo Dean, Dikran Meliksetian, Nianjun Zhou, Kapil Gupta, Jessica Wu"
+  venue: "CHI 2002 | AIGA Experience Design Forum"
+  year: "2002"
+  categories: ["Conferences"]
+
+- title: "XML Content Management: Challenges and Solutions"
+  authors: "Nianjun Zhou, Dikran Meliksetian, Louis Weitzman, Sara Elo Dean, Jeff Milton, Peter Davis, Jessica Wu"
+  venue: "XML Europe 2001"
+  year: "2001"
+  categories: ["Conferences"]
+
+- title: "Design of a Distributed Video Management System"
+  authors: "Dikran S. Meliksetian, Frank Feng-Kuo Yu, C. Y. Roger Chen"
+  venue: "IEEE Transactions on Multimedia (Vol 2, No 1)"
+  year: "2000"
+  categories: ["Journals"]
+
+- title: "Partitionable multistage interconnection networks. Dynamic subcube migration"
+  authors: "M. N. Ayyaz, Dikran S. Meliksetian, C. Y. Roger Chen"
+  venue: "Journal of Telecommunication Systems (Vol 13)"
+  year: "2000"
+  categories: ["Journals"]
+
+- title: "Partitionable multistage interconnection networks. Task Migration Issues"
+  authors: "M. N. Ayyaz, Dikran S. Meliksetian, C. Y. Roger Chen"
+  venue: "Journal of Telecommunication Systems (Vol 10)"
+  year: "1998"
+  categories: ["Journals"]
+
+- title: "Dynamic Swizzling: Towards the Integration of Persistent Objects in the Internet"
+  authors: "Jose Antonio del Cano, Dikran S. Meliksetian, C. Y. Roger Chen"
+  venue: "Proceedings IEEE COMPSAC"
+  year: "1997"
+  categories: ["Conferences"]
+
+- title: "Smoothing Algorithms for the delivery of Compressed Video"
+  authors: "Tacettin Köprülü, Dikran Meliksetian, C. Y. Roger Chen"
+  venue: "Proceedings 1997 IEEE International Conference on Communications"
+  year: "1997"
+  categories: ["Conferences"]
+
+- title: "New Architecture for MPEG-2 Real-Time Encoding"
+  authors: "Mansour Zuair, Dikran S. Meliksetian, C.Y. Roger Chen"
+  venue: "Proceedings SPIE (Vol 3021)"
+  year: "1997"
+  categories: ["Conferences"]
+
+- title: "Message Reduction Rules (MR2): a methodology to streamline intelligent message based, distributed multimedia applications"
+  authors: "Kubilay Cardakli, Tacettin Köprülü, Dikran Meliksetian, C. Y. Roger Chen"
+  venue: "Proceedings SPIE (Vol 3020)"
+  year: "1997"
+  categories: ["Conferences"]
+
+- title: "An Efficient Application-Independent Visualization Engine for Information with Complex Data Structure"
+  authors: "Wei-Chih Tseng, Dikran S. Meliksetian, C. Y. Roger Chen"
+  venue: "Proceedings of SPIE (Vol 3017)"
+  year: "1997"
+  categories: ["Conferences"]
+
+- title: "Management of Distributed Multimedia Information"
+  authors: "C. Y. Roger Chen, Dikran S. Meliksetian, Mark D. Foresti"
+  venue: "Proceedings of the 1996 Sixth Annual Dual-Use Technologies and Applications Conference"
+  year: "1996"
+  categories: ["Conferences"]
+
+- title: "Collaboration System"
+  authors: "Dikran S. Meliksetian, C. Y. Roger Chen, Chung-Cheng Kuo, Larry J. Liu"
+  venue: "Proceedings of the 1996 Sixth Annual Dual-Use Technologies and Applications Conference"
+  year: "1996"
+  categories: ["Conferences"]
+
+- title: "Design and Implementation of an Object-Oriented Geographical Information System"
+  authors: "Dikran S. Meliksetian and others"
+  venue: "Proceedings of the 1996 Sixth Annual Dual-Use Technologies and Applications Conference"
+  year: "1996"
+  categories: ["Conferences"]
+
+- title: "Prediction-Based Routing for Cell-Switched Networks"
+  authors: "Scott M. Huse, D. S. Meliksetian, C. Y. Roger Chen"
+  venue: "Proceedings of the 1996 International Phoenix Conference on Computers and Communications"
+  year: "1996"
+  categories: ["Conferences"]
+
+- title: "Computational Analysis of MPEG-2 Encoding Algorithm"
+  authors: "Mansour Zuair, Dikran S. Meliksetian, C.Y. Roger Chen"
+  venue: "Digest of Technical Papers IEEE International Conference on Consumer Electronics"
+  year: "1996"
+  categories: ["Conferences"]
+
+- title: "Transistor Chaining in CMOS Leaf Cells of Planar Topology"
+  authors: "Bradley S. Carlson, C. Y. Roger Chen, Dikran S. Meliksetian"
+  venue: "Proceedings Sixth Great Lakes Symposium on VLSI"
+  year: "1996"
+  categories: ["Conferences"]
+
+- title: "Resource Management Issues of a Video Server"
+  authors: "Frank F. Kuo, Dikran S. Meliksetian, C. Y. Roger Chen"
+  venue: "Proceedings of SPIE (Vol 2916)"
+  year: "1996"
+  categories: ["Conferences"]
+
+- title: "Collaboration System for Classroom Instruction"
+  authors: "C. Y. Roger Chen, Dikran S. Meliksetian, Martin Cheng-Sheng Chang"
+  venue: "Proceedings SPIE (Vol 2617)"
+  year: "1996"
+  categories: ["Conferences"]
+
+- title: "Techniques for Video Indexing"
+  authors: "C. Y. Roger Chen, Dikran S. Meliksetian, Martin Cheng-Sheng Chang, Larry J. Liu"
+  venue: "Proceedings SPIE (Vol 2617)"
+  year: "1996"
+  categories: ["Conferences"]
+
+- title: "A Queueing Analysis of the Performance of DQDB"
+  authors: "C. Y. Roger Chen, G. A. Makhoul, Dikran S. Meliksetian"
+  venue: "ACM/IEEE Transactions on Networking (Vol 3, No 6)"
+  year: "1995"
+  categories: ["Journals"]
+
+- title: "Design of a Multimedia Object-Oriented DBMS"
+  authors: "C. Y. Roger Chen, Dikran S. Meliksetian, Martin Cheng-Sheng Chang, Larry J. Liu"
+  venue: "ACM/Springer Multimedia Systems (Vol 3, No 5/6)"
+  year: "1995"
+  categories: ["Journals"]
+
+- title: "Dual Eulerian properties of plane multigraphs"
+  authors: "Bradley S. Carlson, C. Y. Roger Chen, Dikran S. Meliksetian"
+  venue: "SIAM Journal of Discrete Mathematics (Vol 8, No 1)"
+  year: "1995"
+  categories: ["Journals"]
+
+- title: "Throughput Analysis of Interconnecting CSMA/CD LANs with Switching Hubs"
+  authors: "Mowcheng Lee, C. Y. Roger Chen, Dikran S. Meliksetian"
+  venue: "Proceedings of the IEEE 14th Annual International Phoenix Conference on Computers and Communications"
+  year: "1995"
+  categories: ["Conferences"]
+
+- title: "Electric Circuits: Student Study Guide"
+  authors: "Norman Balabanian, Dikran S. Meliksetian"
+  venue: "McGraw Hill"
+  year: "1995"
+  categories: ["Books"]
+
+- title: "Solution Manual for Electric Circuits to accompany the textbook Electric Circuits by Norman Balabanian"
+  authors: "Dikran S. Meliksetian"
+  venue: "McGraw Hill"
+  year: "1994"
+  categories: ["Books"]
+
+- title: "Personal Electronics Laboratory"
+  authors: "Michael J. Batchelder, Dikran S. Meliksetian"
+  venue: "ASEE 1994 Annual Conference Proceedings"
+  year: "1994"
+  categories: ["Conferences"]
+
+- title: "Optimal Routing Algorithm and the Diameter of the Cube-Connected Cycles"
+  authors: "Dikran S. Meliksetian, C. Y. Roger Chen"
+  venue: "IEEE Transactions on Parallel and Distributed Systems (No 10)"
+  year: "1993"
+  categories: ["Journals"]
+
+- title: "A Markov-Modulated Bernoulli Process Approximation for the Analysis of Banyan Networks"
+  authors: "Dikran S. Meliksetian, C. Y. Roger Chen"
+  venue: "ACM Journal on Performance Evaluation Revue (Vol 21, No 1)"
+  year: "1993"
+  categories: ["Journals"]
+
+- title: "Programmable Logic Devices in Undergraduate Digital Design Courses"
+  authors: "Michael J. Batchelder, Dikran S. Meliksetian"
+  venue: "Proceedings of the 25th Southeastern Symposium on Circuit Theory"
+  year: "1993"
+  categories: ["Conferences"]
+
+- title: "Performance Analysis of Communications in Static Interconnection Networks"
+  authors: "Dikran S. Meliksetian, C. Y. Roger Chen"
+  venue: "ACM Journal on Performance Evaluation Revue (Vol 20, No 1)"
+  year: "1992"
+  categories: ["Journals"]
+
+- title: "A Queueing Approach to the Performance Analysis of DQDB"
+  authors: "C. Y. Roger Chen, George A. Makhoul, Dikran S. Meliksetian"
+  venue: "Proceedings of the Eleventh International Phoenix Conference on Computers and Communications"
+  year: "1992"
+  categories: ["Conferences"]
+
+- title: "An Efficient Algorithm for the Identification of Dual Eulerian Graphs and its Application to Cell Layout"
+  authors: "Bradley S. Carlson, C. Y. Roger Chen, Dikran S. Meliksetian"
+  venue: "Proceedings of the IEEE International Symposium on Circuits and Systems"
+  year: "1992"
+  categories: ["Conferences"]
+
+- title: "Communication Aspects of the Cube-Connected Cycles"
+  authors: "Dikran S. Meliksetian, C. Y. Roger Chen"
+  venue: "Proceedings 1990 International Conference on Parallel Processing"
+  year: "1990"
+  categories: ["Conferences"]

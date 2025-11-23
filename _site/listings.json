@@ -1,0 +1,20 @@
+[
+  {
+    "listing": "/patents.html",
+    "items": []
+  },
+  {
+    "listing": "/publications.html",
+    "items": []
+  },
+  {
+    "listing": "/posts/blogs.html",
+    "items": []
+  },
+  {
+    "listing": "/blogs.html",
+    "items": [
+      "/posts/welcome/index.html"
+    ]
+  }
+]
