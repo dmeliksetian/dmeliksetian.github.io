@@ -7,15 +7,15 @@ website:
   
   navbar:
     left:
-      - href: index.qmd
+      - href: index.html
         text: Home
-      - href: teaching.qmd    
+      - href: teaching.html    
         text: Teaching       
-      - href: blog.qmd
+      - href: blog.html
         text: Blog
-      - href: patents.qmd
+      - href: patents.html
         text: Patents
-      - href: publications.qmd
+      - href: publications.html
         text: Publications
     right:
       - icon: linkedin
