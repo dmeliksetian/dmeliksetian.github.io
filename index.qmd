@@ -19,6 +19,7 @@ My career has been dedicated to innovation—from software and cloud computing t
 
 Throughout my time in the industry, I had the privilege of leading global teams, mentoring the next generation of technical talent in places like China and Brazil, and translating complex business needs into elegant, impactful technology solutions. Now, I am channeling that passion into the classroom and my personal research into the fascinating world of Quantum Computing.
 
+::: {.section-gray .p-5 .rounded-3 .my-5}
 ## Professional Recognition & Certifications
 
 ::: {.grid}
@@ -41,6 +42,8 @@ Throughout my time in the industry, I had the privilege of leading global teams,
 
 :::
 
+:::
+
 ---
 
 ## Career Journey Highlights
@@ -56,6 +59,7 @@ Led global teams in transforming the PriSM analytics tool and served as Chief Ar
 
 ---
 
+::: {.section-gray .p-5 .rounded-3 .my-5}
 ## Innovations & Intellectual Property
 
 As an IBM Master Inventor, I hold more than 50 patents. This portfolio represents a career dedicated to solving complex technical challenges.
@@ -83,6 +87,7 @@ Invented a system for automated topology formation in dynamic distributed enviro
 [View Full Patent Portfolio](patents.qmd){.btn .btn-primary role="button"}
 :::
 
+:::
 ---
 
 ## Academic Pursuits
@@ -112,7 +117,7 @@ Invented a system for automated topology formation in dynamic distributed enviro
 :::
 
 ---
-
+::: {.section-gray .p-5 .rounded-3 .my-5}
 ## Quantum Explorations
 
 My current intellectual passion lies at the intersection of classical and quantum computing.
@@ -134,27 +139,6 @@ Running my first simple algorithm on an IBM quantum simulator was a fascinating 
 I believe the near-term future isn't purely quantum. The most exciting potential lies in hybrid systems where classical machines handle data and control flow, offloading specific calculations to quantum co-processors.
 :::
 
-:::
-
----
-
-## Contact
-
-::: {.grid}
-
-::: {.g-col-12 .g-col-md-6}
-### Academic Inquiries
-**University of New Haven** *Office:* Maxcy Hall 120D  
-*Phone:* (203) 479-4945  
-
-[<i class="bi bi-envelope"></i> Dmeliksetian@newhaven.edu](mailto:Dmeliksetian@newhaven.edu)
-:::
-
-::: {.g-col-12 .g-col-md-6}
-### Personal & Consulting
-**Dikran Meliksetian, Ph.D.** *Connect for research collaborations, speaking engagements, or consulting opportunities.*
-
-[<i class="bi bi-envelope"></i> dikran.s.meliksetian@gmail.com](mailto:dikran.s.meliksetian@gmail.com)
 :::
 
 :::

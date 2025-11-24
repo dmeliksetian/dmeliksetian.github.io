@@ -1,0 +1,18 @@
+# 1. Enable Giscus ONLY for files in this folder
+comments:
+  giscus:
+    repo: dmeliksetian/dmeliksetian.github.io
+    category: General
+    mapping: title
+    input-position: top
+    reactions-enabled: true
+
+# 2. Hide the Footer ONLY for files in this folder
+# We inject a small CSS style that targets your footer class
+format:
+  html:
+    include-in-header:
+      text: |
+        <style>
+          .custom-footer { display: none !important; }
+        </style>

@@ -6,6 +6,7 @@ website:
   title: "Dikran Meliksetian, Ph.D."
   
   navbar:
+    background: white # Optional: Ensures text doesn't look messy scrolling behind it
     left:
       - href: index.html
         text: Home
@@ -25,23 +26,15 @@ website:
       - icon: envelope
         href: mailto:dikran.s.meliksetian@gmail.com
 
-  page-footer:
-    center:
-      - text: "© 2025 Dikran Meliksetian"
-      - href: mailto:dikran.s.meliksetian@gmail.com
-        text: "Contact"
+
+
 
 format:
   html:
     theme: cosmo
+    title-block-banner: "#1e3a8a"
+    title-block-banner-color: white
     toc: true
     page-layout: full
     css: styles.css
-
-comments:
-  giscus:
-    repo: dmeliksetian/dmeliksetian.github.io
-    category: General
-    mapping: title
-    input-position: top
-    reactions-enabled: true
+    include-after-body: footer.html

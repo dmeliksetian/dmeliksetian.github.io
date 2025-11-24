@@ -1,0 +1,34 @@
+<footer class="custom-footer">
+    <div class="container">
+        <h3>Get In Touch</h3>
+        <p style="max-width: 600px; margin: 0 auto 2rem auto; opacity: 0.9;">
+            I am always open to discussing new ideas, research opportunities, or interesting projects in the quantum
+            computing space.
+        </p>
+
+        <div class="footer-links">
+            <a href="mailto:dsmeliks@gmail.com" title="Personal Email">
+                <i class="bi bi-envelope-fill"></i> dikran.s.meliksetian@gmail.com
+            </a>
+
+            <a href="mailto:dmeliksetian@newhaven.edu" title="Academic Email">
+                <i class="bi bi-mortarboard-fill"></i> dmeliksetian@newhaven.edu
+            </a>
+
+            <span style="color: #94a3b8; margin: 0 1rem;">
+                <i class="bi bi-geo-alt-fill"></i> Newtown, CT
+            </span>
+        </div>
+
+        <p style="font-size: 0.875rem; opacity: 0.6;">
+            &copy; <span id="year"></span> Dikran Meliksetian. All Rights Reserved.
+        </p>
+    </div>
+</footer>
+
+<script>
+    const yearSpan = document.getElementById('year');
+    if (yearSpan) {
+        yearSpan.textContent = new Date().getFullYear();
+    }
+</script>
