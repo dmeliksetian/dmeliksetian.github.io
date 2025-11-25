@@ -46,7 +46,28 @@
     "href": "posts/welcome/index.html#join-the-conversation",
     "title": "Welcome to My Research Blog",
     "section": "Join the Conversation",
-    "text": "Join the Conversation\nI intend for this space to foster discussion with fellow researchers, industry practitioners, and anyone fascinated by the capabilities and limitations of computing systems.\nI welcome your insights and feedback on these topics."
+    "text": "Join the Conversation\nI intend for this space to foster discussion with fellow researchers, industry practitioners, and anyone fascinated by the capabilities and limitations of computing systems.\nI welcome your insights and feedback on these topics.\n\n\n&lt;h2 class=\"text-3xl font-bold mb-4\"&gt;Get In Touch&lt;/h2&gt;\n&lt;p class=\"max-w-xl mx-auto mb-8\"&gt;I am always open to discussing new ideas, research opportunities, or interesting projects in the quantum computing space. Feel free to reach out.&lt;/p&gt;\n\n&lt;div class=\"flex justify-center items-center flex-wrap gap-x-8 gap-y-4 text-lg mb-8\"&gt;\n  &lt;a href=\"mailto:dsmeliks@gmail.com\" class=\"flex items-center space-x-2 hover:text-brand-light transition-colors\"&gt;\n    &lt;i class=\"fas fa-envelope w-6\"&gt;&lt;/i&gt;\n    &lt;span&gt;dikran.s.meliksetian@gmail.com (Personal)&lt;/span&gt;\n  &lt;/a&gt;\n  \n  &lt;a href=\"mailto:dmeliksetian@newhaven.edu\" class=\"flex items-center space-x-2 hover:text-brand-light transition-colors\"&gt;\n    &lt;i class=\"fas fa-university w-6\"&gt;&lt;/i&gt;\n    &lt;span&gt;dmeliksetian@newhaven.edu (Academic)&lt;/span&gt;\n  &lt;/a&gt;\n  \n  &lt;div class=\"flex items-center space-x-2\"&gt;\n    &lt;i class=\"fas fa-map-marker-alt w-6\"&gt;&lt;/i&gt;\n    &lt;span&gt;Newtown, CT&lt;/span&gt;\n  &lt;/div&gt;\n&lt;/div&gt;\n\n&lt;p class=\"text-sm text-slate-400\"&gt;&copy; &lt;span id=\"year\"&gt;&lt;/span&gt; Dikran Meliksetian. All Rights Reserved.&lt;/p&gt;"
+  },
+  {
+    "objectID": "patents.html",
+    "href": "patents.html",
+    "title": "Patent Portfolio",
+    "section": "",
+    "text": "As an IBM Master Inventor, I hold patents spanning cloud computing, data management, and security."
+  },
+  {
+    "objectID": "patents.html#overview",
+    "href": "patents.html#overview",
+    "title": "Patent Portfolio",
+    "section": "",
+    "text": "As an IBM Master Inventor, I hold patents spanning cloud computing, data management, and security."
+  },
+  {
+    "objectID": "blog.html",
+    "href": "blog.html",
+    "title": "Research Blog",
+    "section": "",
+    "text": "The Quantum Pigeonhole Paradox in Qiskit 2.x\n\n\n\nQuantum Computing\n\nQiskit\n\nWeak Measurements\n\nParadoxes\n\n\n\nExploring how three particles can fit into two boxes without any two particles sharing a box—a journey through pre-selection, post-selection, and weak measurements.\n\n\n\n\n\nNov 25, 2025\n\n\nDikran Meliksetian\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome to My Research Blog\n\n\n\nQuantum Computing\n\nGenerative AI\n\nInnovation\n\nProductivity\n\n\n\nExploring the frontiers of Quantum Computing, the architecture of innovation, and how Generative AI is fundamentally altering professional workflows.\n\n\n\n\n\nNov 23, 2025\n\n\nDikran Meliksetian, Ph.D.\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
@@ -98,25 +119,11 @@
     "text": "My current intellectual passion lies at the intersection of classical and quantum computing.\n\n\n\nMoving from the certainty of classical bits to the probabilistic nature of qubits is a profound paradigm shift. It challenges every assumption about state management and error correction I’ve built over a career.\n\n\n\nRunning my first simple algorithm on an IBM quantum simulator was a fascinating experience. It’s one thing to read about superposition and entanglement; it’s another to see their effects.\n\n\n\nI believe the near-term future isn’t purely quantum. The most exciting potential lies in hybrid systems where classical machines handle data and control flow, offloading specific calculations to quantum co-processors."
   },
   {
-    "objectID": "blog.html",
-    "href": "blog.html",
-    "title": "Research Blog",
+    "objectID": "posts/quantum-pigeonhole/index.html",
+    "href": "posts/quantum-pigeonhole/index.html",
+    "title": "The Quantum Pigeonhole Paradox in Qiskit 2.x",
     "section": "",
-    "text": "Welcome to My Research Blog\n\n\n\nQuantum Computing\n\nGenerative AI\n\nInnovation\n\nProductivity\n\n\n\nExploring the frontiers of Quantum Computing, the architecture of innovation, and how Generative AI is fundamentally altering professional workflows.\n\n\n\n\n\nNov 23, 2025\n\n\nDikran Meliksetian, Ph.D.\n\n\n\n\n\nNo matching items"
-  },
-  {
-    "objectID": "patents.html",
-    "href": "patents.html",
-    "title": "Patent Portfolio",
-    "section": "",
-    "text": "As an IBM Master Inventor, I hold patents spanning cloud computing, data management, and security."
-  },
-  {
-    "objectID": "patents.html#overview",
-    "href": "patents.html#overview",
-    "title": "Patent Portfolio",
-    "section": "",
-    "text": "As an IBM Master Inventor, I hold patents spanning cloud computing, data management, and security."
+    "text": "I have released a new tutorial exploring one of the most counter-intuitive results in quantum mechanics: The Quantum Pigeonhole Paradox.\nClassically, the Pigeonhole Principle states that if you put three pigeons into two boxes, at least one box must contain more than one pigeon. In the quantum realm, however, using pre-selection and post-selection, we can construct a scenario where we can verify that no two particles share a box.\n\nWhat this Tutorial Covers\nIn this Qiskit 2.x notebook, we explore:\n\nThe Paradox Setup: Constructing the circuit for three particles and two boxes (states \\(|L\\rangle\\) and \\(|R\\rangle\\)).\nThe Measurement Problem: Demonstrating how a standard “strong” measurement collapses the state and destroys the paradox.\nWeak Measurements: Using a weak, reversible probe (Compute \\(\\rightarrow R_y(\\epsilon) \\rightarrow\\) Uncompute) to extract information without collapsing the interference pattern.\nInterference Recovery: Observing how the paradox re-emerges when we limit the disturbance to the system.\n\n\n\nKey Insight\nThis paradox forces us to reconsider the nature of trajectories and correlations in quantum systems. It demonstrates that “logic” about the past (e.g., “which box were they in?”) depends heavily on the measurement strength and the post-selection choice.\n\n\n\n\n\n\nTipRun the Code\n\n\n\nThis tutorial is open-source and compatible with Qiskit 2.x. You can view the full derivation and run the simulation yourself.\n\n\n\n\n View on GitHub\n\n\n Read the Notebook\n\n\nCitation: &gt; Dikran Meliksetian, The Quantum Pigeonhole Paradox in Qiskit 2.x: From Strong to Weak Measurements, DOI: 10.5281/zenodo.17387139."
   },
   {
     "objectID": "publications.html",

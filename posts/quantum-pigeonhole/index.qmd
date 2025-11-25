@@ -1,0 +1,44 @@
+---
+title: "The Quantum Pigeonhole Paradox in Qiskit 2.x"
+description: "Exploring how three particles can fit into two boxes without any two particles sharing a box—a journey through pre-selection, post-selection, and weak measurements."
+author: "Dikran Meliksetian"
+date: "2025-11-25"
+categories: [Quantum Computing, Qiskit, Weak Measurements, Paradoxes]
+image: "review.png" # Replace with a screenshot from your notebook!
+---
+
+I have released a new tutorial exploring one of the most counter-intuitive results in quantum mechanics: **The Quantum Pigeonhole Paradox**.
+
+Classically, the **Pigeonhole Principle** states that if you put three pigeons into two boxes, at least one box must contain more than one pigeon. In the quantum realm, however, using **pre-selection** and **post-selection**, we can construct a scenario where we can verify that **no two particles share a box**.
+
+### What this Tutorial Covers
+
+In this [Qiskit 2.x notebook](https://github.com/dmeliksetian/quantum_pigeonhole_paradox), we explore:
+
+1.  **The Paradox Setup:** Constructing the circuit for three particles and two boxes (states $|L\rangle$ and $|R\rangle$).
+2.  **The Measurement Problem:** Demonstrating how a standard "strong" measurement collapses the state and destroys the paradox.
+3.  **Weak Measurements:** Using a weak, reversible probe (Compute $\rightarrow R_y(\epsilon) \rightarrow$ Uncompute) to extract information without collapsing the interference pattern.
+4.  **Interference Recovery:** Observing how the paradox re-emerges when we limit the disturbance to the system.
+
+### Key Insight
+This paradox forces us to reconsider the nature of trajectories and correlations in quantum systems. It demonstrates that "logic" about the past (e.g., "which box were they in?") depends heavily on the measurement strength and the post-selection choice.
+
+::: {.callout-tip}
+## Run the Code
+This tutorial is open-source and compatible with **Qiskit 2.x**. You can view the full derivation and run the simulation yourself.
+:::
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+[<i class="bi bi-github"></i> View on GitHub](https://github.com/dmeliksetian/quantum_pigeonhole_paradox){.btn .btn-outline-primary .w-100 role="button"}
+:::
+
+::: {.g-col-12 .g-col-md-6}
+[<i class="bi bi-journal-code"></i> Read the Notebook](https://github.com/dmeliksetian/quantum_pigeonhole_paradox/blob/main/quantum_pigeonhole_paradox_qiskit_tutorial.ipynb){.btn .btn-primary .w-100 role="button"}
+:::
+
+:::
+
+**Citation:**
+> Dikran Meliksetian, *The Quantum Pigeonhole Paradox in Qiskit 2.x: From Strong to Weak Measurements*, DOI: [10.5281/zenodo.17387139](https://doi.org/10.5281/zenodo.17387139).

@@ -232,6 +232,37 @@ background: #1e3a8a;
 <h2 class="anchored" data-anchor-id="join-the-conversation">Join the Conversation</h2>
 <p>I intend for this space to foster discussion with fellow researchers, industry practitioners, and anyone fascinated by the capabilities and limitations of computing systems.</p>
 <p>I welcome your insights and feedback on these topics.</p>
+<footer id="contact" class="bg-slate-800 text-slate-100 py-16">
+<div class="container mx-auto px-6 text-center">
+<pre><code>&lt;h2 class="text-3xl font-bold mb-4"&gt;Get In Touch&lt;/h2&gt;
+&lt;p class="max-w-xl mx-auto mb-8"&gt;I am always open to discussing new ideas, research opportunities, or interesting projects in the quantum computing space. Feel free to reach out.&lt;/p&gt;
+
+&lt;div class="flex justify-center items-center flex-wrap gap-x-8 gap-y-4 text-lg mb-8"&gt;
+  &lt;a href="mailto:dsmeliks@gmail.com" class="flex items-center space-x-2 hover:text-brand-light transition-colors"&gt;
+    &lt;i class="fas fa-envelope w-6"&gt;&lt;/i&gt;
+    &lt;span&gt;dikran.s.meliksetian@gmail.com (Personal)&lt;/span&gt;
+  &lt;/a&gt;
+  
+  &lt;a href="mailto:dmeliksetian@newhaven.edu" class="flex items-center space-x-2 hover:text-brand-light transition-colors"&gt;
+    &lt;i class="fas fa-university w-6"&gt;&lt;/i&gt;
+    &lt;span&gt;dmeliksetian@newhaven.edu (Academic)&lt;/span&gt;
+  &lt;/a&gt;
+  
+  &lt;div class="flex items-center space-x-2"&gt;
+    &lt;i class="fas fa-map-marker-alt w-6"&gt;&lt;/i&gt;
+    &lt;span&gt;Newtown, CT&lt;/span&gt;
+  &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;p class="text-sm text-slate-400"&gt;&amp;copy; &lt;span id="year"&gt;&lt;/span&gt; Dikran Meliksetian. All Rights Reserved.&lt;/p&gt;</code></pre>
+</div>
+</footer>
+<script>
+  const yearSpan = document.getElementById('year');
+  if (yearSpan) {
+    yearSpan.textContent = new Date().getFullYear();
+  }
+</script>
 
 
 </section>
