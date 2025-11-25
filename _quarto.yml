@@ -1,10 +1,12 @@
 project:
   type: website
   output-dir: docs   
+  resources:
+    - CNAME
 
 website:
   title: "Dikran Meliksetian, Ph.D."
-  
+
   navbar:
     background: white # Optional: Ensures text doesn't look messy scrolling behind it
     left:
