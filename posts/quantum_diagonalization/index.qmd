@@ -1,0 +1,14 @@
+---
+title: "Series: Quantum Diagonalization Algorithms"
+listing: 
+  contents: "*.qmd"
+  type: table
+  sort: "date asc"
+  fields: [date, title, description]
+  
+# Add this custom flag
+series_overview: true 
+---
+
+I am documenting my journey through the IBM Quantum Learning course on Diagonalization.
+Below are the lab reports and engineering notes from this series.

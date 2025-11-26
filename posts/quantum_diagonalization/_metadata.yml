@@ -1,0 +1,6 @@
+# This adds a sidebar ONLY when viewing pages in this folder
+sidebar:
+  title: "Diagonalization Journey"
+  style: "docked"
+  search: true
+  contents: auto  # Automatically lists all .qmd files in this folder as a menu!

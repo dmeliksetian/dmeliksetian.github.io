@@ -2,6 +2,9 @@
 title: "Research Blog"
 listing:
   contents: posts
+  # This acts as a filter
+  exclude:
+    series_overview: true
   sort: "date desc"
   type: default
   categories: true

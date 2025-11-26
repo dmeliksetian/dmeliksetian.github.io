@@ -6,8 +6,15 @@
   {
     "listing": "/blog.html",
     "items": [
+      "/posts/quantum_diagonalization/01-challenge-accepted.html",
       "/posts/quantum-pigeonhole/index.html",
       "/posts/welcome/index.html"
+    ]
+  },
+  {
+    "listing": "/posts/quantum_diagonalization/index.html",
+    "items": [
+      "/posts/quantum_diagonalization/01-challenge-accepted.html"
     ]
   },
   {

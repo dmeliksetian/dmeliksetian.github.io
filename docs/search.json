@@ -49,6 +49,34 @@
     "text": "Join the Conversation\nI intend for this space to foster discussion with fellow researchers, industry practitioners, and anyone fascinated by the capabilities and limitations of computing systems.\nI welcome your insights and feedback on these topics.\n\n\n&lt;h2 class=\"text-3xl font-bold mb-4\"&gt;Get In Touch&lt;/h2&gt;\n&lt;p class=\"max-w-xl mx-auto mb-8\"&gt;I am always open to discussing new ideas, research opportunities, or interesting projects in the quantum computing space. Feel free to reach out.&lt;/p&gt;\n\n&lt;div class=\"flex justify-center items-center flex-wrap gap-x-8 gap-y-4 text-lg mb-8\"&gt;\n  &lt;a href=\"mailto:dsmeliks@gmail.com\" class=\"flex items-center space-x-2 hover:text-brand-light transition-colors\"&gt;\n    &lt;i class=\"fas fa-envelope w-6\"&gt;&lt;/i&gt;\n    &lt;span&gt;dikran.s.meliksetian@gmail.com (Personal)&lt;/span&gt;\n  &lt;/a&gt;\n  \n  &lt;a href=\"mailto:dmeliksetian@newhaven.edu\" class=\"flex items-center space-x-2 hover:text-brand-light transition-colors\"&gt;\n    &lt;i class=\"fas fa-university w-6\"&gt;&lt;/i&gt;\n    &lt;span&gt;dmeliksetian@newhaven.edu (Academic)&lt;/span&gt;\n  &lt;/a&gt;\n  \n  &lt;div class=\"flex items-center space-x-2\"&gt;\n    &lt;i class=\"fas fa-map-marker-alt w-6\"&gt;&lt;/i&gt;\n    &lt;span&gt;Newtown, CT&lt;/span&gt;\n  &lt;/div&gt;\n&lt;/div&gt;\n\n&lt;p class=\"text-sm text-slate-400\"&gt;&copy; &lt;span id=\"year\"&gt;&lt;/span&gt; Dikran Meliksetian. All Rights Reserved.&lt;/p&gt;"
   },
   {
+    "objectID": "posts/quantum_diagonalization/01-challenge-accepted.html",
+    "href": "posts/quantum_diagonalization/01-challenge-accepted.html",
+    "title": "Challenge Accepted: Mastering Quantum Diagonalization (It’s Not Just for Molecules)",
+    "section": "",
+    "text": "Yesterday, I attended a Qiskit Advocate seminar on Sample-Based Quantum Diagonalization (SQD). The session was a fascinating deep dive into how we can extract eigenvalues from complex Hamiltonians using advanced sampling techniques. It was a reminder of just how powerful hybrid quantum algorithms are becoming for research.\nBut it also prompted a personal challenge.\nAs I watched the presentation, I realized that while I grasp the concepts, I want to get my hands dirty with the implementation details of the foundational solvers that lead up to SQD. To truly appreciate the cutting edge, one must master the building blocks.\nSo, I am kicking off a new learning sprint. I have officially enrolled in the IBM Quantum Learning course on Quantum Diagonalization Algorithms. Over the coming weeks, this blog series will serve as my lab notebook—documenting the code, the math, and the results as I attempt to diagonalize matrices on real quantum backends."
+  },
+  {
+    "objectID": "posts/quantum_diagonalization/01-challenge-accepted.html#why-diagonalization-matters-beyond-physics",
+    "href": "posts/quantum_diagonalization/01-challenge-accepted.html#why-diagonalization-matters-beyond-physics",
+    "title": "Challenge Accepted: Mastering Quantum Diagonalization (It’s Not Just for Molecules)",
+    "section": "Why “Diagonalization” Matters (Beyond Physics)",
+    "text": "Why “Diagonalization” Matters (Beyond Physics)\nIf you look at most quantum computing tutorials, “diagonalization” is almost exclusively framed as a chemistry problem: Find the ground state energy of a molecule.\nWhile simulating nature is a killer application, as a Computer Scientist, I want to broaden the aperture. Mathematically, diagonalizing a matrix \\(A\\) simply means finding the basis in which \\(A\\) acts as a simple scaling factor. We are solving for eigenvectors (\\(v\\)) and eigenvalues (\\(\\lambda\\)):\n\\[\nAv = \\lambda v\n\\]\nIn my view, this isn’t just about electron orbitals. This is about extracting the defining features of a system. The algorithms I’ll be exploring in this course—VQE, Quantum Krylov, and Phase Estimation—are actually universal mathematical tools that apply directly to classic CS and Data Science problems:\n\n1. Graph Theory & Spectral Clustering\nIn social network analysis, we use the Graph Laplacian matrix. Diagonalizing this matrix helps us find the “Fiedler Vector,” which tells us the optimal way to cut a graph into disconnected communities. It’s not energy; it’s clustering.\n\n\n\nA visualization of a Spectral Clustering Cut\n\n\n\n\n2. Data Science & PCA\nIn Machine Learning, Principal Component Analysis (PCA) relies on diagonalizing the Covariance Matrix. The eigenvectors with the largest eigenvalues represent the features that matter most in a massive dataset. A quantum eigensolver is effectively a pattern recognition engine.\n\n\n3. System Dynamics\nIn Markov chains (like the math powering PageRank), the steady state of a system is simply the eigenvector with an eigenvalue of 1."
+  },
+  {
+    "objectID": "posts/quantum_diagonalization/01-challenge-accepted.html#the-syllabus-my-roadmap",
+    "href": "posts/quantum_diagonalization/01-challenge-accepted.html#the-syllabus-my-roadmap",
+    "title": "Challenge Accepted: Mastering Quantum Diagonalization (It’s Not Just for Molecules)",
+    "section": "The Syllabus: My Roadmap",
+    "text": "The Syllabus: My Roadmap\nThis course moves beyond the “Hello World” of quantum. Here is the roadmap of algorithms I plan to implement and stress-test:\n\nThe Heuristic Layer: Deep diving into VQE (Variational Quantum Eigensolver), specifically looking at efficient ansatz construction for non-chemistry problems.\nThe Subspace Layer: This is the bridge to the seminar I attended. I will be exploring Quantum Subspace Expansion and Krylov methods, which project large problems into smaller, manageable subspaces.\nThe Precision Layer: Finally, looking at Quantum Phase Estimation (QPE), the “textbook” algorithm that offers exponential speedup but demands significant resources."
+  },
+  {
+    "objectID": "posts/quantum_diagonalization/01-challenge-accepted.html#the-commitment",
+    "href": "posts/quantum_diagonalization/01-challenge-accepted.html#the-commitment",
+    "title": "Challenge Accepted: Mastering Quantum Diagonalization (It’s Not Just for Molecules)",
+    "section": "The Commitment",
+    "text": "The Commitment\nI intend to approach this not just as a student, but as an engineer and educator.\nI won’t just post the “happy path” where the code works perfectly on a simulator. I plan to run these algorithms on IBM’s utility-scale quantum systems. I will document the noise, the convergence failures, and the error mitigation strategies (like Zero Noise Extrapolation) required to get a clean signal out of a real device.\nNext up: I’ll be tackling the Graph Laplacian and seeing if we can use a quantum computer to solve a classic clustering problem."
+  },
+  {
     "objectID": "patents.html",
     "href": "patents.html",
     "title": "Patent Portfolio",
@@ -67,7 +95,7 @@
     "href": "blog.html",
     "title": "Research Blog",
     "section": "",
-    "text": "The Quantum Pigeonhole Paradox in Qiskit 2.x\n\n\n\nQuantum Computing\n\nQiskit\n\nWeak Measurements\n\nParadoxes\n\n\n\nExploring how three particles can fit into two boxes without any two particles sharing a box—a journey through pre-selection, post-selection, and weak measurements.\n\n\n\n\n\nNov 25, 2025\n\n\nDikran Meliksetian\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome to My Research Blog\n\n\n\nQuantum Computing\n\nGenerative AI\n\nInnovation\n\nProductivity\n\n\n\nExploring the frontiers of Quantum Computing, the architecture of innovation, and how Generative AI is fundamentally altering professional workflows.\n\n\n\n\n\nNov 23, 2025\n\n\nDikran Meliksetian, Ph.D.\n\n\n\n\n\nNo matching items"
+    "text": "Challenge Accepted: Mastering Quantum Diagonalization (It’s Not Just for Molecules)\n\n\n\n\n\n\n\n\nNov 26, 2025\n\n\n\n\n\n\n\n\n\n\n\n\nThe Quantum Pigeonhole Paradox in Qiskit 2.x\n\n\n\nQuantum Computing\n\nQiskit\n\nWeak Measurements\n\nParadoxes\n\n\n\nExploring how three particles can fit into two boxes without any two particles sharing a box—a journey through pre-selection, post-selection, and weak measurements.\n\n\n\n\n\nNov 25, 2025\n\n\nDikran Meliksetian\n\n\n\n\n\n\n\n\n\n\n\n\nWelcome to My Research Blog\n\n\n\nQuantum Computing\n\nGenerative AI\n\nInnovation\n\nProductivity\n\n\n\nExploring the frontiers of Quantum Computing, the architecture of innovation, and how Generative AI is fundamentally altering professional workflows.\n\n\n\n\n\nNov 23, 2025\n\n\nDikran Meliksetian, Ph.D.\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "index.html",
@@ -124,6 +152,13 @@
     "title": "The Quantum Pigeonhole Paradox in Qiskit 2.x",
     "section": "",
     "text": "I have released a new tutorial exploring one of the most counter-intuitive results in quantum mechanics: The Quantum Pigeonhole Paradox.\nClassically, the Pigeonhole Principle states that if you put three pigeons into two boxes, at least one box must contain more than one pigeon. In the quantum realm, however, using pre-selection and post-selection, we can construct a scenario where we can verify that no two particles share a box.\n\nWhat this Tutorial Covers\nIn this Qiskit 2.x notebook, we explore:\n\nThe Paradox Setup: Constructing the circuit for three particles and two boxes (states \\(|L\\rangle\\) and \\(|R\\rangle\\)).\nThe Measurement Problem: Demonstrating how a standard “strong” measurement collapses the state and destroys the paradox.\nWeak Measurements: Using a weak, reversible probe (Compute \\(\\rightarrow R_y(\\epsilon) \\rightarrow\\) Uncompute) to extract information without collapsing the interference pattern.\nInterference Recovery: Observing how the paradox re-emerges when we limit the disturbance to the system.\n\n\n\nKey Insight\nThis paradox forces us to reconsider the nature of trajectories and correlations in quantum systems. It demonstrates that “logic” about the past (e.g., “which box were they in?”) depends heavily on the measurement strength and the post-selection choice.\n\n\n\n\n\n\nTipRun the Code\n\n\n\nThis tutorial is open-source and compatible with Qiskit 2.x. You can view the full derivation and run the simulation yourself.\n\n\n\n\n View on GitHub\n\n\n Read the Notebook\n\n\nCitation: &gt; Dikran Meliksetian, The Quantum Pigeonhole Paradox in Qiskit 2.x: From Strong to Weak Measurements, DOI: 10.5281/zenodo.17387139."
+  },
+  {
+    "objectID": "posts/quantum_diagonalization/index.html",
+    "href": "posts/quantum_diagonalization/index.html",
+    "title": "Series: Quantum Diagonalization Algorithms",
+    "section": "",
+    "text": "I am documenting my journey through the IBM Quantum Learning course on Diagonalization. Below are the lab reports and engineering notes from this series.\n\n\n\n\n\n\n   \n    \n    \n      Order By\n      Default\n      \n        Date - Oldest\n      \n      \n        Date - Newest\n      \n      \n        Title\n      \n    \n  \n    \n      \n      \n    \n\n\n\n\n\n\nDate\n\n\n\nTitle\n\n\n\nDescription\n\n\n\n\n\n\n\n\nNov 26, 2025\n\n\nChallenge Accepted: Mastering Quantum Diagonalization (It’s Not Just for Molecules)\n\n\n\n\n\n\n\n\n\nNo matching items"
   },
   {
     "objectID": "publications.html",
