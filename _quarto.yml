@@ -11,8 +11,7 @@ execute:
 
 website:
   title: "Dikran Meliksetian, Ph.D."
-  google-analytics: "G-21EGSG5G06"  # <--- Paste your code here
-  cookie-consent: true              # Optional but recommended
+
 
   navbar:
     background: white # Optional: Ensures text doesn't look messy scrolling behind it

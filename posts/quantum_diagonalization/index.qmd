@@ -1,7 +1,9 @@
 ---
 title: "Series: Quantum Diagonalization Algorithms"
 listing: 
-  contents: "*.qmd"
+  contents: 
+  - "*.qmd"
+  - "!index.qmd"
   type: table
   sort: "date asc"
   fields: [date, title, description]

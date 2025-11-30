@@ -1,20 +1,22 @@
 [
   {
-    "listing": "/patents.html",
-    "items": []
-  },
-  {
     "listing": "/blog.html",
     "items": [
+      "/posts/quantum_diagonalization/02-variational-principle.html",
       "/posts/quantum_diagonalization/01-challenge-accepted.html",
       "/posts/quantum-pigeonhole/index.html",
       "/posts/welcome/index.html"
     ]
   },
   {
+    "listing": "/patents.html",
+    "items": []
+  },
+  {
     "listing": "/posts/quantum_diagonalization/index.html",
     "items": [
-      "/posts/quantum_diagonalization/01-challenge-accepted.html"
+      "/posts/quantum_diagonalization/01-challenge-accepted.html",
+      "/posts/quantum_diagonalization/02-variational-principle.html"
     ]
   },
   {
