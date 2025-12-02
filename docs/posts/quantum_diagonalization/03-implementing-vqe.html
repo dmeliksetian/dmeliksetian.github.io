@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.8.26">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="dcterms.date" content="2025-12-05">
+<meta name="description" content="How to translate classical linear algebra structures into quantum states and operators, and efficiently calculate expectation values using the Qiskit Estimator.">
+
+<title>Encoding Math into Metal: Representing Vectors and Matrices on a QPU – Dikran Meliksetian, Ph.D.</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/cookie-consent/cookie-consent.js"></script>
+<link href="../../site_libs/cookie-consent/cookie-consent.css" rel="stylesheet">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/axe/axe-check.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-587c61ba64f3a5504c4d52d930310e48.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-e2429388cbb09b51952cd90828872873.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script async="" src="https://www.googletagmanager.com/gtag/js?id=G-21EGSG5G06"></script>
+
+<script type="text/plain" cookie-consent="tracking">
+
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-21EGSG5G06', { 'anonymize_ip': true});
+</script>
+
+<script type="text/javascript" charset="UTF-8">
+document.addEventListener('DOMContentLoaded', function () {
+cookieconsent.run({
+  "notice_banner_type":"simple",
+  "consent_type":"implied",
+  "palette":"light",
+  "language":"en",
+  "page_load_consent_levels":["strictly-necessary","functionality","tracking","targeting"],
+  "notice_banner_reject_button_hide":false,
+  "preferences_center_close_button_hide":false,
+  "website_name":""
+  ,
+"language":"en"
+  });
+});
+</script> 
+  
+<style>
+
+      .quarto-title-block .quarto-title-banner h1,
+      .quarto-title-block .quarto-title-banner h2,
+      .quarto-title-block .quarto-title-banner h3,
+      .quarto-title-block .quarto-title-banner h4,
+      .quarto-title-block .quarto-title-banner h5,
+      .quarto-title-block .quarto-title-banner h6
+      {
+        color: white;
+      }
+
+      .quarto-title-block .quarto-title-banner {
+        color: white;
+background: #1e3a8a;
+      }
+</style>
+<style>
+  .custom-footer { display: none !important; }
+</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">Dikran Meliksetian, Ph.D.</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll me-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Home</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../teaching.html"> 
+<span class="menu-text">Teaching</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../blog.html"> 
+<span class="menu-text">Blog</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../patents.html"> 
+<span class="menu-text">Patents</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+</ul>
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://www.linkedin.com/in/dikran-meliksetian/"> <i class="bi bi-linkedin" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/dmeliksetian"> <i class="bi bi-github" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="mailto:dikran.s.meliksetian@gmail.com"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-page-left">
+      <h1 class="title">Encoding Math into Metal: Representing Vectors and Matrices on a QPU</h1>
+                  <div>
+        <div class="description">
+          How to translate classical linear algebra structures into quantum states and operators, and efficiently calculate expectation values using the Qiskit Estimator.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Quantum Computing</div>
+                <div class="quarto-category">Qiskit</div>
+                <div class="quarto-category">Linear Algebra</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta column-page-left">
+
+      
+      <div>
+      <div class="quarto-title-meta-heading">Published</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">December 5, 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-full page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#representing-an-n-dimensional-vector" id="toc-representing-an-n-dimensional-vector" class="nav-link active" data-scroll-target="#representing-an-n-dimensional-vector">1. Representing an N-dimensional Vector</a>
+  <ul class="collapse">
+  <li><a href="#the-quantum-compression" id="toc-the-quantum-compression" class="nav-link" data-scroll-target="#the-quantum-compression">The Quantum Compression</a></li>
+  <li><a href="#the-constraint-normalization" id="toc-the-constraint-normalization" class="nav-link" data-scroll-target="#the-constraint-normalization">The Constraint: Normalization</a></li>
+  </ul></li>
+  <li><a href="#representing-the-nxn-matrix" id="toc-representing-the-nxn-matrix" class="nav-link" data-scroll-target="#representing-the-nxn-matrix">2. Representing the NxN Matrix</a>
+  <ul class="collapse">
+  <li><a href="#the-decomposition" id="toc-the-decomposition" class="nav-link" data-scroll-target="#the-decomposition">The Decomposition</a></li>
+  <li><a href="#a-crucial-detail-where-do-these-strings-come-from" id="toc-a-crucial-detail-where-do-these-strings-come-from" class="nav-link" data-scroll-target="#a-crucial-detail-where-do-these-strings-come-from">A Crucial Detail: Where do these strings come from?</a></li>
+  <li><a href="#why-this-solves-the-complexity-problem" id="toc-why-this-solves-the-complexity-problem" class="nav-link" data-scroll-target="#why-this-solves-the-complexity-problem">Why This Solves the Complexity Problem</a></li>
+  </ul></li>
+  <li><a href="#calculating-the-expectation-value" id="toc-calculating-the-expectation-value" class="nav-link" data-scroll-target="#calculating-the-expectation-value">3. Calculating the Expectation Value</a>
+  <ul class="collapse">
+  <li><a href="#a-the-manual-approach-sampling-eigenvalues" id="toc-a-the-manual-approach-sampling-eigenvalues" class="nav-link" data-scroll-target="#a-the-manual-approach-sampling-eigenvalues">A) The Manual Approach: Sampling Eigenvalues</a></li>
+  <li><a href="#b-the-challenge-the-explosion-of-terms" id="toc-b-the-challenge-the-explosion-of-terms" class="nav-link" data-scroll-target="#b-the-challenge-the-explosion-of-terms">B) The Challenge: The Explosion of Terms</a></li>
+  <li><a href="#c-the-abstraction-the-qiskit-estimator" id="toc-c-the-abstraction-the-qiskit-estimator" class="nav-link" data-scroll-target="#c-the-abstraction-the-qiskit-estimator">C) The Abstraction: The Qiskit Estimator</a></li>
+  </ul></li>
+  <li><a href="#code-example-the-estimator-in-action" id="toc-code-example-the-estimator-in-action" class="nav-link" data-scroll-target="#code-example-the-estimator-in-action">4. Code Example: The Estimator in Action</a>
+  <ul class="collapse">
+  <li><a href="#the-quantum-code" id="toc-the-quantum-code" class="nav-link" data-scroll-target="#the-quantum-code">The Quantum Code</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content quarto-banner-title-block column-page-left" id="quarto-document-content">
+
+
+
+
+
+<p>In my <a href="../../posts/quantum_diagonalization/02-variational-principle.html">previous post</a>, we established the mathematical goal of VQE: finding a normalized vector <span class="math inline">\(v\)</span> that minimizes the expectation value <span class="math inline">\(v^T A v\)</span>.</p>
+<p>Mathematically, this is elegant. Computationally, it poses a massive storage problem. If our system has <span class="math inline">\(N\)</span> states, <span class="math inline">\(v\)</span> is a vector of size <span class="math inline">\(N\)</span>, and <span class="math inline">\(A\)</span> is a matrix of size <span class="math inline">\(N \times N\)</span>. As we scale up, storing these explicitly becomes impossible.</p>
+<p>To solve this on a quantum computer, we need to translate our classical data structures into quantum mechanics. We need to answer two fundamental questions:</p>
+<ol type="1">
+<li>How do we represent a high-dimensional vector <span class="math inline">\(v\)</span> on a quantum processor?</li>
+<li>How do we represent the matrix <span class="math inline">\(A\)</span> so we can calculate its expectation value?</li>
+</ol>
+<section id="representing-an-n-dimensional-vector" class="level2">
+<h2 class="anchored" data-anchor-id="representing-an-n-dimensional-vector">1. Representing an N-dimensional Vector</h2>
+<p>In the classical world, if I want to store a state vector <span class="math inline">\(v\)</span> of size <span class="math inline">\(N=4\)</span>, I allocate an array of 4 floating-point numbers in memory:</p>
+<p><span class="math display">\[
+v_{classical} = \begin{bmatrix} v_0 \\ v_1 \\ v_2 \\ v_3 \end{bmatrix}
+\]</span></p>
+<p>The memory requirement grows linearly with <span class="math inline">\(N\)</span>. However, in quantum problems, <span class="math inline">\(N\)</span> represents the dimension of the Hilbert space, which grows <strong>exponentially</strong> with the number of particles or qubits (<span class="math inline">\(N = 2^n\)</span>).</p>
+<section id="the-quantum-compression" class="level3">
+<h3 class="anchored" data-anchor-id="the-quantum-compression">The Quantum Compression</h3>
+<p>On a quantum computer, we use <strong>Amplitude Encoding</strong>. We map the <strong>indices</strong> of the vector to the <strong>computational basis states</strong> of our qubits.</p>
+<p>To represent a vector of size <span class="math inline">\(N\)</span>, we need only <span class="math inline">\(n = \log_2(N)\)</span> qubits. For our <span class="math inline">\(N=4\)</span> example, we need just <span class="math inline">\(n=2\)</span> qubits. The indices <span class="math inline">\(0, 1, 2, 3\)</span> correspond to the binary states <span class="math inline">\(|00\rangle, |01\rangle, |10\rangle, |11\rangle\)</span>.</p>
+<p>The vector <span class="math inline">\(v\)</span> is then represented as the <strong>superposition state</strong> of the quantum system:</p>
+<p><span class="math display">\[
+|v\rangle = v_0|00\rangle + v_1|01\rangle + v_2|10\rangle + v_3|11\rangle
+\]</span></p>
+</section>
+<section id="the-constraint-normalization" class="level3">
+<h3 class="anchored" data-anchor-id="the-constraint-normalization">The Constraint: Normalization</h3>
+<p>There is one strict constraint. In classical coding, a vector can have any magnitude. In quantum mechanics, probabilities must sum to 1. Therefore, the vector <span class="math inline">\(|v\rangle\)</span> must be normalized such that the sum of the squared absolute values of its coefficients equals 1:</p>
+<p><span class="math display">\[
+\sum_{i=0}^{N-1} |v_i|^2 = 1
+\]</span></p>
+<p>This means that our quantum state <span class="math inline">\(|v\rangle\)</span> is mathematically identical to the normalized vector <span class="math inline">\(v\)</span> we discussed in the previous post. We aren’t “storing” the numbers <span class="math inline">\(v_i\)</span> in digital memory addresses; the numbers <span class="math inline">\(v_i\)</span> exist physically as the probability amplitudes of the wavefunction itself.</p>
+</section>
+</section>
+<section id="representing-the-nxn-matrix" class="level2">
+<h2 class="anchored" data-anchor-id="representing-the-nxn-matrix">2. Representing the NxN Matrix</h2>
+<p>Now, what about the matrix <span class="math inline">\(A\)</span>? Classically, <span class="math inline">\(A\)</span> is a dense grid of numbers. If the vector has dimension <span class="math inline">\(N=2^n\)</span>, the matrix has <span class="math inline">\((2^n)^2\)</span> entries. Storing a matrix for just 50 qubits would require more memory than exists on Earth.</p>
+<p>In the quantum context, <span class="math inline">\(A\)</span> represents an observable (usually a Hamiltonian). We do not store this matrix in the quantum computer’s memory. Instead, we represent it in the native language of the quantum processor: <strong>Pauli Strings</strong>.</p>
+<section id="the-decomposition" class="level3">
+<h3 class="anchored" data-anchor-id="the-decomposition">The Decomposition</h3>
+<p>The set of Pauli matrices <span class="math inline">\(\{I, X, Y, Z\}\)</span> forms a complete basis for the space of <span class="math inline">\(2 \times 2\)</span> Hermitian matrices. For a multi-qubit system, we use tensor products of these matrices (e.g., <span class="math inline">\(Z \otimes Z\)</span> or <span class="math inline">\(X \otimes I\)</span>).</p>
+<p>Any Hermitian matrix <span class="math inline">\(A\)</span> can be written as a weighted sum of these Pauli strings:</p>
+<p><span class="math display">\[
+A = \sum_{j} c_j P_j
+\]</span></p>
+<p>Where <span class="math inline">\(c_j\)</span> are real-valued scalar coefficients and <span class="math inline">\(P_j\)</span> are Pauli strings.</p>
+</section>
+<section id="a-crucial-detail-where-do-these-strings-come-from" class="level3">
+<h3 class="anchored" data-anchor-id="a-crucial-detail-where-do-these-strings-come-from">A Crucial Detail: Where do these strings come from?</h3>
+<p>You might be asking: <em>“If the matrix <span class="math inline">\(A\)</span> is too big to store, how do we calculate this decomposition?”</em></p>
+<p>There are two scenarios:</p>
+<ol type="1">
+<li><p><strong>The Mathematical Route:</strong> If we <em>did</em> have a small arbitrary matrix, we could mathematically decompose it using the <strong>Hilbert-Schmidt inner product</strong>. We project the matrix onto each Pauli basis tensor to find the coefficients <span class="math inline">\(c_j\)</span>. However, doing this for large <span class="math inline">\(N\)</span> defeats the purpose, as we would need to build the giant matrix first.</p></li>
+<li><p><strong>The Practical Route (Direct Mapping):</strong> In useful quantum applications (like Chemistry or Optimization), <strong>we never build the dense matrix</strong>.</p>
+<ul>
+<li><strong>In Chemistry:</strong> The interaction between electrons is described by the <strong>Jordan-Wigner</strong> or <strong>Bravyi-Kitaev</strong> transformations, which map the physical system <em>directly</em> into a sum of Pauli strings (<span class="math inline">\(O(n^4)\)</span> terms) without ever creating a <span class="math inline">\(2^n \times 2^n\)</span> array.</li>
+<li><strong>In Optimization (MaxCut):</strong> The cost function of a graph cut maps directly to a sum of <span class="math inline">\(Z_i Z_j\)</span> terms based on the graph’s edges.</li>
+</ul></li>
+</ol>
+<p>This allows us to work with operators for 50+ qubits (a vector space of <span class="math inline">\(10^{15}\)</span>) while only storing a polynomial number of Pauli terms in our laptop’s memory.</p>
+<blockquote class="blockquote">
+<p><strong>Note:</strong> If these transformations sound complex, don’t worry. We will dedicate a future post in this series specifically to <strong>Problem Mapping</strong>—showing exactly how to turn a physical chemistry problem or a logistics graph into these Pauli strings without ever building the giant matrix.</p>
+</blockquote>
+</section>
+<section id="why-this-solves-the-complexity-problem" class="level3">
+<h3 class="anchored" data-anchor-id="why-this-solves-the-complexity-problem">Why This Solves the Complexity Problem</h3>
+<p>This representation changes the problem from “massive matrix multiplication” to “linear summation.”</p>
+<p>Recall that we want to calculate the expectation value <span class="math inline">\(\langle v | A | v \rangle\)</span>. Using the linearity of expectation, we can break this down:</p>
+<p><span class="math display">\[
+\langle v | A | v \rangle = \langle v | \left( \sum_j c_j P_j \right) | v \rangle = \sum_j c_j \langle v | P_j | v \rangle
+\]</span></p>
+<p>This is the key to the efficiency of the algorithm. We don’t need a quantum computer that can “process” the giant matrix <span class="math inline">\(A\)</span> all at once. We only need a quantum computer that can measure simple Pauli terms.</p>
+</section>
+</section>
+<section id="calculating-the-expectation-value" class="level2">
+<h2 class="anchored" data-anchor-id="calculating-the-expectation-value">3. Calculating the Expectation Value</h2>
+<p>We have defined our vector <span class="math inline">\(|v\rangle\)</span> and decomposed our matrix <span class="math inline">\(A\)</span>. Now comes the actual computation: calculating <span class="math inline">\(\langle v | P_j | v \rangle\)</span>. How do we actually ask a quantum computer for this number?</p>
+<section id="a-the-manual-approach-sampling-eigenvalues" class="level3">
+<h3 class="anchored" data-anchor-id="a-the-manual-approach-sampling-eigenvalues">A) The Manual Approach: Sampling Eigenvalues</h3>
+<p>Let’s assume our Hamiltonian is just a single Pauli string, say <span class="math inline">\(Z\)</span> on a single qubit. The expectation value is simply the weighted average of outcomes. We run the circuit, measure the qubit, and collect the bitstrings (e.g., <code>0</code>, <code>0</code>, <code>1</code>, <code>0</code>…). mapping <code>0</code> to <span class="math inline">\(+1\)</span> and <code>1</code> to <span class="math inline">\(-1\)</span>.</p>
+<p><strong>Why this mapping?</strong> This isn’t arbitrary. It relies on the known spectral properties of Pauli matrices. The computational basis states <span class="math inline">\(|0\rangle\)</span> and <span class="math inline">\(|1\rangle\)</span> are the <strong>eigenstates</strong> of the Pauli <span class="math inline">\(Z\)</span> operator, with eigenvalues <span class="math inline">\(+1\)</span> and <span class="math inline">\(-1\)</span> respectively:</p>
+<p><span class="math display">\[Z|0\rangle = (+1)|0\rangle\]</span> <span class="math display">\[Z|1\rangle = (-1)|1\rangle\]</span></p>
+<p>When we measure a qubit, we are collapsing it into one of these eigenstates. The value we associate with that outcome is the corresponding eigenvalue.</p>
+<p><strong>Extending to Multi-Qubit Terms</strong> Crucially, the eigenvalue of a tensor product of Pauli matrices is simply the <strong>product</strong> of the eigenvalues of each individual matrix.</p>
+<p>For example, if we are measuring the operator <span class="math inline">\(Z \otimes Z\)</span> on two qubits and we observe the state <span class="math inline">\(|01\rangle\)</span>: * The first qubit is in <span class="math inline">\(|0\rangle\)</span> (eigenvalue <span class="math inline">\(+1\)</span>). * The second qubit is in <span class="math inline">\(|1\rangle\)</span> (eigenvalue <span class="math inline">\(-1\)</span>). * The total eigenvalue for this shot is <span class="math inline">\((+1) \times (-1) = -1\)</span>.</p>
+<p>This allows us to reconstruct the value of any complex Pauli string simply by multiplying the results of individual qubit measurements.</p>
+<p><span class="math display">\[\langle Z \rangle \approx \frac{(+1) \cdot N_0 + (-1) \cdot N_1}{N_{total}}\]</span></p>
+<p><strong>What about X and Y?</strong> Quantum hardware generally only measures in the <strong>Z-basis</strong>. If our Pauli string contains an <span class="math inline">\(X\)</span> or <span class="math inline">\(Y\)</span>, we cannot measure it directly. We must apply a basis rotation gate (like a Hadamard for <span class="math inline">\(X\)</span>) <em>just before</em> measurement to align the axis with <span class="math inline">\(Z\)</span>.</p>
+</section>
+<section id="b-the-challenge-the-explosion-of-terms" class="level3">
+<h3 class="anchored" data-anchor-id="b-the-challenge-the-explosion-of-terms">B) The Challenge: The Explosion of Terms</h3>
+<p>In a real problem, our matrix <span class="math inline">\(A\)</span> might contain <strong>thousands</strong> of Pauli terms.</p>
+<p><span class="math display">\[H = c_1 (Z_0 Z_1) + c_2 (X_0 X_1) + c_3 (Z_0 I_1) + \dots\]</span></p>
+<p>If we were to run a separate quantum experiment (Sampler job) for every single term, the overhead would be astronomical.</p>
+<p><strong>The Solution: Operator Grouping</strong> Fortunately, we can exploit <strong>commutativity</strong>. If two Pauli strings commute (specifically, qubit-wise commutativity), they can be measured in the same basis simultaneously.</p>
+<p>For example, <span class="math inline">\(Z_0 Z_1\)</span> and <span class="math inline">\(Z_0 I_1\)</span> both require the Z-basis. We can measure both in a single “shot”. However, <span class="math inline">\(Z_0 Z_1\)</span> and <span class="math inline">\(X_0 X_1\)</span> do <strong>not</strong> commute (Heisenberg’s Uncertainty Principle). You cannot measure Z and X on qubit 0 at the same time.</p>
+<p>Therefore, we group the thousands of Pauli strings into a small number of <strong>commuting families</strong>. We run one quantum job per family, effectively compressing thousands of measurements into a few dozen jobs.</p>
+</section>
+<section id="c-the-abstraction-the-qiskit-estimator" class="level3">
+<h3 class="anchored" data-anchor-id="c-the-abstraction-the-qiskit-estimator">C) The Abstraction: The Qiskit Estimator</h3>
+<p>Doing this efficiently involves significant bookkeeping: checking commutativity, grouping terms, appending rotations, and aggregating statistics.</p>
+<p>In modern Qiskit, this is abstracted away by the <strong>Estimator</strong>. The Estimator is a primitive that takes the Circuit (state) and the Operator (matrix), handles the grouping and rotations internally, and returns the final floating-point expectation value.</p>
+</section>
+</section>
+<section id="code-example-the-estimator-in-action" class="level2">
+<h2 class="anchored" data-anchor-id="code-example-the-estimator-in-action">4. Code Example: The Estimator in Action</h2>
+<p>Let’s make this concrete. We will not start with quantum gates; we will start with a standard linear algebra problem.</p>
+<p><strong>The Classical Problem</strong> Imagine we have a <span class="math inline">\(4 \times 4\)</span> Hermitian matrix <span class="math inline">\(A\)</span> and a 4-dimensional vector <span class="math inline">\(v\)</span>, and we want to calculate <span class="math inline">\(v^T A v\)</span>.</p>
+<p><span class="math display">\[
+A = \begin{bmatrix}
+0.5 &amp; 0 &amp; 0 &amp; 0.2 \\
+0 &amp; -0.5 &amp; 0.2 &amp; 0 \\
+0 &amp; 0.2 &amp; -0.5 &amp; 0 \\
+0.2 &amp; 0 &amp; 0 &amp; 0.5
+\end{bmatrix}
+\]</span></p>
+<p>We want to verify the expectation value for a specific normalized vector: <span class="math display">\[
+v \approx \begin{bmatrix} 0.80 \\ 0.46 \\ 0.33 \\ 0.19 \end{bmatrix}
+\]</span></p>
+<p>This problem is so small that one could do this on paper to determine that <span class="math inline">\(v^T A v \approx 0.299\)</span>. However, we are going to use this example to illustrate how this problem can be mapped to a quantum system and how it produces an output.</p>
+<p><strong>1. The Matrix Decomposition:</strong> We cannot load the <span class="math inline">\(4 \times 4\)</span> array into the QPU. We must break it down. Looking at the structure of <span class="math inline">\(A\)</span>: * The diagonal terms correspond to <span class="math inline">\(Z \otimes Z\)</span>. * The off-diagonal terms correspond to <span class="math inline">\(X \otimes X\)</span>.</p>
+<p>We can rewrite <span class="math inline">\(A\)</span> exactly as: <span class="math display">\[A = 0.5 (Z \otimes Z) + 0.2 (X \otimes X)\]</span></p>
+<p><strong>2. The Vector Construction:</strong> Quantum computers always start in the <span class="math inline">\(|00\rangle\)</span> state (the vector <span class="math inline">\([1, 0, 0, 0]\)</span>). We need to build a circuit to transform this into our target vector <span class="math inline">\(v\)</span>. We can do this using <span class="math inline">\(R_Y\)</span> (Rotation-Y) gates.</p>
+<ul>
+<li>Applying <span class="math inline">\(R_Y(\pi/3)\)</span> to qubit 0 creates amplitudes <span class="math inline">\(\approx [0.866, 0.5]\)</span>.</li>
+<li>Applying <span class="math inline">\(R_Y(\pi/4)\)</span> to qubit 1 creates amplitudes <span class="math inline">\(\approx [0.924, 0.383]\)</span>.</li>
+</ul>
+<p>The tensor product of these rotations results in exactly our target vector <span class="math inline">\([0.80, 0.46, 0.33, 0.19]\)</span>.</p>
+<section id="the-quantum-code" class="level3">
+<h3 class="anchored" data-anchor-id="the-quantum-code">The Quantum Code</h3>
+<p>Now, let’s write the code to implement this mapping and verify the result matches our classical calculation.</p>
+<div id="8ee9af7f" class="cell" data-execution_count="2">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qiskit <span class="im">import</span> QuantumCircuit</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qiskit.quantum_info <span class="im">import</span> SparsePauliOp</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qiskit.primitives <span class="im">import</span> StatevectorEstimator</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. The Matrix A (The Hamiltonian)</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co"># We define A = 0.5 * (Z on q0, Z on q1) + 0.2 * (X on q0, X on q1)</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>hamiltonian <span class="op">=</span> SparsePauliOp.from_list([</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"ZZ"</span>, <span class="fl">0.5</span>),  </span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>    (<span class="st">"XX"</span>, <span class="fl">0.2</span>)   </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Operator A:"</span>, end<span class="op">=</span><span class="st">" "</span>)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>print_hamiltonian(hamiltonian)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Operator A: 0.50 * ZZ + 0.20 * XX
+
+</code></pre>
+</div>
+</div>
+<div id="0de0a4eb" class="cell" data-execution_count="3">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. The Vector |v&gt; (State Preparation)</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We use Ry gates to rotate the qubits from |0&gt; to a superposition.</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="co"># using real-valued rotations keeps the amplitudes real.</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>qc <span class="op">=</span> QuantumCircuit(<span class="dv">2</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>qc.ry(np.pi<span class="op">/</span><span class="dv">3</span>, <span class="dv">0</span>) <span class="co"># Rotate qubit 0 by 60 degrees</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>qc.ry(np.pi<span class="op">/</span><span class="dv">4</span>, <span class="dv">1</span>) <span class="co"># Rotate qubit 1 by 45 degrees</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Circuit representing state |v&gt;:"</span>)</span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>display(qc.draw(<span class="st">"mpl"</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Circuit representing state |v&gt;:</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="03-implementing-vqe_files/figure-html/cell-4-output-2.png" width="170" height="168" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="ffbd9c37" class="cell" data-execution_count="4">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. The Abstraction (The Estimator)</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># We instantiate the local StatevectorEstimator</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>estimator <span class="op">=</span> StatevectorEstimator()</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="co"># The estimator handles the basis rotations and operator grouping internally.</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Run format: run([(circuit, operator)])</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>job <span class="op">=</span> estimator.run([(qc, hamiltonian)])</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> job.result()[<span class="dv">0</span>]</span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 4. The Result</span></span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a><span class="co"># result.data.evs is a NumPy array of expectation values.</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a><span class="co"># We access the first element [0] to get our specific scalar result.</span></span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>expectation_value <span class="op">=</span> result.data.evs</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Calculated Expectation Value &lt;v|A|v&gt;: </span><span class="sc">{</span>expectation_value<span class="sc">:.6f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Calculated Expectation Value &lt;v|A|v&gt;: 0.299251</code></pre>
+</div>
+</div>
+<p><strong>What just happened?</strong> The Estimator acted as our “Linear Algebra Calculator.”</p>
+<ol type="1">
+<li><strong>Input:</strong> It took a Circuit (a recipe for creating the vector <span class="math inline">\(v\)</span>) and an Operator (the decomposition of matrix <span class="math inline">\(A\)</span>).</li>
+<li><strong>Process:</strong> It handled the basis rotations and measurements internally (splitting ZZ and XX into different measurement jobs if needed).</li>
+<li><strong>Output:</strong> It returned the scalar value <span class="math inline">\(v^T A v\)</span>.</li>
+</ol>
+<p><strong>Next Steps:</strong> In the next post, we will finally close the loop. We will replace our fixed manual angles with <strong>variables</strong>, introducing the <strong>Ansatz</strong>, and use a classical optimization algorithm to find the specific angles that minimize our energy.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<footer class="custom-footer">
+
+    <div class="container">
+
+        <h3>Get In Touch</h3>
+
+        <p style="max-width: 600px; margin: 0 auto 2rem auto; opacity: 0.9;">
+
+            I am always open to discussing new ideas, research opportunities, or interesting projects in the quantum
+
+            computing space.
+
+        </p>
+
+
+
+        <div class="footer-links">
+
+            <a href="mailto:dsmeliks@gmail.com" title="Personal Email">
+
+                <i class="bi bi-envelope-fill"></i> dikran.s.meliksetian@gmail.com
+
+            </a>
+
+
+
+            <a href="mailto:dmeliksetian@newhaven.edu" title="Academic Email">
+
+                <i class="bi bi-mortarboard-fill"></i> dmeliksetian@newhaven.edu
+
+            </a>
+
+
+
+            <span style="color: #94a3b8; margin: 0 1rem;">
+
+                <i class="bi bi-geo-alt-fill"></i> Newtown, CT
+
+            </span>
+
+        </div>
+
+
+
+        <p style="font-size: 0.875rem; opacity: 0.6;">
+
+            © <span id="year"></span> Dikran Meliksetian. All Rights Reserved.
+
+        </p>
+
+    </div>
+
+</footer>
+
+
+
+<script>
+
+    const yearSpan = document.getElementById('year');
+
+    if (yearSpan) {
+
+        yearSpan.textContent = new Date().getFullYear();
+
+    }
+
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<input type="hidden" id="giscus-base-theme" value="light">
+<input type="hidden" id="giscus-alt-theme" value="dark">
+<script>
+  function loadGiscus() {
+    // Function to get the theme based on body class
+    const getTheme = () => {
+      let baseTheme = document.getElementById('giscus-base-theme').value;
+      let altTheme = document.getElementById('giscus-alt-theme').value;
+      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
+    };
+    const script = document.createElement("script");
+    script.src = "https://giscus.app/client.js";
+    script.async = true;
+    script.dataset.repo = "dmeliksetian/dmeliksetian.github.io";
+    script.dataset.repoId = "R_kgDOPqGCFQ";
+    script.dataset.category = "General";
+    script.dataset.categoryId = "DIC_kwDOPqGCFc4CyH8f";
+    script.dataset.mapping = "title";
+    script.dataset.reactionsEnabled = "1";
+    script.dataset.emitMetadata = "0";
+    script.dataset.inputPosition = "top";
+    script.dataset.theme = getTheme();
+    script.dataset.lang = "en";
+    script.crossOrigin = "anonymous";
+    // Append the script to the desired div instead of at the end of the body
+    document.getElementById("quarto-content").appendChild(script);
+  }
+  loadGiscus();
+</script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+      &nbsp;
+    </div>   
+    <div class="nav-footer-center">
+
+<div class="cookie-consent-footer"><a href="#" id="open_preferences_center">Cookie Preferences</a></div></div>
+    <div class="nav-footer-right">
+      &nbsp;
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
