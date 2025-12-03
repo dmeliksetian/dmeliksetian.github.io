@@ -180,6 +180,12 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="../../styles.css">
+<meta property="og:title" content="Series: Quantum Diagonalization Algorithms – Dikran Meliksetian, Ph.D.">
+<meta property="og:description" content="Personal academic portfolio and research blog exploring Quantum Computing, Qiskit, and Software Architecture.">
+<meta property="og:site_name" content="Dikran Meliksetian, Ph.D.">
+<meta name="twitter:title" content="Series: Quantum Diagonalization Algorithms – Dikran Meliksetian, Ph.D.">
+<meta name="twitter:description" content="Personal academic portfolio and research blog exploring Quantum Computing, Qiskit, and Software Architecture.">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -233,6 +239,11 @@ window.Quarto = {
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="mailto:dikran.s.meliksetian@gmail.com"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="../../blog.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -347,12 +358,12 @@ Description
 
 </tr>
 
-<tr data-index="2" data-categories="UXVhbnR1bSUyMENvbXB1dGluZyUyQ1Fpc2tpdCUyQ0xpbmVhciUyMEFsZ2VicmE=" data-listing-date-sort="1764910800000" data-listing-file-modified-sort="1764705432398" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1958" data-listing-title-sort="Encoding Math into Metal: Representing Vectors and Matrices on a QPU" data-listing-filename-sort="03-implementing-vqe.qmd">
+<tr data-index="2" data-categories="UXVhbnR1bSUyMENvbXB1dGluZyUyQ1Fpc2tpdCUyQ0xpbmVhciUyMEFsZ2VicmE=" data-listing-date-sort="1764910800000" data-listing-file-modified-sort="1764720504706" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1958" data-listing-title-sort="Encoding Math into Metal: Representing Vectors and Matrices on a QPU" data-listing-filename-sort="03-encoding-math-into-metal.qmd">
 <td>
 <span class="listing-date">Dec 5, 2025</span>
 </td>
 <td>
-<a href="../../posts/quantum_diagonalization/03-implementing-vqe.html" class="title listing-title">Encoding Math into Metal: Representing Vectors and Matrices on a QPU</a>
+<a href="../../posts/quantum_diagonalization/03-encoding-math-into-metal.html" class="title listing-title">Encoding Math into Metal: Representing Vectors and Matrices on a QPU</a>
 </td>
 <td>
 <span class="listing-description">How to translate classical linear algebra structures into quantum states and operators, and efficiently calculate expectation values using the Qiskit Estimator.</span>
@@ -431,6 +442,23 @@ Description
     }
 
 </script>
+<div id="hyvor-talk-view"></div>
+
+<script type="text/javascript">
+
+    var HYVOR_TALK_WEBSITE = '14634'; // Replace with your ID
+
+    var HYVOR_TALK_CONFIG = {
+
+        url: false,
+
+        id: false
+
+    };
+
+</script>
+
+<script async="" type="text/javascript" src="//talk.hyvor.com/web-api/embed.js"></script>
 <script id="quarto-html-after-body" type="application/javascript">
   window.document.addEventListener("DOMContentLoaded", function (event) {
     const icon = "";
@@ -504,7 +532,7 @@ Description
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/dikranmeliksetian\.com");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
@@ -831,35 +859,6 @@ Description
     }
   });
   </script>
-<input type="hidden" id="giscus-base-theme" value="light">
-<input type="hidden" id="giscus-alt-theme" value="dark">
-<script>
-  function loadGiscus() {
-    // Function to get the theme based on body class
-    const getTheme = () => {
-      let baseTheme = document.getElementById('giscus-base-theme').value;
-      let altTheme = document.getElementById('giscus-alt-theme').value;
-      return document.body.classList.contains('quarto-dark') ? altTheme : baseTheme;
-    };
-    const script = document.createElement("script");
-    script.src = "https://giscus.app/client.js";
-    script.async = true;
-    script.dataset.repo = "dmeliksetian/dmeliksetian.github.io";
-    script.dataset.repoId = "R_kgDOPqGCFQ";
-    script.dataset.category = "General";
-    script.dataset.categoryId = "DIC_kwDOPqGCFc4CyH8f";
-    script.dataset.mapping = "title";
-    script.dataset.reactionsEnabled = "1";
-    script.dataset.emitMetadata = "0";
-    script.dataset.inputPosition = "top";
-    script.dataset.theme = getTheme();
-    script.dataset.lang = "en";
-    script.crossOrigin = "anonymous";
-    // Append the script to the desired div instead of at the end of the body
-    document.getElementById("quarto-content").appendChild(script);
-  }
-  loadGiscus();
-</script>
 </div> <!-- /content -->
 <footer class="footer">
   <div class="nav-footer">

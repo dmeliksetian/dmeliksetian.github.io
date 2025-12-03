@@ -178,6 +178,12 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles.css">
+<meta property="og:title" content="Patent Portfolio – Dikran Meliksetian, Ph.D.">
+<meta property="og:description" content="Personal academic portfolio and research blog exploring Quantum Computing, Qiskit, and Software Architecture.">
+<meta property="og:site_name" content="Dikran Meliksetian, Ph.D.">
+<meta name="twitter:title" content="Patent Portfolio – Dikran Meliksetian, Ph.D.">
+<meta name="twitter:description" content="Personal academic portfolio and research blog exploring Quantum Computing, Qiskit, and Software Architecture.">
+<meta name="twitter:card" content="summary">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -231,6 +237,11 @@ window.Quarto = {
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="mailto:dikran.s.meliksetian@gmail.com"> <i class="bi bi-envelope" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="./blog.xml"> <i class="bi bi-rss" role="img">
 </i> 
 <span class="menu-text"></span></a>
   </li>  
@@ -1637,7 +1648,7 @@ window.Quarto = {
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/dikranmeliksetian\.com");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }

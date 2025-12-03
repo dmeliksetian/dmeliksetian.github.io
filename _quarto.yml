@@ -11,7 +11,12 @@ execute:
 
 website:
   title: "Dikran Meliksetian, Ph.D."
-
+  site-url: "https://dikranmeliksetian.com"  # <--- CRITICAL for Google/LinkedIn
+  description: "Personal academic portfolio and research blog exploring Quantum Computing, Qiskit, and Software Architecture."
+  
+  # 1. Enable Social Cards (The "LinkedIn Preview" Fix)
+  open-graph: true
+  twitter-card: true
 
   navbar:
     background: white # Optional: Ensures text doesn't look messy scrolling behind it
@@ -33,6 +38,8 @@ website:
         href: https://github.com/dmeliksetian
       - icon: envelope
         href: mailto:dikran.s.meliksetian@gmail.com
+      - icon: rss                 # <--- Add this
+        href: blog.xml
 
 
 

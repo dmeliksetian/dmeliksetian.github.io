@@ -177,6 +177,16 @@ window.Quarto = {
 </script>
 
 <link rel="stylesheet" href="styles.css">
+<link rel="alternate" type="application/rss+xml" title="Dikran Meliksetian, Ph.D." href="blog.xml" data-external="1"><meta property="og:title" content="Research Blog – Dikran Meliksetian, Ph.D.">
+<meta property="og:image" content="https://dikranmeliksetian.com/posts/quantum_diagonalization/img/image_0.png">
+<meta property="og:site_name" content="Dikran Meliksetian, Ph.D.">
+<meta property="og:image:height" content="2100">
+<meta property="og:image:width" content="3000">
+<meta name="twitter:title" content="Research Blog – Dikran Meliksetian, Ph.D.">
+<meta name="twitter:image" content="https://dikranmeliksetian.com/posts/quantum_diagonalization/img/image_0.png">
+<meta name="twitter:image-height" content="2100">
+<meta name="twitter:image-width" content="3000">
+<meta name="twitter:card" content="summary_large_image">
 </head>
 
 <body class="nav-fixed quarto-light">
@@ -233,6 +243,11 @@ window.Quarto = {
 </i> 
 <span class="menu-text"></span></a>
   </li>  
+  <li class="nav-item compact">
+    <a class="nav-link" href="./blog.xml"> <i class="bi bi-rss" role="img">
+</i> 
+<span class="menu-text"></span></a>
+  </li>  
 </ul>
           </div> <!-- /navcollapse -->
             <div class="quarto-navbar-tools">
@@ -276,15 +291,15 @@ window.Quarto = {
 
 <div class="quarto-listing quarto-listing-container-default" id="listing-listing">
 <div class="list quarto-listing-default">
-<div class="quarto-post image-right" data-index="0" data-categories="UXVhbnR1bSUyMENvbXB1dGluZyUyQ1Fpc2tpdCUyQ0xpbmVhciUyMEFsZ2VicmE=" data-listing-date-sort="1764910800000" data-listing-file-modified-sort="1764705432398" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1958">
-<div class="thumbnail"><a href="./posts/quantum_diagonalization/03-implementing-vqe.html" class="no-external">
+<div class="quarto-post image-right" data-index="0" data-categories="UXVhbnR1bSUyMENvbXB1dGluZyUyQ1Fpc2tpdCUyQ0xpbmVhciUyMEFsZ2VicmE=" data-listing-date-sort="1764910800000" data-listing-file-modified-sort="1764720504706" data-listing-date-modified-sort="NaN" data-listing-reading-time-sort="10" data-listing-word-count-sort="1958">
+<div class="thumbnail"><a href="./posts/quantum_diagonalization/03-encoding-math-into-metal.html" class="no-external">
 
 <img loading="lazy" src="./posts/quantum_diagonalization/img/image_0.png" class="thumbnail-image">
 
 </a></div>
 <div class="body">
 <h3 class="no-anchor listing-title">
-<a href="./posts/quantum_diagonalization/03-implementing-vqe.html" class="no-external">Encoding Math into Metal: Representing Vectors and Matrices on a QPU</a>
+<a href="./posts/quantum_diagonalization/03-encoding-math-into-metal.html" class="no-external">Encoding Math into Metal: Representing Vectors and Matrices on a QPU</a>
 </h3>
 <div class="listing-categories">
 
@@ -295,12 +310,12 @@ window.Quarto = {
 <div class="listing-category" onclick="window.quartoListingCategory('TGluZWFyJTIwQWxnZWJyYQ=='); return false;">Linear Algebra</div>
 
 </div>
-<div class="delink listing-description"><a href="./posts/quantum_diagonalization/03-implementing-vqe.html" class="no-external">
+<div class="delink listing-description"><a href="./posts/quantum_diagonalization/03-encoding-math-into-metal.html" class="no-external">
 <p>How to translate classical linear algebra structures into quantum states and operators, and efficiently calculate expectation values using the Qiskit Estimator.</p>
 </a></div>
 </div>
 <div class="metadata">
-<a href="./posts/quantum_diagonalization/03-implementing-vqe.html" class="no-external">
+<a href="./posts/quantum_diagonalization/03-encoding-math-into-metal.html" class="no-external">
 <div class="listing-date">
 Dec 5, 2025
 </div>
@@ -575,7 +590,7 @@ Dikran Meliksetian, Ph.D.
     }
       var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
       var mailtoRegex = new RegExp(/^mailto:/);
-        var filterRegex = new RegExp('/' + window.location.host + '/');
+        var filterRegex = new RegExp("https:\/\/dikranmeliksetian\.com");
       var isInternal = (href) => {
           return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
       }
