@@ -1,6 +1,6 @@
 ---
 title: "Encoding Math into Metal: Representing Vectors and Matrices on a QPU"
-date: 2025-12-05
+date: 2025-12-02
 categories: [Quantum Computing, Qiskit, Linear Algebra]
 image: img/image_0.png
 description: "How to translate classical linear algebra structures into quantum states and operators, and efficiently calculate expectation values using the Qiskit Estimator."

@@ -10,7 +10,7 @@
 <atom:link href="https://dikranmeliksetian.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Personal academic portfolio and research blog exploring Quantum Computing, Qiskit, and Software Architecture.</description>
 <generator>quarto-1.8.26</generator>
-<lastBuildDate>Fri, 05 Dec 2025 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Tue, 02 Dec 2025 05:00:00 GMT</lastBuildDate>
 <item>
   <title>Encoding Math into Metal: Representing Vectors and Matrices on a QPU</title>
   <link>https://dikranmeliksetian.com/posts/quantum_diagonalization/03-encoding-math-into-metal.html</link>
@@ -336,7 +336,7 @@ Calculated Expectation Value &lt;v|A|v&gt;: 0.299251</code></pre>
   <category>Qiskit</category>
   <category>Linear Algebra</category>
   <guid>https://dikranmeliksetian.com/posts/quantum_diagonalization/03-encoding-math-into-metal.html</guid>
-  <pubDate>Fri, 05 Dec 2025 05:00:00 GMT</pubDate>
+  <pubDate>Tue, 02 Dec 2025 05:00:00 GMT</pubDate>
   <media:content url="https://dikranmeliksetian.com/posts/quantum_diagonalization/img/image_0.png" medium="image" type="image/png" height="101" width="144"/>
 </item>
 <item>
