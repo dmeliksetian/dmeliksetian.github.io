@@ -6,7 +6,7 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="dcterms.date" content="2025-12-05">
+<meta name="dcterms.date" content="2025-12-02">
 <meta name="description" content="How to translate classical linear algebra structures into quantum states and operators, and efficiently calculate expectation values using the Qiskit Estimator.">
 
 <title>Encoding Math into Metal: Representing Vectors and Matrices on a QPU – Dikran Meliksetian, Ph.D.</title>
@@ -291,7 +291,7 @@ window.Quarto = {
       <div>
       <div class="quarto-title-meta-heading">Published</div>
       <div class="quarto-title-meta-contents">
-        <p class="date">December 5, 2025</p>
+        <p class="date">December 2, 2025</p>
       </div>
     </div>
     
@@ -467,7 +467,7 @@ v \approx \begin{bmatrix} 0.80 \\ 0.46 \\ 0.33 \\ 0.19 \end{bmatrix}
 <section id="the-quantum-code" class="level3">
 <h3 class="anchored" data-anchor-id="the-quantum-code">The Quantum Code</h3>
 <p>Now, let’s write the code to implement this mapping and verify the result matches our classical calculation.</p>
-<div id="bc550872" class="cell" data-execution_count="2">
+<div id="8d534ba2" class="cell" data-execution_count="2">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -492,7 +492,7 @@ v \approx \begin{bmatrix} 0.80 \\ 0.46 \\ 0.33 \\ 0.19 \end{bmatrix}
 </code></pre>
 </div>
 </div>
-<div id="6595d021" class="cell" data-execution_count="3">
+<div id="629de96b" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 2. The Vector |v&gt; (State Preparation)</span></span>
@@ -516,7 +516,7 @@ v \approx \begin{bmatrix} 0.80 \\ 0.46 \\ 0.33 \\ 0.19 \end{bmatrix}
 </div>
 </div>
 </div>
-<div id="5e4d73ad" class="cell" data-execution_count="4">
+<div id="876f9e03" class="cell" data-execution_count="4">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 3. The Abstraction (The Estimator)</span></span>

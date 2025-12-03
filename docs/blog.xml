@@ -130,7 +130,7 @@
 <section id="the-quantum-code" class="level3">
 <h3 class="anchored" data-anchor-id="the-quantum-code">The Quantum Code</h3>
 <p>Now, let’s write the code to implement this mapping and verify the result matches our classical calculation.</p>
-<div id="bc550872" class="cell" data-execution_count="2">
+<div id="8d534ba2" class="cell" data-execution_count="2">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
@@ -201,7 +201,7 @@ font-style: inherit;">"</span>)</span></code></pre></div></div>
 </code></pre>
 </div>
 </div>
-<div id="6595d021" class="cell" data-execution_count="3">
+<div id="629de96b" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
@@ -257,7 +257,7 @@ font-style: inherit;">"mpl"</span>))</span></code></pre></div></div>
 </div>
 </div>
 </div>
-<div id="5e4d73ad" class="cell" data-execution_count="4">
+<div id="876f9e03" class="cell" data-execution_count="4">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="co" style="color: #5E5E5E;
