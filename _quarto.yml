@@ -36,6 +36,9 @@ website:
         href: https://www.linkedin.com/in/dikran-meliksetian/
       - icon: github
         href: https://github.com/dmeliksetian
+      - icon: google          # <--- Standard icon for Scholar links
+        href: https://scholar.google.com/citations?user=gGnnS6MAAAAJ
+        aria-label: "Google Scholar"
       - icon: envelope
         href: mailto:dikran.s.meliksetian@gmail.com
       - icon: rss                 # <--- Add this
