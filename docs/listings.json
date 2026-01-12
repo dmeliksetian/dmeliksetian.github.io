@@ -1,7 +1,12 @@
 [
   {
+    "listing": "/patents.html",
+    "items": []
+  },
+  {
     "listing": "/blog.html",
     "items": [
+      "/posts/quantum_diagonalization/04-closing-the-loop.html",
       "/posts/quantum_diagonalization/03-encoding-math-into-metal.html",
       "/posts/quantum_diagonalization/02-variational-principle.html",
       "/posts/quantum_diagonalization/01-challenge-accepted.html",
@@ -10,15 +15,12 @@
     ]
   },
   {
-    "listing": "/patents.html",
-    "items": []
-  },
-  {
     "listing": "/posts/quantum_diagonalization/index.html",
     "items": [
       "/posts/quantum_diagonalization/01-challenge-accepted.html",
       "/posts/quantum_diagonalization/02-variational-principle.html",
-      "/posts/quantum_diagonalization/03-encoding-math-into-metal.html"
+      "/posts/quantum_diagonalization/03-encoding-math-into-metal.html",
+      "/posts/quantum_diagonalization/04-closing-the-loop.html"
     ]
   },
   {

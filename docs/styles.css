@@ -1,7 +1,9 @@
-/* --- Global Typography --- */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap');
+//* --- Global Typography --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap');
 
-/* --- Nuclear Option: Force Fixed Header --- */
+/* --------------------------------------------------------- */
+/* 1. NUCLEAR OPTION: Fixed Header & Navigation              */
+/* --------------------------------------------------------- */
 #quarto-header {
     position: fixed !important;
     top: 0 !important;
@@ -24,92 +26,98 @@
 /* Ensure the inner navbar doesn't try to float away either */
 .navbar {
     position: static !important;
-    /* Let the parent wrapper handle the fixing */
     transform: none !important;
 }
 
-/* 2. Prevent Content Overlap */
-/* Since the header is now "floating", we must push the body down */
+/* Prevent Content Overlap (Push body down) */
 body {
     padding-top: 80px;
-    /* Adjust this if the header covers your title */
     font-family: 'Inter', sans-serif;
 }
 
-
-/* 3. Handle Anchors (Optional but Good) */
-/* Ensures that when you click a link, it doesn't scroll UNDER the header */
+/* Handle Anchors so they don't scroll under the header */
 section {
     scroll-margin-top: 100px;
 }
 
-
-/* 1. Make the Links Pop */
+/* --------------------------------------------------------- */
+/* 2. Navigation Link Styling                                */
+/* --------------------------------------------------------- */
 .navbar-nav .nav-link {
     font-weight: 700;
-    /* Make them Bold */
     text-transform: uppercase;
-    /* Make them ALL CAPS */
     font-size: 0.9rem;
-    /* Slightly smaller but punchier */
     letter-spacing: 0.05em;
-    /* Add spacing for readability */
     color: #334155 !important;
-    /* Dark Slate (High contrast) */
+    /* Dark Slate */
     margin-left: 0.5rem;
-    /* Add breathing room between links */
 }
 
-/* 2. Add a clear Hover Effect */
 .navbar-nav .nav-link:hover {
     color: #1e3a8a !important;
-    /* Your Brand Blue on hover */
+    /* Brand Blue */
     text-decoration: underline;
     text-underline-offset: 5px;
 }
 
-/* --- Section Headers --- */
-/* Centers all H2 headers (About Me, Academic Pursuits) automatically */
+/* --------------------------------------------------------- */
+/* 3. Section Headers & Layout                               */
+/* --------------------------------------------------------- */
 h2 {
     text-align: center;
     margin-top: 3rem;
     margin-bottom: 2rem;
-    font-weight: 700;
     font-weight: 800;
-    /* Made it slightly bolder */
     color: #1e3a8a;
-    /* <--- Your IBM-style Brand Blue */
-    /* Slate 800 */
 }
 
-
-/* 3. The Gray Section Box */
-/* MAKE SURE THE DOT IS HERE v */
+/* The Gray Zebra Striping Box */
 .section-gray {
     background-color: #f1f5f9;
     /* Slate 100 */
     border-radius: 0.5rem;
-    /* Rounded corners */
     margin-top: 3rem;
     margin-bottom: 3rem;
     width: 100%;
 }
 
-/* --- Footer Styling --- */
+/* --------------------------------------------------------- */
+/* 4. Footer Styling (UPDATED for Perfect Centering)         */
+/* --------------------------------------------------------- */
 .custom-footer {
     background-color: #1e293b;
-    /* Slate 800 (Dark Blue-Grey) */
+    /* Dark Blue-Grey */
     color: #f8fafc;
-    /* Slate 50 (Off-white) */
+    /* Off-white */
     padding: 4rem 1rem;
     text-align: center;
     margin-top: 4rem;
+
+    /* NEW: Force full width and reset margins */
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    box-sizing: border-box;
+}
+
+/* NEW: Force the inner content container to center explicitly */
+.custom-footer .container {
+    max-width: 1200px;
+    margin-left: auto !important;
+    margin-right: auto !important;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 100%;
 }
 
 .custom-footer h3 {
     color: #f8fafc;
     font-weight: 700;
     margin-bottom: 1rem;
+    /* NEW: Force text centering to override theme defaults */
+    text-align: center !important;
+    width: 100%;
+    display: block;
 }
 
 .custom-footer a {
@@ -118,7 +126,6 @@ h2 {
     text-decoration: none;
     transition: color 0.2s;
     margin: 0 1rem;
-    /* Spacing between links */
 }
 
 .custom-footer a:hover {
@@ -135,26 +142,22 @@ h2 {
     font-size: 1.1rem;
 }
 
-/* --- Force Zebra Striping on Listing Tables (Darker Version) --- */
-
-/* 1. Target the Listing Table specifically */
+/* --------------------------------------------------------- */
+/* 5. Listing Tables (Zebra Striping)                        */
+/* --------------------------------------------------------- */
 .quarto-listing table tbody tr:nth-of-type(odd)>* {
-    /* INCREASED OPACITY: 0.03 -> 0.08 */
+    /* Gray Background (via Box Shadow) */
     --bs-table-accent-bg: rgba(0, 0, 0, 0.08);
     box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg) !important;
     color: #1e293b !important;
-    /* Made text slightly darker (Slate 800) for contrast */
 }
 
-/* 2. Hover Effect */
 .quarto-listing table tbody tr:hover>* {
-    /* INCREASED OPACITY: 0.06 -> 0.12 */
+    /* Darker Gray on Hover */
     --bs-table-accent-bg: rgba(0, 0, 0, 0.12);
     box-shadow: inset 0 0 0 9999px var(--bs-table-accent-bg) !important;
 }
 
-/* 3. Clean Borders */
 .quarto-listing table tbody tr td {
     border-bottom: 1px solid #cbd5e1;
-    /* Slightly darker border line */
 }

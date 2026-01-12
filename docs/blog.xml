@@ -10,7 +10,619 @@
 <atom:link href="https://dikranmeliksetian.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Personal academic portfolio and research blog exploring Quantum Computing, Qiskit, and Software Architecture.</description>
 <generator>quarto-1.8.26</generator>
-<lastBuildDate>Tue, 02 Dec 2025 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Fri, 12 Dec 2025 05:00:00 GMT</lastBuildDate>
+<item>
+  <title>Closing the Loop: From Fixed Angles to Optimization</title>
+  <link>https://dikranmeliksetian.com/posts/quantum_diagonalization/04-closing-the-loop.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>In our <a href="../../posts/quantum_diagonalization/03-encoding-math-into-metal.html">last post</a>, we successfully calculated the value <img src="https://latex.codecogs.com/png.latex?v%5ET%20A%20v"> for a <em>specific</em> vector <img src="https://latex.codecogs.com/png.latex?v">. We manually rotated our qubits by specific angles (<img src="https://latex.codecogs.com/png.latex?%5Cpi/3"> and <img src="https://latex.codecogs.com/png.latex?%5Cpi/4">), ran the Estimator, and verified that the result matched our classical calculation.</p>
+<p>But in a real problem, we don’t know the answer ahead of time. We don’t know the specific angles that create the solution. We are searching for the <strong>minimum eigenvalue</strong> (<img src="https://latex.codecogs.com/png.latex?%5Clambda_0">) and its corresponding <strong>eigenvector</strong> (<img src="https://latex.codecogs.com/png.latex?x_0">).</p>
+<p>To find them, we must transition from a static calculation to a dynamic <strong>optimization loop</strong>.</p>
+<section id="the-hybrid-loop" class="level2">
+<h2 class="anchored" data-anchor-id="the-hybrid-loop">1. The Hybrid Loop</h2>
+<p>The quantum computer cannot “find” the minimum on its own. It is just a very expensive function evaluator. It takes a set of angles <img src="https://latex.codecogs.com/png.latex?%5Cvec%7B%5Ctheta%7D"> and returns a cost <img src="https://latex.codecogs.com/png.latex?E">. The logic for <em>how</em> to change <img src="https://latex.codecogs.com/png.latex?%5Cvec%7B%5Ctheta%7D"> to lower the cost lives on the classical computer.</p>
+<p>This creates a hybrid feedback loop:</p>
+<ol type="1">
+<li><strong>Classical CPU:</strong> Guesses a set of parameters <img src="https://latex.codecogs.com/png.latex?%5Cvec%7B%5Ctheta%7D"> (e.g., <img src="https://latex.codecogs.com/png.latex?%5B0,%200%5D">).</li>
+<li><strong>Quantum QPU (Estimator):</strong> Prepares the state <img src="https://latex.codecogs.com/png.latex?%7Cv(%5Cvec%7B%5Ctheta%7D)%5Crangle"> and measures the expectation value <img src="https://latex.codecogs.com/png.latex?E%20=%20%5Clangle%20v(%5Cvec%7B%5Ctheta%7D)%20%7C%20A%20%7C%20v(%5Cvec%7B%5Ctheta%7D)%20%5Crangle">.</li>
+<li><strong>Classical CPU:</strong> Looks at <img src="https://latex.codecogs.com/png.latex?E">. Is it lower than before?
+<ul>
+<li><em>Yes:</em> Move further in that direction.</li>
+<li><em>No:</em> Try a different direction.</li>
+</ul></li>
+<li><strong>Repeat</strong> until the value converges to the minimum.</li>
+</ol>
+</section>
+<section id="step-a-finding-the-minimum-eigenvalue" class="level2">
+<h2 class="anchored" data-anchor-id="step-a-finding-the-minimum-eigenvalue">2. Step A: Finding the Minimum Eigenvalue</h2>
+<p>Let’s make this concrete. We will use the <strong>exact same matrix</strong> from the previous post, but we will upgrade our circuit. Last time, we hard-coded <code>np.pi/3</code>. This time, we will insert a symbolic <strong>Parameter</strong> and let the optimizer find that value for us.</p>
+<p><strong>The Matrix (<img src="https://latex.codecogs.com/png.latex?A">):</strong> <img src="https://latex.codecogs.com/png.latex?A%20=%200.5%20(Z%20%5Cotimes%20Z)%20+%200.2%20(X%20%5Cotimes%20X)"></p>
+<div id="af246822" class="cell" data-execution_count="1">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> QuantumCircuit</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit.circuit <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> Parameter</span>
+<span id="cb1-4"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit.quantum_info <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> SparsePauliOp</span>
+<span id="cb1-5"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit.primitives <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> StatevectorEstimator</span>
+<span id="cb1-6"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> scipy.optimize <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> minimize</span>
+<span id="cb1-7"></span>
+<span id="cb1-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Define the Hamiltonian</span></span>
+<span id="cb1-9">hamiltonian <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> SparsePauliOp.from_list([(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"ZZ"</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>), (<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"XX"</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>)])</span>
+<span id="cb1-10"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Target Hamiltonian: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>hamiltonian<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Target Hamiltonian: SparsePauliOp(['ZZ', 'XX'],
+              coeffs=[0.5+0.j, 0.2+0.j])</code></pre>
+</div>
+</div>
+<section id="parameterizing-the-circuit" class="level3">
+<h3 class="anchored" data-anchor-id="parameterizing-the-circuit">Parameterizing the Circuit</h3>
+<p>In Qiskit, we use <code>Parameter</code> objects to create algebraic variables. These are the “knobs” our classical optimizer will turn.</p>
+<div id="06b1467f" class="cell" data-execution_count="2">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1. Define the Parameters</span></span>
+<span id="cb3-2">theta_0 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Parameter(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'θ0'</span>)</span>
+<span id="cb3-3">theta_1 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> Parameter(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'θ1'</span>)</span>
+<span id="cb3-4"></span>
+<span id="cb3-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2. Build the Circuit</span></span>
+<span id="cb3-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Instead of fixed angles, we use the parameters.</span></span>
+<span id="cb3-7">qc <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> QuantumCircuit(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)</span>
+<span id="cb3-8">qc.ry(theta_0, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>) </span>
+<span id="cb3-9">qc.ry(theta_1, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>)</span>
+<span id="cb3-10"></span>
+<span id="cb3-11"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Parameterized Circuit:"</span>)</span>
+<span id="cb3-12">display(qc.draw(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"mpl"</span>))</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Parameterized Circuit:</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://dikranmeliksetian.com/posts/quantum_diagonalization/04-closing-the-loop_files/figure-html/cell-3-output-2.png" width="170" height="168" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-cost-function" class="level3">
+<h3 class="anchored" data-anchor-id="the-cost-function">The Cost Function</h3>
+<p>We need a standard Python function that the optimizer can call. This function takes a list of numbers (the current values of <img src="https://latex.codecogs.com/png.latex?%5Cvec%7B%5Ctheta%7D">) and returns a single number (the eigenvalue estimate).</p>
+<div id="ec56a374" class="cell" data-execution_count="3">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">estimator <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> StatevectorEstimator()</span>
+<span id="cb5-2"></span>
+<span id="cb5-3"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> cost_function(params):</span>
+<span id="cb5-4">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">"""</span></span>
+<span id="cb5-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    Input: params = [val_0, val_1]</span></span>
+<span id="cb5-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    Output: Expectation Value &lt;v(params)|A|v(params)&gt;</span></span>
+<span id="cb5-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">    """</span></span>
+<span id="cb5-8">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Bind the numerical values to the circuit parameters</span></span>
+<span id="cb5-9">    pub <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (qc, hamiltonian, params)</span>
+<span id="cb5-10">    </span>
+<span id="cb5-11">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Run the job</span></span>
+<span id="cb5-12">    job <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> estimator.run([pub])</span>
+<span id="cb5-13">    result <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> job.result()[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb5-14">    </span>
+<span id="cb5-15">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Return the scalar float</span></span>
+<span id="cb5-16">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># We explicitly cast to float to avoid numpy array issues in scipy</span></span>
+<span id="cb5-17">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>(result.data.evs)</span>
+<span id="cb5-18"></span>
+<span id="cb5-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Test it with a random guess to make sure it works</span></span>
+<span id="cb5-20">test_guess <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>]</span>
+<span id="cb5-21"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Value at [0,0]: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>cost_function(test_guess)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.4f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Value at [0,0]: 0.5000</code></pre>
+</div>
+</div>
+</section>
+<section id="running-the-optimization" class="level3">
+<h3 class="anchored" data-anchor-id="running-the-optimization">Running the Optimization</h3>
+<p>We use <code>scipy.optimize.minimize</code> with the <strong>COBYLA</strong> method. This is a “gradient-free” optimizer, often used in quantum computing because it handles noise better than standard gradient descent.</p>
+<div id="259fdc92" class="cell" data-execution_count="4">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1. Initial Guess</span></span>
+<span id="cb7-2">initial_guess <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.0</span>]</span>
+<span id="cb7-3"></span>
+<span id="cb7-4"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Starting Optimization..."</span>)</span>
+<span id="cb7-5"></span>
+<span id="cb7-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2. The Minimization Routine</span></span>
+<span id="cb7-7">result <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> minimize(cost_function, initial_guess, method<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'COBYLA'</span>)</span>
+<span id="cb7-8"></span>
+<span id="cb7-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 3. The Output</span></span>
+<span id="cb7-10">optimal_angles <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> result.x</span>
+<span id="cb7-11">min_eigenvalue <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> result.fun</span>
+<span id="cb7-12"></span>
+<span id="cb7-13"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">Optimization Complete!"</span>)</span>
+<span id="cb7-14"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Optimal Angles found: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>optimal_angles<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb7-15"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Minimum Eigenvalue found: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>min_eigenvalue<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.6f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Starting Optimization...
+
+Optimization Complete!
+Optimal Angles found: [3.14157719e+00 8.62918814e-05]
+Minimum Eigenvalue found: -0.500000</code></pre>
+</div>
+</div>
+<p>Success! The optimizer automatically found the angles that produce the minimum eigenvalue.</p>
+</section>
+</section>
+<section id="step-b-retrieving-the-eigenvector" class="level2">
+<h2 class="anchored" data-anchor-id="step-b-retrieving-the-eigenvector">3. Step B: Retrieving the Eigenvector</h2>
+<p>We have found the minimum eigenvalue (<img src="https://latex.codecogs.com/png.latex?%5Clambda_0">), but in many applications (like data science or chemistry), we also need the <strong>eigenvector</strong> itself (<img src="https://latex.codecogs.com/png.latex?x_0">).</p>
+<p>The <strong>Estimator</strong> only gives us the energy. To see the vector structure, we use the <strong>Sampler</strong>. The Sampler gives us the probability (<img src="https://latex.codecogs.com/png.latex?P">) of measuring each state. Since <img src="https://latex.codecogs.com/png.latex?P%20=%20%7C%5Cpsi%7C%5E2">, we can reconstruct the magnitude of the state vector.</p>
+<p><em>Note: The Sampler recovers the magnitude, but not the relative phases (signs). For that, we would need more complex tomography. For now, we compare the probability distributions.</em></p>
+<div id="44ec2a2c" class="cell" data-execution_count="5">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit.primitives <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> StatevectorSampler</span>
+<span id="cb9-2"></span>
+<span id="cb9-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1. Prepare the Circuit for Sampling</span></span>
+<span id="cb9-4">qc_sampled <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> qc.copy()</span>
+<span id="cb9-5">qc_sampled.measure_all()</span>
+<span id="cb9-6"></span>
+<span id="cb9-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2. Run the Sampler using the OPTIMAL angles</span></span>
+<span id="cb9-8">sampler <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> StatevectorSampler()</span>
+<span id="cb9-9">job_sampler <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> sampler.run([(qc_sampled, optimal_angles)])</span>
+<span id="cb9-10">result_sampler <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> job_sampler.result()[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb9-11"></span>
+<span id="cb9-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 3. Reconstruct the Vector</span></span>
+<span id="cb9-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Get counts and convert to probabilities</span></span>
+<span id="cb9-14">counts <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> result_sampler.data.meas.get_counts()</span>
+<span id="cb9-15">total_shots <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sum</span>(counts.values())</span>
+<span id="cb9-16"></span>
+<span id="cb9-17"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># We strictly order the states: |00&gt;, |01&gt;, |10&gt;, |11&gt;</span></span>
+<span id="cb9-18">states <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'00'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'01'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'10'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'11'</span>]</span>
+<span id="cb9-19"></span>
+<span id="cb9-20"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Calculate Probabilities</span></span>
+<span id="cb9-21">probs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([counts.get(s, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">/</span> total_shots <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> s <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> states])</span>
+<span id="cb9-22"></span>
+<span id="cb9-23"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Calculate Amplitudes (Sqrt of probability)</span></span>
+<span id="cb9-24">quantum_vector <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.sqrt(probs)</span>
+<span id="cb9-25"></span>
+<span id="cb9-26"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Reconstructed Quantum Eigenvector:"</span>)</span>
+<span id="cb9-27"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(quantum_vector)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Reconstructed Quantum Eigenvector:
+[0. 1. 0. 0.]</code></pre>
+</div>
+</div>
+</section>
+<section id="the-reality-check-did-we-fail" class="level2">
+<h2 class="anchored" data-anchor-id="the-reality-check-did-we-fail">4. The Reality Check: Did we fail?</h2>
+<p>We have an answer. The optimization loop converged successfully. But is it the <em>correct</em> answer?</p>
+<p>Let’s verify this using standard linear algebra tools like <code>numpy</code>. We will construct the matrix <img src="https://latex.codecogs.com/png.latex?A"> explicitly, diagonalize it, and find the true eigenvector.</p>
+<div id="57e74919" class="cell" data-execution_count="6">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1. Construct the Matrix A Classically</span></span>
+<span id="cb11-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># A = 0.5*ZZ + 0.2*XX</span></span>
+<span id="cb11-3">matrix_A <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([</span>
+<span id="cb11-4">    [<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,   <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,   <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>],</span>
+<span id="cb11-5">    [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,  <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>  ],</span>
+<span id="cb11-6">    [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,   <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>,<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>  ],</span>
+<span id="cb11-7">    [<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,   <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>,   <span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>]</span>
+<span id="cb11-8">])</span>
+<span id="cb11-9"></span>
+<span id="cb11-10"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2. Calculate Eigenvalues and Eigenvectors</span></span>
+<span id="cb11-11">eigenvals, eigenvecs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.linalg.eigh(matrix_A)</span>
+<span id="cb11-12"></span>
+<span id="cb11-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 3. Extract the Minimum</span></span>
+<span id="cb11-14">true_eigenvalue <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> eigenvals[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb11-15">true_eigenvector <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> eigenvecs[:, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>]</span>
+<span id="cb11-16"></span>
+<span id="cb11-17"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 4. Take absolute value for comparison (ignoring phase signs)</span></span>
+<span id="cb11-18">true_vector_abs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">abs</span>(true_eigenvector)</span>
+<span id="cb11-19"></span>
+<span id="cb11-20"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"True Minimum Eigenvalue: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>true_eigenvalue<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.6f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb11-21"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"True Eigenvector (Abs):  </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>true_vector_abs<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb11-22"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"-"</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">30</span>)</span>
+<span id="cb11-23"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Quantum Value Found:     </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>min_eigenvalue<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.6f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb11-24"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Quantum Vector Distance: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>np<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>linalg<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>norm(quantum_vector <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> true_vector_abs)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.6f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>True Minimum Eigenvalue: -0.700000
+True Eigenvector (Abs):  [0.         0.70710678 0.70710678 0.        ]
+------------------------------
+Quantum Value Found:     -0.500000
+Quantum Vector Distance: 0.765367</code></pre>
+</div>
+</div>
+<section id="the-discrepancy" class="level3">
+<h3 class="anchored" data-anchor-id="the-discrepancy">The Discrepancy</h3>
+<p>Look at the results above. 1. <strong>The Value:</strong> The quantum result is significantly higher than the true minimum. 2. <strong>The Vector:</strong> The distance is large (likely <img src="https://latex.codecogs.com/png.latex?%3E0.7">).</p>
+<p>The code worked perfectly. The optimizer did its job. Yet, we failed to find the ground state. <strong>Why?</strong></p>
+<p>The answer lies in the <strong>Ansatz</strong> (the circuit structure). We constructed our circuit using only independent rotations (<code>RY</code> on qubit 0, <code>RY</code> on qubit 1).</p>
+<p><img src="https://latex.codecogs.com/png.latex?%7C%5Cpsi%5Crangle%20=%20(a%7C0%5Crangle%20+%20b%7C1%5Crangle)%20%5Cotimes%20(c%7C0%5Crangle%20+%20d%7C1%5Crangle)"></p>
+<p>The classical calculation reveals that the true ground state is a <strong>Bell State</strong> approximation—a <strong>maximally entangled</strong> state where the qubits are correlated.</p>
+<p>Mathematically, a tensor product of single qubits (which is all our current circuit can produce) can <strong>never</strong> create an entangled state. We tried to fit a round peg (an entangled ground state) into a square hole (a product-state circuit).</p>
+<p>No matter how long we run the optimizer, we will never reach the true minimum because it physically does not exist in the search space of our current circuit.</p>
+<p><strong>Next Steps:</strong> We have the Engine (VQE loop), but we need better Fuel. In the next post, we will break the “Product State Barrier” by introducing <strong>Entanglement</strong> and designing a <strong>Hardware Efficient Ansatz</strong>.</p>
+
+
+</section>
+</section>
+
+ ]]></description>
+  <category>Quantum Computing</category>
+  <category>VQE</category>
+  <category>Optimization</category>
+  <guid>https://dikranmeliksetian.com/posts/quantum_diagonalization/04-closing-the-loop.html</guid>
+  <pubDate>Fri, 12 Dec 2025 05:00:00 GMT</pubDate>
+  <media:content url="https://dikranmeliksetian.com/posts/quantum_diagonalization/img/landscape_optimization.png" medium="image" type="image/png"/>
+</item>
 <item>
   <title>Encoding Math into Metal: Representing Vectors and Matrices on a QPU</title>
   <link>https://dikranmeliksetian.com/posts/quantum_diagonalization/03-encoding-math-into-metal.html</link>

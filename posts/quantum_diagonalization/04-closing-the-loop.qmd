@@ -12,7 +12,7 @@ execute:
   freeze: false
   keep-ipynb: true
 jupyter: quantum
-draft: true
+draft: false
 ---
 
 In our [last post](./03-encoding-math-into-metal.qmd), we successfully calculated the value $v^T A v$ for a *specific* vector $v$. We manually rotated our qubits by specific angles ($\pi/3$ and $\pi/4$), ran the Estimator, and verified that the result matched our classical calculation.
@@ -36,8 +36,7 @@ This creates a hybrid feedback loop:
 
 ## 2. Step A: Finding the Minimum Eigenvalue
 
-Let's make this concrete. We will use the **exact same matrix and circuit** from the previous post.
-The only difference: Last time, we hard-coded `np.pi/3`. This time, we will insert a symbolic **Parameter** and let the optimizer find that value for us.
+Let's make this concrete. We will use the **exact same matrix** from the previous post, but we will upgrade our circuit. Last time, we hard-coded `np.pi/3`. This time, we will insert a symbolic **Parameter** and let the optimizer find that value for us.
 
 **The Matrix ($A$):**
 $$A = 0.5 (Z \otimes Z) + 0.2 (X \otimes X)$$
@@ -56,11 +55,10 @@ print(f"Target Hamiltonian: {hamiltonian}")
 ```
 
 ### Parameterizing the Circuit
-In Qiskit, we use `Parameter` objects to create algebraic variables.
+In Qiskit, we use `Parameter` objects to create algebraic variables. These are the "knobs" our classical optimizer will turn.
 
 ```{python}
 # 1. Define the Parameters
-# These are the "knobs" our classical optimizer will turn.
 theta_0 = Parameter('θ0')
 theta_1 = Parameter('θ1')
 
@@ -93,6 +91,7 @@ def cost_function(params):
     result = job.result()[0]
     
     # Return the scalar float
+    # We explicitly cast to float to avoid numpy array issues in scipy
     return float(result.data.evs)
 
 # Test it with a random guess to make sure it works
@@ -127,8 +126,9 @@ Success! The optimizer automatically found the angles that produce the minimum e
 
 We have found the minimum eigenvalue ($\lambda_0$), but in many applications (like data science or chemistry), we also need the **eigenvector** itself ($x_0$).
 
-The **Estimator** only gives us the energy. To see the vector structure, we use the **Sampler**.
-The Sampler gives us the probability ($P$) of measuring each state. Since $P = |amplitude|^2$, we can reconstruct the magnitude of the state vector.
+The **Estimator** only gives us the energy. To see the vector structure, we use the **Sampler**. The Sampler gives us the probability ($P$) of measuring each state. Since $P = |\psi|^2$, we can reconstruct the magnitude of the state vector.
+
+*Note: The Sampler recovers the magnitude, but not the relative phases (signs). For that, we would need more complex tomography. For now, we compare the probability distributions.*
 
 ```{python}
 from qiskit.primitives import StatevectorSampler
@@ -160,16 +160,15 @@ print("Reconstructed Quantum Eigenvector:")
 print(quantum_vector)
 ```
 
-### The Moment of Truth: Comparing with Classical Calculation
-Did the quantum computer find the correct vector? We can verify this using standard linear algebra tools like `numpy`.
+## 4. The Reality Check: Did we fail?
 
-We will construct the matrix $A$ explicitly, diagonalize it, and find the true eigenvector.
+We have an answer. The optimization loop converged successfully. But is it the *correct* answer?
+
+Let's verify this using standard linear algebra tools like `numpy`. We will construct the matrix $A$ explicitly, diagonalize it, and find the true eigenvector.
 
 ```{python}
 # 1. Construct the Matrix A Classically
 # A = 0.5*ZZ + 0.2*XX
-# ZZ = diag(1, -1, -1, 1)
-# XX = anti-diag(1, 1, 1, 1)
 matrix_A = np.array([
     [0.5, 0,   0,   0.2],
     [0,  -0.5, 0.2, 0  ],
@@ -181,8 +180,6 @@ matrix_A = np.array([
 eigenvals, eigenvecs = np.linalg.eigh(matrix_A)
 
 # 3. Extract the Minimum
-# The true ground state for this matrix is roughly [0, 0.707, -0.707, 0]
-# This corresponds to the entangled Bell State (|01> - |10>)/sqrt(2)
 true_eigenvalue = eigenvals[0]
 true_eigenvector = eigenvecs[:, 0]
 
@@ -190,135 +187,28 @@ true_eigenvector = eigenvecs[:, 0]
 true_vector_abs = np.abs(true_eigenvector)
 
 print(f"True Minimum Eigenvalue: {true_eigenvalue:.6f}")
-print(f"True Eigenvector:        {true_vector_abs}")
+print(f"True Eigenvector (Abs):  {true_vector_abs}")
 print("-" * 30)
+print(f"Quantum Value Found:     {min_eigenvalue:.6f}")
 print(f"Quantum Vector Distance: {np.linalg.norm(quantum_vector - true_vector_abs):.6f}")
 ```
 
-### The Discrepancy: Why didn't it match?
-Notice the result above. The **Quantum Vector Distance** is not zero. It is likely quite large (around `0.76`).
+### The Discrepancy
 
-The classical calculation reveals that the true ground state is the **Bell State** $\frac{1}{\sqrt{2}}(|01\rangle - |10\rangle)$. This is a **maximally entangled** state.
+Look at the results above.
+1.  **The Value:** The quantum result is significantly higher than the true minimum.
+2.  **The Vector:** The distance is large (likely $>0.7$).
 
-**Our Ansatz failed.**
-We constructed our circuit using only independent rotations (`RY` on qubit 0, `RY` on qubit 1).
-$$ |\psi\rangle = (a|0\rangle + b|1\rangle) \otimes (c|0\rangle + d|1\rangle) $$
-Mathematically, a tensor product of single qubits can **never** create an entangled state. No matter how much the classical optimizer tuned the angles $\theta_0, \theta_1$, the quantum computer was physically incapable of reaching the solution. It got stuck in the "best possible product state" (likely just $|01\rangle$ or $|10\rangle$), but could not reach the true minimum.
+The code worked perfectly. The optimizer did its job. Yet, we failed to find the ground state. **Why?**
 
-## 4. The Fix: Adding Entanglement
+The answer lies in the **Ansatz** (the circuit structure). We constructed our circuit using only independent rotations (`RY` on qubit 0, `RY` on qubit 1).
 
-The failure above wasn't an issue with the optimizer; it was an issue with the *Ansatz*. We tried to fit a round peg (an entangled ground state) into a square hole (a product-state circuit).
+$$|\psi\rangle = (a|0\rangle + b|1\rangle) \otimes (c|0\rangle + d|1\rangle)$$
 
-To fix this, we need to allow the qubits to talk to each other. We do this by adding a **CNOT (CX)** gate after the rotations. This transforms our circuit from a simple tensor product into a state where the value of qubit 1 depends on qubit 0.
+The classical calculation reveals that the true ground state is a **Bell State** approximation—a **maximally entangled** state where the qubits are correlated.
 
-### Step C: The Entangled Ansatz
+Mathematically, a tensor product of single qubits (which is all our current circuit can produce) can **never** create an entangled state. We tried to fit a round peg (an entangled ground state) into a square hole (a product-state circuit).
 
-Let's rebuild the circuit, this time appending a `cx(0, 1)` gate.
+No matter how long we run the optimizer, we will never reach the true minimum because it physically does not exist in the search space of our current circuit.
 
-```{python}
-# 1. Define Parameters (Same as before)
-theta_0 = Parameter('θ0')
-theta_1 = Parameter('θ1')
-
-# 2. Build the Entangled Ansatz
-# RY rotations followed by a CNOT entangler
-qc_entangled = QuantumCircuit(2)
-qc_entangled.ry(theta_0, 0)
-qc_entangled.ry(theta_1, 1)
-qc_entangled.cx(0, 1)  # <--- The magic ingredient
-
-print("Entangled Ansatz:")
-display(qc_entangled.draw("mpl"))
-```
-
-### Running the Optimization Again
-We use the exact same Hamiltonian ($A$) and the exact same optimizer (COBYLA). The only thing changing is the circuit `qc_entangled`.
-
-```{python}
-# Define a new cost function using the entangled circuit
-def cost_function_entangled(params):
-    # Bind parameters to the NEW circuit
-    pub = (qc_entangled, hamiltonian, params)
-    job = estimator.run([pub])
-    result = job.result()[0]
-    return float(result.data.evs)
-
-# Run Optimization
-initial_guess = [0.0, 0.0]
-result_entangled = minimize(cost_function_entangled, initial_guess, method='COBYLA')
-
-optimal_angles_entangled = result_entangled.x
-min_eigenvalue_entangled = result_entangled.fun
-
-print(f"Optimization Complete (Entangled)!")
-print(f"Minimum Eigenvalue found: {min_eigenvalue_entangled:.6f}")
-print(f"Classical Truth (from Step 3): {true_eigenvalue:.6f}")
-```
-
-**The Result:**
-With just one added gate, the optimizer should now find a value much closer to the true minimum (approx `-0.70`). The CNOT gate opened up the "Entangled Subspace" of the Hilbert space, allowing the optimizer to access the Bell State solution that was previously impossible to reach. Let us check the correponding eigenvector:
-
-```{python}
-from qiskit.primitives import StatevectorSampler
-
-# 1. Prepare the Circuit for Sampling
-qc_entangled_sampled = qc_entangled.copy()
-qc_entangled_sampled.measure_all()
-
-# 2. Run the Sampler using the OPTIMAL angles
-sampler = StatevectorSampler()
-job_sampler = sampler.run([(qc_entangled_sampled, optimal_angles_entangled)])
-result_sampler = job_sampler.result()[0]
-
-# 3. Reconstruct the Vector
-# Get counts and convert to probabilities
-counts = result_sampler.data.meas.get_counts()
-total_shots = sum(counts.values())
-
-# We strictly order the states: |00>, |01>, |10>, |11>
-states = ['00', '01', '10', '11']
-
-# Calculate Probabilities
-probs = np.array([counts.get(s, 0) / total_shots for s in states])
-
-# Calculate Amplitudes (Sqrt of probability)
-quantum_vector = np.sqrt(probs)
-
-print("Reconstructed Quantum Eigenvector:")
-print(quantum_vector)
-print(f"Quantum Vector Distance: {np.linalg.norm(quantum_vector - true_vector_abs):.6f}")
-```
-
-## 5. The Complications: Why We Can't "Just Scale Up"
-
-In this example, adding one gate solved everything. But what if we have 50 qubits?
-
-It seems obvious: just add rotations and CNOTs everywhere, right? Not quite. This brings us to the theoretical wall of Variational Quantum Algorithms.
-
-To uniquely define an arbitrary quantum state of $N$ qubits, the number of independent real parameters required is:
-$$\text{Parameters} = 2(2^N) - 2$$
-
-### The Reality Check: N = 50
-Let's look at the numbers for a useful quantum computer:
-* **Dimension:** $2^{50} \approx 10^{15}$ (1 Quadrillion states).
-* **Parameters Needed:** $\approx 2 \times 10^{15}$.
-
-If we tried to build a "universal" circuit with 1 quadrillion parameters, two things would happen:
-1.  **The Quantum Wall:** The circuit would be so deep that noise would destroy the state before we finished preparing it.
-2.  **The Classical Wall (Barren Plateaus):** Even with a perfect quantum computer, a classical optimizer cannot handle $10^{15}$ variables. In such a high-dimensional space, the energy landscape becomes essentially flat. The gradient vanishes, and the optimizer gets stuck, having no idea which direction leads "down."
-
-## 6. The Solution: The Ansatz
-
-This is why we cannot simply "parameterize everything." We must be selective.
-
-We cannot search the entire Hilbert space. We must choose a specific **subspace** where we suspect the answer lies. We define a fixed circuit structure—called an **Ansatz** (German for "approach")—that uses a manageable number of parameters (e.g., $N^2$ or even $N$).
-
-$$
-|v(\vec{\theta})\rangle = U_{\text{Ansatz}}(\vec{\theta}) |0\dots0\rangle
-$$
-
-The "Art" of VQE is designing an Ansatz that is:
-1.  **Expressive enough** to capture the physics of the problem (as we saw with the CNOT).
-2.  **Simple enough** to be optimized on real hardware.
-
-**Next Steps:** In the next post, we will compare different Ansatz strategies—specifically **Hardware Efficient** circuits vs. **Chemically Inspired** ones (like UCCSD)—to see how we balance accuracy with complexity.
+**Next Steps:** We have the Engine (VQE loop), but we need better Fuel. In the next post, we will break the "Product State Barrier" by introducing **Entanglement** and designing a **Hardware Efficient Ansatz**.
