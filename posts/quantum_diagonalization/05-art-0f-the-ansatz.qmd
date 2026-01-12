@@ -12,7 +12,7 @@ execute:
   freeze: false
   keep-ipynb: true
 jupyter: quantum
-draft: true
+draft: false
 ---
 
 In our **[previous post](./04-closing-the-loop.qmd)**, we built a hybrid optimization loop that successfully minimized the energy of our quantum circuit. However, when we compared our result to the classical truth, we hit a snag.
