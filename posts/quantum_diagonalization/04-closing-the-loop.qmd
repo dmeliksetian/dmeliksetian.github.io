@@ -2,7 +2,7 @@
 title: "Closing the Loop: From Fixed Angles to Optimization"
 date: 2025-12-12
 categories: [Quantum Computing, VQE, Optimization]
-image: img/landscape_optimization.png
+image: img/image_0.png
 description: "Turning constants into variables: How to build a parameterized quantum circuit and use classical optimization to find the minimum eigenvalue and eigenvector."
 format:
   html:
