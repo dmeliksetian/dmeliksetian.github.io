@@ -188,11 +188,11 @@ window.Quarto = {
 <link rel="stylesheet" href="../../styles.css">
 <meta property="og:title" content="The Art of the Ansatz: Entanglement and the Hilbert Space Wall – Dikran Meliksetian, Ph.D.">
 <meta property="og:description" content="Why our previous circuit failed, how adding a CNOT gate fixes it, and why even that isn’t enough for every matrix.">
-<meta property="og:image" content="https://dikranmeliksetian.com/posts/quantum_diagonalization/img/entanglement_optimization.png">
+<meta property="og:image" content="https://dikranmeliksetian.com/posts/quantum_diagonalization/img/image0.png">
 <meta property="og:site_name" content="Dikran Meliksetian, Ph.D.">
 <meta name="twitter:title" content="The Art of the Ansatz: Entanglement and the Hilbert Space Wall – Dikran Meliksetian, Ph.D.">
 <meta name="twitter:description" content="Why our previous circuit failed, how adding a CNOT gate fixes it, and why even that isn’t enough for every matrix.">
-<meta name="twitter:image" content="https://dikranmeliksetian.com/posts/quantum_diagonalization/img/entanglement_optimization.png">
+<meta name="twitter:image" content="https://dikranmeliksetian.com/posts/quantum_diagonalization/img/image0.png">
 <meta name="twitter:card" content="summary_large_image">
 </head>
 
@@ -351,7 +351,7 @@ window.Quarto = {
 <section id="implementing-the-entangled-ansatz" class="level3">
 <h3 class="anchored" data-anchor-id="implementing-the-entangled-ansatz">Implementing the Entangled Ansatz</h3>
 <p>Let’s rebuild the circuit, this time appending a <code>cx(0, 1)</code> gate.</p>
-<div id="9ffd3bab" class="cell" data-execution_count="1">
+<div id="e63b88cd" class="cell" data-execution_count="1">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -394,7 +394,7 @@ window.Quarto = {
 <section id="running-the-optimization-again" class="level3">
 <h3 class="anchored" data-anchor-id="running-the-optimization-again">Running the Optimization Again</h3>
 <p>We use the exact same Hamiltonian (<span class="math inline">\(A\)</span>) and the exact same optimizer (COBYLA). The only thing changing is the circuit <code>qc_entangled</code>.</p>
-<div id="6ab6264d" class="cell" data-execution_count="2">
+<div id="7a0c5c73" class="cell" data-execution_count="2">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Define a new cost function using the entangled circuit</span></span>
@@ -433,7 +433,7 @@ Classical Truth:          -0.700000</code></pre>
 <section id="verifying-the-eigenvector" class="level2">
 <h2 class="anchored" data-anchor-id="verifying-the-eigenvector">2. Verifying the Eigenvector</h2>
 <p>The energy looks correct, but we must verify the state itself. Did we actually produce the Bell State? We will use the <code>StatevectorSampler</code> to reconstruct the vector magnitudes from the probabilities and compare it to the known truth.</p>
-<div id="ef54f3e8" class="cell" data-execution_count="3">
+<div id="14caa163" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qiskit.primitives <span class="im">import</span> StatevectorSampler</span>
@@ -472,9 +472,9 @@ Classical Truth:          -0.700000</code></pre>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reconstructed Quantum Eigenvector:
-[0.         0.6973723  0.71670906 0.        ]
+[0.         0.72685646 0.68678941 0.        ]
 ------------------------------
-Quantum Vector Distance: 0.013673</code></pre>
+Quantum Vector Distance: 0.028335</code></pre>
 </div>
 </div>
 <p>Excellent! The distance is now extremely close to zero. By adding the CNOT gate, our Ansatz was able to capture the entanglement required by the solution.</p>
@@ -488,7 +488,7 @@ Quantum Vector Distance: 0.013673</code></pre>
 <p>We will construct a matrix where the ground state is the vector <span class="math inline">\(v = \frac{1}{\sqrt{3}}(|00\rangle + |01\rangle + |10\rangle)\)</span>. Notice that the last component (<span class="math inline">\(|11\rangle\)</span>) is exactly zero.</p>
 <p>Mathematically, our current Ansatz (Rotation <span class="math inline">\(\to\)</span> CNOT) forces a specific relationship between the amplitudes: <span class="math inline">\(v_{00} \cdot v_{11} = v_{01} \cdot v_{10}\)</span>. For our target vector, <span class="math inline">\(1 \cdot 0 \neq 1 \cdot 1\)</span>. This vector is mathematically impossible for our current circuit to generate.</p>
 <p>Let’s see the optimizer fail in real-time.</p>
-<div id="d4f9db06" class="cell" data-execution_count="4">
+<div id="08a93eb3" class="cell" data-execution_count="4">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Define the "Unsolvable" Hamiltonian</span></span>
@@ -547,7 +547,7 @@ Error (Gap):             0.1273</code></pre>
 <h3 class="anchored" data-anchor-id="introducing-the-controlled-ry">Introducing the Controlled-RY</h3>
 <p>Instead of a fixed <code>CNOT</code> (which has 0 parameters), we can conceptually use a parameterized <strong>Controlled-Rotation (<span class="math inline">\(CR_Y\)</span>)</strong>.</p>
 <p>This gate rotates the second qubit by an angle <span class="math inline">\(\theta_2\)</span> <em>only if</em> the first qubit is 1. This gives us independent control over the “top half” (<span class="math inline">\(|00\rangle, |01\rangle\)</span>) and “bottom half” (<span class="math inline">\(|10\rangle, |11\rangle\)</span>) of the vector, unlocking the 3rd degree of freedom.</p>
-<div id="c0540e33" class="cell" data-execution_count="5">
+<div id="10a8affa" class="cell" data-execution_count="5">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Define 3 Parameters</span></span>

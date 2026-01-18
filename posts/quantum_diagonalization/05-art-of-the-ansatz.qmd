@@ -2,7 +2,7 @@
 title: "The Art of the Ansatz: Entanglement and the Hilbert Space Wall"
 date: 2025-12-19
 categories: [Quantum Computing, VQE, Ansatz]
-image: img/entanglement_optimization.png
+image: img/image0.png
 description: "Why our previous circuit failed, how adding a CNOT gate fixes it, and why even that isn't enough for every matrix."
 format:
   html:

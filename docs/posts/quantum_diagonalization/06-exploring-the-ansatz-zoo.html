@@ -347,7 +347,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="the-road-less-traveled-a-3-local-example">The Road Less Traveled: A 3-Local Example</h3>
 <p>Most standard ansatzes are <strong>2-local</strong> (using pairs of qubits). But to understand why, let’s try to build a <strong>3-local</strong> circuit.</p>
 <p>We could use a 3-qubit gate, like the <strong>Toffoli (CCX)</strong>, as our entangler.</p>
-<div id="b6f106f7" class="cell" data-execution_count="1">
+<div id="d6b08b1e" class="cell" data-execution_count="1">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qiskit.circuit.library <span class="im">import</span> n_local</span>
@@ -399,7 +399,7 @@ window.Quarto = {
 <li><p><strong>Best for:</strong> Problems with complex eigenvectors (e.g., non-Hermitian matrices, dynamics).</p></li>
 <li><p><strong>Structure:</strong> <span class="math inline">\(R_Y \to R_Z \to \text{CNOT}\)</span>.</p></li>
 </ul>
-<div id="c7b063e5" class="cell" data-execution_count="2">
+<div id="bb3142da" class="cell" data-execution_count="2">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qiskit.circuit.library <span class="im">import</span> efficient_su2</span>
@@ -437,7 +437,7 @@ window.Quarto = {
 <li><p><strong>Best for:</strong> Hamiltonian ground states, Machine Learning kernels, Real Symmetric matrices.</p></li>
 <li><p><strong>Structure:</strong> <span class="math inline">\(R_Y \to \text{CNOT}\)</span>.</p></li>
 </ul>
-<div id="432abb07" class="cell" data-execution_count="3">
+<div id="f85f792c" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qiskit.circuit.library <span class="im">import</span> real_amplitudes</span>
