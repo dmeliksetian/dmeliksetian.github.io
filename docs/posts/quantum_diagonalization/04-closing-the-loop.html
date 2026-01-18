@@ -356,7 +356,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="step-a-finding-the-minimum-eigenvalue">2. Step A: Finding the Minimum Eigenvalue</h2>
 <p>Let’s make this concrete. We will use the <strong>exact same matrix</strong> from the previous post, but we will upgrade our circuit. Last time, we hard-coded <code>np.pi/3</code>. This time, we will insert a symbolic <strong>Parameter</strong> and let the optimizer find that value for us.</p>
 <p><strong>The Matrix (<span class="math inline">\(A\)</span>):</strong> <span class="math display">\[A = 0.5 (Z \otimes Z) + 0.2 (X \otimes X)\]</span></p>
-<div id="bec57096" class="cell" data-execution_count="1">
+<div id="55e4f02a" class="cell" data-execution_count="1">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -378,7 +378,7 @@ window.Quarto = {
 <section id="parameterizing-the-circuit" class="level3">
 <h3 class="anchored" data-anchor-id="parameterizing-the-circuit">Parameterizing the Circuit</h3>
 <p>In Qiskit, we use <code>Parameter</code> objects to create algebraic variables. These are the “knobs” our classical optimizer will turn.</p>
-<div id="35f72a8b" class="cell" data-execution_count="2">
+<div id="9dcf2bca" class="cell" data-execution_count="2">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Define the Parameters</span></span>
@@ -409,7 +409,7 @@ window.Quarto = {
 <section id="the-cost-function" class="level3">
 <h3 class="anchored" data-anchor-id="the-cost-function">The Cost Function</h3>
 <p>We need a standard Python function that the optimizer can call. This function takes a list of numbers (the current values of <span class="math inline">\(\vec{\theta}\)</span>) and returns a single number (the eigenvalue estimate).</p>
-<div id="7089350e" class="cell" data-execution_count="3">
+<div id="ac50c49c" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>estimator <span class="op">=</span> StatevectorEstimator()</span>
@@ -442,7 +442,7 @@ window.Quarto = {
 <section id="running-the-optimization" class="level3">
 <h3 class="anchored" data-anchor-id="running-the-optimization">Running the Optimization</h3>
 <p>We use <code>scipy.optimize.minimize</code> with the <strong>COBYLA</strong> method. This is a “gradient-free” optimizer, often used in quantum computing because it handles noise better than standard gradient descent.</p>
-<div id="a494685f" class="cell" data-execution_count="4">
+<div id="d1c675a5" class="cell" data-execution_count="4">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Initial Guess</span></span>
@@ -477,7 +477,7 @@ Minimum Eigenvalue found: -0.500000</code></pre>
 <p>We have found the minimum eigenvalue (<span class="math inline">\(\lambda_0\)</span>), but in many applications (like data science or chemistry), we also need the <strong>eigenvector</strong> itself (<span class="math inline">\(x_0\)</span>).</p>
 <p>The <strong>Estimator</strong> only gives us the energy. To see the vector structure, we use the <strong>Sampler</strong>. The Sampler gives us the probability (<span class="math inline">\(P\)</span>) of measuring each state. Since <span class="math inline">\(P = |\psi|^2\)</span>, we can reconstruct the magnitude of the state vector.</p>
 <p><em>Note: The Sampler recovers the magnitude, but not the relative phases (signs). For that, we would need more complex tomography. For now, we compare the probability distributions.</em></p>
-<div id="7b255f2e" class="cell" data-execution_count="5">
+<div id="36c98ae2" class="cell" data-execution_count="5">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> qiskit.primitives <span class="im">import</span> StatevectorSampler</span>
@@ -518,7 +518,7 @@ Minimum Eigenvalue found: -0.500000</code></pre>
 <h2 class="anchored" data-anchor-id="the-reality-check-did-we-fail">4. The Reality Check: Did we fail?</h2>
 <p>We have an answer. The optimization loop converged successfully. But is it the <em>correct</em> answer?</p>
 <p>Let’s verify this using standard linear algebra tools like <code>numpy</code>. We will construct the matrix <span class="math inline">\(A\)</span> explicitly, diagonalize it, and find the true eigenvector.</p>
-<div id="ed1ba238" class="cell" data-execution_count="6">
+<div id="123ebfd6" class="cell" data-execution_count="6">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 1. Construct the Matrix A Classically</span></span>

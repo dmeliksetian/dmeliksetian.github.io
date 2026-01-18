@@ -10,10 +10,341 @@
 <atom:link href="https://dikranmeliksetian.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Personal academic portfolio and research blog exploring Quantum Computing, Qiskit, and Software Architecture.</description>
 <generator>quarto-1.8.26</generator>
-<lastBuildDate>Fri, 19 Dec 2025 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sun, 18 Jan 2026 05:00:00 GMT</lastBuildDate>
+<item>
+  <title>Exploring the Ansatz Zoo: Heuristics and the Parameter Gap</title>
+  <link>https://dikranmeliksetian.com/posts/quantum_diagonalization/06-exploring-the-ansatz-zoo.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>In our <strong><a href="../../posts/quantum_diagonalization/05-art-of-the-ansatz.html">previous post</a></strong>, we hit a theoretical wall.</p>
+<p>We calculated that to fully parameterize a unique quantum state for <img src="https://latex.codecogs.com/png.latex?N"> qubits, we need:</p>
+<p><img src="https://latex.codecogs.com/png.latex?%20%5Ctext%7BParams%7D_%7B%5Ctext%7BFull%7D%7D%20=%202(2%5EN)%20-%202%20"></p>
+<p>For a practical <img src="https://latex.codecogs.com/png.latex?N=16"> system, this means searching a <strong>130,000-dimensional</strong> space. No optimizer can handle that. We need to be smarter. We need a “Heuristic Ansatz”—a circuit template that explores a relevant slice of the Hilbert space using a manageable number of parameters.</p>
+<section id="the-blueprint-n_local" class="level2">
+<h2 class="anchored" data-anchor-id="the-blueprint-n_local">1. The Blueprint: <code>n_local</code></h2>
+<p>The general strategy for building these templates is the <strong>n-local</strong> architecture. It consists of alternating layers:</p>
+<ol type="1">
+<li><p><strong>Rotation Layers:</strong> Single-qubit gates (like <img src="https://latex.codecogs.com/png.latex?R_Y,%20R_Z">) to explore local states.</p></li>
+<li><p><strong>Entanglement Layers:</strong> Multi-qubit gates to mix information.</p></li>
+</ol>
+<p>The term “<img src="https://latex.codecogs.com/png.latex?n">-local” refers to the size of the entangling blocks. The gates act on at most <img src="https://latex.codecogs.com/png.latex?n"> qubits at a time. In Qiskit, the <code>n_local()</code> function allows us to build any variation of this structure.</p>
+<section id="the-road-less-traveled-a-3-local-example" class="level3">
+<h3 class="anchored" data-anchor-id="the-road-less-traveled-a-3-local-example">The Road Less Traveled: A 3-Local Example</h3>
+<p>Most standard ansatzes are <strong>2-local</strong> (using pairs of qubits). But to understand why, let’s try to build a <strong>3-local</strong> circuit.</p>
+<p>We could use a 3-qubit gate, like the <strong>Toffoli (CCX)</strong>, as our entangler.</p>
+<div id="b6f106f7" class="cell" data-execution_count="1">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit.circuit.library <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> n_local</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> QuantumCircuit</span>
+<span id="cb1-3"></span>
+<span id="cb1-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Building a 3-Local Ansatz</span></span>
+<span id="cb1-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Rotations: RY on every qubit</span></span>
+<span id="cb1-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Entanglement: CCX (Toffoli) acting on triplets</span></span>
+<span id="cb1-7"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># We use reps=3 to give it depth</span></span>
+<span id="cb1-8">ansatz_3local <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> n_local(num_qubits<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>,</span>
+<span id="cb1-9">                        rotation_blocks<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ry'</span>],</span>
+<span id="cb1-10">                        entanglement_blocks<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ccx'</span>,</span>
+<span id="cb1-11">                        entanglement<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>], [<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>]], <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Explicit triplets</span></span>
+<span id="cb1-12">                        reps<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>,</span>
+<span id="cb1-13">                        insert_barriers<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>)</span>
+<span id="cb1-14"></span>
+<span id="cb1-15"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"3-Local Parameters: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>ansatz_3local<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>num_parameters<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb1-16">display(ansatz_3local.draw(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'mpl'</span>))</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>3-Local Parameters: 16</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://dikranmeliksetian.com/posts/quantum_diagonalization/06-exploring-the-ansatz-zoo_files/figure-html/cell-2-output-2.png" width="1097" height="291" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="why-dont-we-use-this" class="level3">
+<h3 class="anchored" data-anchor-id="why-dont-we-use-this">Why don’t we use this?</h3>
+<p>You rarely see 3-local (or 4-local) ansatzes in VQE. There are two main reasons:</p>
+<ol type="1">
+<li><p><strong>Hardware Connectivity:</strong> Real quantum processors (like IBM’s heavy-hex lattice) only physically connect qubits in pairs. A 3-qubit gate like <code>CCX</code> doesn’t exist natively. The compiler has to break it down into <strong>6+ CNOT gates</strong>, making the circuit incredibly deep and noisy.</p></li>
+<li><p><strong>Overkill:</strong> We don’t <em>need</em> 3-body gates to create global entanglement. A layer of 2-body CNOTs can spread information across the entire chip in just a few steps (<img src="https://latex.codecogs.com/png.latex?O(%5Clog%20N)"> depth).</p></li>
+</ol>
+</section>
+</section>
+<section id="the-standard-2-local" class="level2">
+<h2 class="anchored" data-anchor-id="the-standard-2-local">2. The Standard: 2-Local</h2>
+<p>This is why the <strong>2-local</strong> structure is the gold standard. It matches the native hardware (CNOT/CZ) and is expressive enough to generate complex states.</p>
+<p>While we can use <code>n_local</code> to build them, Qiskit provides optimized helper functions for the two most common patterns: <code>efficient_su2</code> and <code>real_amplitudes</code>.</p>
+<section id="efficient_su2-the-generalist" class="level3">
+<h3 class="anchored" data-anchor-id="efficient_su2-the-generalist"><code>efficient_su2</code>: The Generalist</h3>
+<p>The <code>efficient_su2</code> ansatz is designed to be <strong>universal for local operations</strong>. “SU(2)” refers to the group of operations on a single qubit. This circuit ensures that every qubit can reach <em>any</em> state on its Bloch sphere (using <img src="https://latex.codecogs.com/png.latex?R_Y"> and <img src="https://latex.codecogs.com/png.latex?R_Z">) before being entangled.</p>
+<ul>
+<li><p><strong>Best for:</strong> Problems with complex eigenvectors (e.g., non-Hermitian matrices, dynamics).</p></li>
+<li><p><strong>Structure:</strong> <img src="https://latex.codecogs.com/png.latex?R_Y%20%5Cto%20R_Z%20%5Cto%20%5Ctext%7BCNOT%7D">.</p></li>
+</ul>
+<div id="c7b063e5" class="cell" data-execution_count="2">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit.circuit.library <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> efficient_su2</span>
+<span id="cb3-2"></span>
+<span id="cb3-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Standard EfficientSU2 with reps=3</span></span>
+<span id="cb3-4"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># This creates 3 full layers of entanglement</span></span>
+<span id="cb3-5">ansatz_su2 <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> efficient_su2(num_qubits<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>,</span>
+<span id="cb3-6">                           su2_gates<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>[<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'ry'</span>, <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'rz'</span>],</span>
+<span id="cb3-7">                           entanglement<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'linear'</span>,</span>
+<span id="cb3-8">                           reps<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)</span>
+<span id="cb3-9"></span>
+<span id="cb3-10"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"EfficientSU2 Parameters: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>ansatz_su2<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>num_parameters<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb3-11">display(ansatz_su2.draw(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'mpl'</span>))</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>EfficientSU2 Parameters: 32</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://dikranmeliksetian.com/posts/quantum_diagonalization/06-exploring-the-ansatz-zoo_files/figure-html/cell-3-output-2.png" width="1035" height="291" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="parameter-count-n16" class="level4">
+<h4 class="anchored" data-anchor-id="parameter-count-n16">Parameter Count (N=16)</h4>
+<p>For a 16-qubit system with depth 3: <img src="https://latex.codecogs.com/png.latex?%20%5Ctext%7BParams%7D%20=%202N(d+1)%20=%202(16)(4)%20=%20128%20"> We have reduced the problem from 130,000 variables to <strong>128</strong>.</p>
+</section>
+</section>
+<section id="real_amplitudes-the-specialist" class="level3">
+<h3 class="anchored" data-anchor-id="real_amplitudes-the-specialist"><code>real_amplitudes</code>: The Specialist</h3>
+<p>For <strong>Matrix Diagonalization</strong> of real symmetric matrices (our main goal), we know the eigenvectors are real. We can strip out the <img src="https://latex.codecogs.com/png.latex?R_Z"> gates. This reduces the parameter count by half, making the optimization easier.</p>
+<ul>
+<li><p><strong>Best for:</strong> Hamiltonian ground states, Machine Learning kernels, Real Symmetric matrices.</p></li>
+<li><p><strong>Structure:</strong> <img src="https://latex.codecogs.com/png.latex?R_Y%20%5Cto%20%5Ctext%7BCNOT%7D">.</p></li>
+</ul>
+<div id="432abb07" class="cell" data-execution_count="3">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit.circuit.library <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> real_amplitudes</span>
+<span id="cb5-2"></span>
+<span id="cb5-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Standard RealAmplitudes with reps=3</span></span>
+<span id="cb5-4">ansatz_real <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> real_amplitudes(num_qubits<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>,</span>
+<span id="cb5-5">                              entanglement<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'linear'</span>,</span>
+<span id="cb5-6">                              reps<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)</span>
+<span id="cb5-7"></span>
+<span id="cb5-8"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"RealAmplitudes Parameters: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>ansatz_real<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>num_parameters<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb5-9">display(ansatz_real.draw(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'mpl'</span>))</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>RealAmplitudes Parameters: 16</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://dikranmeliksetian.com/posts/quantum_diagonalization/06-exploring-the-ansatz-zoo_files/figure-html/cell-4-output-2.png" width="788" height="291" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="parameter-count-n16-1" class="level4">
+<h4 class="anchored" data-anchor-id="parameter-count-n16-1">Parameter Count (N=16)</h4>
+<p>For a 16-qubit system with depth 3: <img src="https://latex.codecogs.com/png.latex?%20%5Ctext%7BParams%7D%20=%20N(d+1)%20=%2016(4)%20=%2064%20"> <strong>64 variables</strong> is incredibly lightweight. This gives our optimizer the best possible chance of success.</p>
+</section>
+</section>
+</section>
+<section id="the-goldilocks-choice-why-reps3" class="level2">
+<h2 class="anchored" data-anchor-id="the-goldilocks-choice-why-reps3">3. The Goldilocks Choice: Why <code>reps=3</code>?</h2>
+<p>In all the examples above, we set <code>reps=3</code>. This wasn’t an accident. In heuristic ansatz design, the number of repetitions (depth) is the most critical knob we can turn.</p>
+<p>It represents a trade-off between <strong>Expressibility</strong> and <strong>Trainability</strong>.</p>
+<ol type="1">
+<li><p><strong>Too Shallow (<code>reps=0</code> or <code>1</code>):</strong> The circuit cannot create enough entanglement. It can only explore “Product States” or very simple correlations. It will likely fail to reach the true ground state.</p></li>
+<li><p><strong>Too Deep (<code>reps=50</code>):</strong></p>
+<ul>
+<li><strong>Noise:</strong> Every additional layer adds CNOT gates. On current hardware, deep circuits accumulate so much noise that the signal becomes garbage.</li>
+<li><strong>Barren Plateaus:</strong> As we add parameters, the high-dimensional optimization landscape becomes increasingly flat. The gradient vanishes, and the optimizer gets stuck.</li>
+</ul></li>
+<li><p><strong>Just Right (<code>reps=3</code>):</strong> For many practical problems, 3 layers provide enough entanglement to capture non-trivial correlations, while keeping the parameter count low enough (e.g., 64 vs 1000s) for the classical optimizer to succeed.</p></li>
+</ol>
+</section>
+<section id="the-road-not-taken-specialized-ansatzes" class="level2">
+<h2 class="anchored" data-anchor-id="the-road-not-taken-specialized-ansatzes">4. The Road Not Taken: Specialized Ansatzes</h2>
+<p>The ansatzes above are “blind”—they don’t know what problem they are solving. They just explore the space.</p>
+<p>In some fields, we can do better by building the circuit based on the problem’s physics. We mention them here for completeness, though we won’t use them for general diagonalization.</p>
+<ol type="1">
+<li><p><strong>UCCSD (Unitary Coupled Cluster):</strong> Used in <strong>Chemistry</strong>. The gates mimic electron excitations. It is incredibly accurate but produces very deep circuits that are hard to run on near-term hardware.</p></li>
+<li><p><strong>QAOA (Quantum Approximate Optimization Algorithm):</strong> Used in <strong>Combinatorial Optimization</strong> (e.g., MaxCut). The gates alternate between the “Cost Hamiltonian” and a “Mixer,” effectively simulating a time-evolution process.</p></li>
+<li><p><strong>ZZFeatureMap:</strong> Used in <strong>Machine Learning</strong>. This is used to encode classical data into quantum states (kernels) rather than finding ground states.</p></li>
+</ol>
+<p><strong>Why don’t we use them here?</strong> Because we are solving a <strong>general</strong> linear algebra problem. We don’t have the physical intuition of a molecule or a graph to guide us. Therefore, the <strong>Hardware Efficient Ansatz</strong> (<code>real_amplitudes</code>) is our best general-purpose tool.</p>
+</section>
+<section id="whats-next" class="level2">
+<h2 class="anchored" data-anchor-id="whats-next">5. What’s Next?</h2>
+<p>We have our Ansatz (<code>real_amplitudes</code>) and our strategy (<code>VQE</code>). But there is a glaring hole in our pipeline.</p>
+<p>In all our examples so far, we have been “building” the matrix <img src="https://latex.codecogs.com/png.latex?A"> manually in Python (e.g., creating a NumPy array). But if <img src="https://latex.codecogs.com/png.latex?N=16">, the matrix has <strong>4 billion entries</strong>. We cannot store that in RAM to convert it into a Hamiltonian.</p>
+<p>In the next post, we will learn how to represent the matrix <strong>implicitly</strong>—decomposing a problem into Pauli strings without ever building the full dense matrix.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Quantum Computing</category>
+  <category>VQE</category>
+  <category>Ansatz</category>
+  <guid>https://dikranmeliksetian.com/posts/quantum_diagonalization/06-exploring-the-ansatz-zoo.html</guid>
+  <pubDate>Sun, 18 Jan 2026 05:00:00 GMT</pubDate>
+  <media:content url="https://dikranmeliksetian.com/posts/quantum_diagonalization/img/ansatz_zoo.png" medium="image" type="image/png"/>
+</item>
 <item>
   <title>The Art of the Ansatz: Entanglement and the Hilbert Space Wall</title>
-  <link>https://dikranmeliksetian.com/posts/quantum_diagonalization/05-art-0f-the-ansatz.html</link>
+  <link>https://dikranmeliksetian.com/posts/quantum_diagonalization/05-art-of-the-ansatz.html</link>
   <description><![CDATA[ 
 
 
@@ -31,7 +362,7 @@
 <section id="implementing-the-entangled-ansatz" class="level3">
 <h3 class="anchored" data-anchor-id="implementing-the-entangled-ansatz">Implementing the Entangled Ansatz</h3>
 <p>Let’s rebuild the circuit, this time appending a <code>cx(0, 1)</code> gate.</p>
-<div id="4364567b" class="cell" data-execution_count="1">
+<div id="9ffd3bab" class="cell" data-execution_count="1">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
@@ -137,7 +468,7 @@ font-style: inherit;">"mpl"</span>))</span></code></pre></div></div>
 <div class="cell-output cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="https://dikranmeliksetian.com/posts/quantum_diagonalization/05-art-0f-the-ansatz_files/figure-html/cell-2-output-2.png" width="232" height="168" class="figure-img"></p>
+<p><img src="https://dikranmeliksetian.com/posts/quantum_diagonalization/05-art-of-the-ansatz_files/figure-html/cell-2-output-2.png" width="232" height="168" class="figure-img"></p>
 </figure>
 </div>
 </div>
@@ -146,7 +477,7 @@ font-style: inherit;">"mpl"</span>))</span></code></pre></div></div>
 <section id="running-the-optimization-again" class="level3">
 <h3 class="anchored" data-anchor-id="running-the-optimization-again">Running the Optimization Again</h3>
 <p>We use the exact same Hamiltonian (<img src="https://latex.codecogs.com/png.latex?A">) and the exact same optimizer (COBYLA). The only thing changing is the circuit <code>qc_entangled</code>.</p>
-<div id="9bfd414a" class="cell" data-execution_count="2">
+<div id="6ab6264d" class="cell" data-execution_count="2">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
@@ -259,7 +590,7 @@ Classical Truth:          -0.700000</code></pre>
 <section id="verifying-the-eigenvector" class="level2">
 <h2 class="anchored" data-anchor-id="verifying-the-eigenvector">2. Verifying the Eigenvector</h2>
 <p>The energy looks correct, but we must verify the state itself. Did we actually produce the Bell State? We will use the <code>StatevectorSampler</code> to reconstruct the vector magnitudes from the probabilities and compare it to the known truth.</p>
-<div id="dbd24bbe" class="cell" data-execution_count="3">
+<div id="ef54f3e8" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><span class="im" style="color: #00769E;
@@ -408,9 +739,9 @@ font-style: inherit;">"</span>)</span></code></pre></div></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Reconstructed Quantum Eigenvector:
-[0.         0.69877124 0.7153452  0.        ]
+[0.         0.6973723  0.71670906 0.        ]
 ------------------------------
-Quantum Vector Distance: 0.011720</code></pre>
+Quantum Vector Distance: 0.013673</code></pre>
 </div>
 </div>
 <p>Excellent! The distance is now extremely close to zero. By adding the CNOT gate, our Ansatz was able to capture the entanglement required by the solution.</p>
@@ -424,7 +755,7 @@ Quantum Vector Distance: 0.011720</code></pre>
 <p>We will construct a matrix where the ground state is the vector <img src="https://latex.codecogs.com/png.latex?v%20=%20%5Cfrac%7B1%7D%7B%5Csqrt%7B3%7D%7D(%7C00%5Crangle%20+%20%7C01%5Crangle%20+%20%7C10%5Crangle)">. Notice that the last component (<img src="https://latex.codecogs.com/png.latex?%7C11%5Crangle">) is exactly zero.</p>
 <p>Mathematically, our current Ansatz (Rotation <img src="https://latex.codecogs.com/png.latex?%5Cto"> CNOT) forces a specific relationship between the amplitudes: <img src="https://latex.codecogs.com/png.latex?v_%7B00%7D%20%5Ccdot%20v_%7B11%7D%20=%20v_%7B01%7D%20%5Ccdot%20v_%7B10%7D">. For our target vector, <img src="https://latex.codecogs.com/png.latex?1%20%5Ccdot%200%20%5Cneq%201%20%5Ccdot%201">. This vector is mathematically impossible for our current circuit to generate.</p>
 <p>Let’s see the optimizer fail in real-time.</p>
-<div id="4e78a53f" class="cell" data-execution_count="4">
+<div id="d4f9db06" class="cell" data-execution_count="4">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="co" style="color: #5E5E5E;
@@ -665,7 +996,7 @@ Error (Gap):             0.1273</code></pre>
 <h3 class="anchored" data-anchor-id="introducing-the-controlled-ry">Introducing the Controlled-RY</h3>
 <p>Instead of a fixed <code>CNOT</code> (which has 0 parameters), we can conceptually use a parameterized <strong>Controlled-Rotation (<img src="https://latex.codecogs.com/png.latex?CR_Y">)</strong>.</p>
 <p>This gate rotates the second qubit by an angle <img src="https://latex.codecogs.com/png.latex?%5Ctheta_2"> <em>only if</em> the first qubit is 1. This gives us independent control over the “top half” (<img src="https://latex.codecogs.com/png.latex?%7C00%5Crangle,%20%7C01%5Crangle">) and “bottom half” (<img src="https://latex.codecogs.com/png.latex?%7C10%5Crangle,%20%7C11%5Crangle">) of the vector, unlocking the 3rd degree of freedom.</p>
-<div id="2e3b45f7" class="cell" data-execution_count="5">
+<div id="c0540e33" class="cell" data-execution_count="5">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="co" style="color: #5E5E5E;
@@ -845,7 +1176,7 @@ Best Value Found (3-Param): -1.0000</code></pre>
   <category>Quantum Computing</category>
   <category>VQE</category>
   <category>Ansatz</category>
-  <guid>https://dikranmeliksetian.com/posts/quantum_diagonalization/05-art-0f-the-ansatz.html</guid>
+  <guid>https://dikranmeliksetian.com/posts/quantum_diagonalization/05-art-of-the-ansatz.html</guid>
   <pubDate>Fri, 19 Dec 2025 05:00:00 GMT</pubDate>
   <media:content url="https://dikranmeliksetian.com/posts/quantum_diagonalization/img/entanglement_optimization.png" medium="image" type="image/png"/>
 </item>
@@ -880,7 +1211,7 @@ Best Value Found (3-Param): -1.0000</code></pre>
 <h2 class="anchored" data-anchor-id="step-a-finding-the-minimum-eigenvalue">2. Step A: Finding the Minimum Eigenvalue</h2>
 <p>Let’s make this concrete. We will use the <strong>exact same matrix</strong> from the previous post, but we will upgrade our circuit. Last time, we hard-coded <code>np.pi/3</code>. This time, we will insert a symbolic <strong>Parameter</strong> and let the optimizer find that value for us.</p>
 <p><strong>The Matrix (<img src="https://latex.codecogs.com/png.latex?A">):</strong> <img src="https://latex.codecogs.com/png.latex?A%20=%200.5%20(Z%20%5Cotimes%20Z)%20+%200.2%20(X%20%5Cotimes%20X)"></p>
-<div id="bec57096" class="cell" data-execution_count="1">
+<div id="55e4f02a" class="cell" data-execution_count="1">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
@@ -948,7 +1279,7 @@ font-style: inherit;">"</span>)</span></code></pre></div></div>
 <section id="parameterizing-the-circuit" class="level3">
 <h3 class="anchored" data-anchor-id="parameterizing-the-circuit">Parameterizing the Circuit</h3>
 <p>In Qiskit, we use <code>Parameter</code> objects to create algebraic variables. These are the “knobs” our classical optimizer will turn.</p>
-<div id="35f72a8b" class="cell" data-execution_count="2">
+<div id="9dcf2bca" class="cell" data-execution_count="2">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><span class="co" style="color: #5E5E5E;
@@ -1007,7 +1338,7 @@ font-style: inherit;">"mpl"</span>))</span></code></pre></div></div>
 <section id="the-cost-function" class="level3">
 <h3 class="anchored" data-anchor-id="the-cost-function">The Cost Function</h3>
 <p>We need a standard Python function that the optimizer can call. This function takes a list of numbers (the current values of <img src="https://latex.codecogs.com/png.latex?%5Cvec%7B%5Ctheta%7D">) and returns a single number (the eigenvalue estimate).</p>
-<div id="7089350e" class="cell" data-execution_count="3">
+<div id="ac50c49c" class="cell" data-execution_count="3">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1">estimator <span class="op" style="color: #5E5E5E;
@@ -1092,7 +1423,7 @@ font-style: inherit;">"</span>)</span></code></pre></div></div>
 <section id="running-the-optimization" class="level3">
 <h3 class="anchored" data-anchor-id="running-the-optimization">Running the Optimization</h3>
 <p>We use <code>scipy.optimize.minimize</code> with the <strong>COBYLA</strong> method. This is a “gradient-free” optimizer, often used in quantum computing because it handles noise better than standard gradient descent.</p>
-<div id="a494685f" class="cell" data-execution_count="4">
+<div id="d1c675a5" class="cell" data-execution_count="4">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><span class="co" style="color: #5E5E5E;
@@ -1181,7 +1512,7 @@ Minimum Eigenvalue found: -0.500000</code></pre>
 <p>We have found the minimum eigenvalue (<img src="https://latex.codecogs.com/png.latex?%5Clambda_0">), but in many applications (like data science or chemistry), we also need the <strong>eigenvector</strong> itself (<img src="https://latex.codecogs.com/png.latex?x_0">).</p>
 <p>The <strong>Estimator</strong> only gives us the energy. To see the vector structure, we use the <strong>Sampler</strong>. The Sampler gives us the probability (<img src="https://latex.codecogs.com/png.latex?P">) of measuring each state. Since <img src="https://latex.codecogs.com/png.latex?P%20=%20%7C%5Cpsi%7C%5E2">, we can reconstruct the magnitude of the state vector.</p>
 <p><em>Note: The Sampler recovers the magnitude, but not the relative phases (signs). For that, we would need more complex tomography. For now, we compare the probability distributions.</em></p>
-<div id="7b255f2e" class="cell" data-execution_count="5">
+<div id="36c98ae2" class="cell" data-execution_count="5">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><span class="im" style="color: #00769E;
@@ -1286,7 +1617,7 @@ font-style: inherit;">print</span>(quantum_vector)</span></code></pre></div></di
 <h2 class="anchored" data-anchor-id="the-reality-check-did-we-fail">4. The Reality Check: Did we fail?</h2>
 <p>We have an answer. The optimization loop converged successfully. But is it the <em>correct</em> answer?</p>
 <p>Let’s verify this using standard linear algebra tools like <code>numpy</code>. We will construct the matrix <img src="https://latex.codecogs.com/png.latex?A"> explicitly, diagonalize it, and find the true eigenvector.</p>
-<div id="ed1ba238" class="cell" data-execution_count="6">
+<div id="123ebfd6" class="cell" data-execution_count="6">
 <details open="" class="code-fold">
 <summary>Code</summary>
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><span class="co" style="color: #5E5E5E;
