@@ -9,7 +9,7 @@ format:
     code-fold: show
 execute:
   enabled: true
-  freeze: false
+  freeze: true
   keep-ipynb: true
 jupyter: quantum
 draft: false

@@ -1,7 +1,7 @@
 ---
 title: "The Variational Principle: A Linear Algebra Perspective"
 execute:
-  freeze: false
+  freeze: true
 date: 2025-11-30
 categories: [Quantum Computing, Linear Algebra, VQE]
 image: img/image_0.png
