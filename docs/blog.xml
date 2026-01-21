@@ -10,7 +10,979 @@
 <atom:link href="https://dikranmeliksetian.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Personal academic portfolio and research blog exploring Quantum Computing, Qiskit, and Software Architecture.</description>
 <generator>quarto-1.8.26</generator>
-<lastBuildDate>Sun, 18 Jan 2026 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 21 Jan 2026 05:00:00 GMT</lastBuildDate>
+<item>
+  <title>The Implicit Matrix: Scaling Max-Cut with Paulis</title>
+  <link>https://dikranmeliksetian.com/posts/quantum_diagonalization/07-matrix-decomposition.html</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>In our <strong><a href="../../posts/quantum_diagonalization/06-exploring-the-ansatz-zoo.html">previous post</a></strong>, we solved the “Parameter Wall” by using Heuristic Ansatzes. This allowed us to represent a complex quantum state <img src="https://latex.codecogs.com/png.latex?%7C%5Cpsi%5Crangle"> with just a few dozen parameters.</p>
+<p>But VQE has two parts: <img src="https://latex.codecogs.com/png.latex?E%20=%20%5Clangle%20%5Cpsi%20%7C%20H%20%7C%20%5Cpsi%20%5Crangle"></p>
+<p>We fixed <img src="https://latex.codecogs.com/png.latex?%7C%5Cpsi%5Crangle"> (the vector). Now we must fix <img src="https://latex.codecogs.com/png.latex?H"> (the matrix).</p>
+<p>It is only in textbook exercises that we are given a matrix and asked to find the lowest eigenvalue and the corresponding eigenvector. In real-world scenarios, we are almost never “given” the matrix. Instead, we start from a <strong>problem definition</strong>—a graph, a molecule, or a financial model.</p>
+<p>Our job is to cast that problem as an eigenvalue/eigenvector problem. The general approach is to construct the <strong>Hamiltonian</strong> (<img src="https://latex.codecogs.com/png.latex?H">) directly from the problem definition. For large systems (e.g., 50 variables), we must do this <strong>implicitly</strong>, building <img src="https://latex.codecogs.com/png.latex?H"> as a sum of Pauli strings without ever generating the full <img src="https://latex.codecogs.com/png.latex?2%5EN%20%5Ctimes%202%5EN"> matrix.</p>
+<p>In this post, we will use the <strong>Max-Cut Problem</strong> to illustrate this approach step-by-step.</p>
+<section id="the-setup-defining-the-graph" class="level2">
+<h2 class="anchored" data-anchor-id="the-setup-defining-the-graph">1. The Setup: Defining the Graph</h2>
+<p><strong>The Goal:</strong> Divide the nodes of a graph into two groups (colors) such that the number of edges connecting different colors is maximized.</p>
+<p>Let’s define a simple graph with 5 nodes.</p>
+<div id="c185daee" class="cell" data-execution_count="1">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> networkx <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> nx</span>
+<span id="cb1-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> matplotlib.pyplot <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> plt</span>
+<span id="cb1-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> numpy <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">as</span> np</span>
+<span id="cb1-4"></span>
+<span id="cb1-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1. Define the Graph</span></span>
+<span id="cb1-6">num_nodes <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span></span>
+<span id="cb1-7">edges <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>), (<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span>)]</span>
+<span id="cb1-8"></span>
+<span id="cb1-9">G <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> nx.Graph()</span>
+<span id="cb1-10">G.add_nodes_from(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(num_nodes))</span>
+<span id="cb1-11">G.add_edges_from(edges)</span>
+<span id="cb1-12"></span>
+<span id="cb1-13"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2. Draw the Graph</span></span>
+<span id="cb1-14">plt.figure(figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>))</span>
+<span id="cb1-15">pos <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> nx.spring_layout(G, seed<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">42</span>)</span>
+<span id="cb1-16">nx.draw(G, pos, with_labels<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>, node_color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'lightblue'</span>, edge_color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'gray'</span>, node_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">700</span>, font_weight<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'bold'</span>)</span>
+<span id="cb1-17">plt.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"5-Node Graph for Max-Cut"</span>)</span>
+<span id="cb1-18">plt.show()</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://dikranmeliksetian.com/posts/quantum_diagonalization/07-matrix-decomposition_files/figure-html/cell-2-output-1.png" width="595" height="423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="the-classical-cost-sum-x_i---x_j2" class="level2">
+<h2 class="anchored" data-anchor-id="the-classical-cost-sum-x_i---x_j2">2. The Classical Cost: <img src="https://latex.codecogs.com/png.latex?%5Csum%20(x_i%20-%20x_j)%5E2"></h2>
+<p>Before we look at quantum operators, let’s define the problem mathematically.</p>
+<p>We represent the solution as a vector of binary variables <img src="https://latex.codecogs.com/png.latex?x%20%5Cin%20%5C%7B0,%201%5C%7D%5EN">.</p>
+<ul>
+<li><img src="https://latex.codecogs.com/png.latex?x_i%20=%200"> means Node <img src="https://latex.codecogs.com/png.latex?i"> is in Group A.</li>
+<li><img src="https://latex.codecogs.com/png.latex?x_i%20=%201"> means Node <img src="https://latex.codecogs.com/png.latex?i"> is in Group B.</li>
+</ul>
+<p>For every edge <img src="https://latex.codecogs.com/png.latex?(i,%20j)">, we want to check if the nodes are in different groups. We can do this with the squared difference: <img src="https://latex.codecogs.com/png.latex?C_%7Bij%7D%20=%20(x_i%20-%20x_j)%5E2"></p>
+<ul>
+<li>If <img src="https://latex.codecogs.com/png.latex?x_i%20=%20x_j"> (Same Group): <img src="https://latex.codecogs.com/png.latex?(0-0)%5E2%20=%200"> or <img src="https://latex.codecogs.com/png.latex?(1-1)%5E2%20=%200">.</li>
+<li>If <img src="https://latex.codecogs.com/png.latex?x_i%20%5Cneq%20x_j"> (Different Group): <img src="https://latex.codecogs.com/png.latex?(0-1)%5E2%20=%201"> or <img src="https://latex.codecogs.com/png.latex?(1-0)%5E2%20=%201">.</li>
+</ul>
+<p>The total size of the cut is the sum over all edges: <img src="https://latex.codecogs.com/png.latex?%5Ctext%7BCut%20Size%7D%20=%20%5Csum_%7B(i,j)%20%5Cin%20E%7D%20(x_i%20-%20x_j)%5E2"></p>
+<section id="matrix-form-the-laplacian" class="level3">
+<h3 class="anchored" data-anchor-id="matrix-form-the-laplacian">Matrix Form (The Laplacian)</h3>
+<p>This sum can be written elegantly using matrix notation. <img src="https://latex.codecogs.com/png.latex?%5Csum_%7B(i,j)%20%5Cin%20E%7D%20(x_i%20-%20x_j)%5E2%20=%20x%5ET%20L%20x"> where <img src="https://latex.codecogs.com/png.latex?L"> is the <strong>Laplacian Matrix</strong> (<img src="https://latex.codecogs.com/png.latex?L%20=%20D%20-%20A">).</p>
+<p>To maximize the cut using a minimization algorithm (like VQE), we define our energy as negative: <img src="https://latex.codecogs.com/png.latex?E(x)%20=%20-%20%5Csum_%7B(i,j)%20%5Cin%20E%7D%20(x_i%20-%20x_j)%5E2%20=%20-x%5ET%20L%20x"></p>
+<p>Let’s verify this classically.</p>
+<div id="d8b763fc" class="cell" data-execution_count="2">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1. Compute Laplacian L = D - A</span></span>
+<span id="cb2-2">L <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> nx.laplacian_matrix(G).todense()</span>
+<span id="cb2-3"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Laplacian Matrix L:"</span>)</span>
+<span id="cb2-4"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(L)</span>
+<span id="cb2-5"></span>
+<span id="cb2-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2. Evaluate Cost for every possible bitstring</span></span>
+<span id="cb2-7">dim <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">**</span>num_nodes</span>
+<span id="cb2-8">best_energy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span></span>
+<span id="cb2-9">best_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">None</span></span>
+<span id="cb2-10"></span>
+<span id="cb2-11"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> k <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(dim):</span>
+<span id="cb2-12">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Convert integer k to binary vector x (e.g., [1, 0, 1, ...])</span></span>
+<span id="cb2-13">    x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.array([(k <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&gt;&gt;</span> i) <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&amp;</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span> <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> i <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">range</span>(num_nodes)])</span>
+<span id="cb2-14">    </span>
+<span id="cb2-15">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Calculate Energy: E = - x^T L x</span></span>
+<span id="cb2-16">    energy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span> (x.T <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> L <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">@</span> x)</span>
+<span id="cb2-17">    </span>
+<span id="cb2-18">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Track the minimum (most negative is best)</span></span>
+<span id="cb2-19">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> energy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">&lt;</span> best_energy:</span>
+<span id="cb2-20">        best_energy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> energy</span>
+<span id="cb2-21">        best_x <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> x</span>
+<span id="cb2-22"></span>
+<span id="cb2-23"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">Max Cut Size:       </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>best_energy<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb2-24"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Best Configuration: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>best_x<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Laplacian Matrix L:
+[[ 3 -1 -1  0 -1]
+ [-1  2 -1  0  0]
+ [-1 -1  3 -1  0]
+ [ 0  0 -1  2 -1]
+ [-1  0  0 -1  2]]
+
+Max Cut Size:       5
+Best Configuration: [1 0 0 1 0]</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="the-implicit-operator-the-quantum-map" class="level2">
+<h2 class="anchored" data-anchor-id="the-implicit-operator-the-quantum-map">3. The “Implicit” Operator (The Quantum Map)</h2>
+<p>Classically, computing <img src="https://latex.codecogs.com/png.latex?x%5ET%20L%20x"> is fast for one vector. But finding the <em>best</em> vector requires checking all <img src="https://latex.codecogs.com/png.latex?2%5EN"> possibilities. To solve this on a quantum computer, we need to convert the binary variables <img src="https://latex.codecogs.com/png.latex?x_i"> into quantum operators.</p>
+<p>Let’s do this step-by-step, dotting every ‘i’ and crossing every ‘t’.</p>
+<section id="step-3a-the-observable-pauli-z" class="level3">
+<h3 class="anchored" data-anchor-id="step-3a-the-observable-pauli-z">Step 3a: The Observable (Pauli Z)</h3>
+<p>We need a quantum operator that behaves like a classical bit check. When we measure it, it should tell us if the qubit is in state <img src="https://latex.codecogs.com/png.latex?%7C0%5Crangle"> or <img src="https://latex.codecogs.com/png.latex?%7C1%5Crangle">.</p>
+<p>The operator that does this is the <strong>Pauli Z matrix</strong>:</p>
+<p><img src="https://latex.codecogs.com/png.latex?Z%20=%20%5Cbegin%7Bpmatrix%7D%201%20&amp;%200%20%5C%5C%200%20&amp;%20-1%20%5Cend%7Bpmatrix%7D"></p>
+<p>When we apply this operator to our computational basis states, the resulting <strong>eigenvalues</strong> act as our labels:</p>
+<ol type="1">
+<li><p><strong>State <img src="https://latex.codecogs.com/png.latex?%7C0%5Crangle"> (Group A):</strong> <img src="https://latex.codecogs.com/png.latex?Z%20%7C0%5Crangle%20=%20(+1)%7C0%5Crangle"> The eigenvalue is <strong>+1</strong>.</p></li>
+<li><p><strong>State <img src="https://latex.codecogs.com/png.latex?%7C1%5Crangle"> (Group B):</strong> <img src="https://latex.codecogs.com/png.latex?Z%20%7C1%5Crangle%20=%20(-1)%7C1%5Crangle"> The eigenvalue is <strong>-1</strong>.</p></li>
+</ol>
+<p>So, while the qubit is the <em>object</em>, the Pauli <img src="https://latex.codecogs.com/png.latex?Z"> is the <em>tool</em> we use to extract a value (+1 or -1) that corresponds to our classical bits (0 or 1).</p>
+</section>
+<section id="step-3b-mapping-binary-x-to-eigenvalues-lambda" class="level3">
+<h3 class="anchored" data-anchor-id="step-3b-mapping-binary-x-to-eigenvalues-lambda">Step 3b: Mapping Binary (<img src="https://latex.codecogs.com/png.latex?x">) to Eigenvalues (<img src="https://latex.codecogs.com/png.latex?%5Clambda">)</h3>
+<p>We need a linear equation that maps our binary variables <img src="https://latex.codecogs.com/png.latex?x%20%5Cin%20%5C%7B0,%201%5C%7D"> to these eigenvalues <img src="https://latex.codecogs.com/png.latex?%5Clambda%20%5Cin%20%5C%7B+1,%20-1%5C%7D">.</p>
+<ul>
+<li>We want <img src="https://latex.codecogs.com/png.latex?x=0"> (Group A) to map to <img src="https://latex.codecogs.com/png.latex?%5Clambda=+1">.</li>
+<li>We want <img src="https://latex.codecogs.com/png.latex?x=1"> (Group B) to map to <img src="https://latex.codecogs.com/png.latex?%5Clambda=-1">.</li>
+</ul>
+<p>The equation that achieves this is: <img src="https://latex.codecogs.com/png.latex?%5Clambda%20=%201%20-%202x"></p>
+<p>Let’s check:</p>
+<ul>
+<li>If <img src="https://latex.codecogs.com/png.latex?x=0%20%5Cimplies%20%5Clambda%20=%201%20-%200%20=%201">. (Correct)</li>
+<li>If <img src="https://latex.codecogs.com/png.latex?x=1%20%5Cimplies%20%5Clambda%20=%201%20-%202%20=%20-1">. (Correct)</li>
+</ul>
+</section>
+<section id="step-3c-the-operator-substitution" class="level3">
+<h3 class="anchored" data-anchor-id="step-3c-the-operator-substitution">Step 3c: The Operator Substitution</h3>
+<p>Now we invert that equation to express <img src="https://latex.codecogs.com/png.latex?x"> in terms of the operator <img src="https://latex.codecogs.com/png.latex?Z">. Since <img src="https://latex.codecogs.com/png.latex?%5Clambda"> corresponds to the operator <img src="https://latex.codecogs.com/png.latex?Z">, we can write:</p>
+<p><img src="https://latex.codecogs.com/png.latex?Z%20=%20I%20-%202x%20%5Cquad%20%5Cimplies%20%5Cquad%20x%20=%20%5Cfrac%7BI%20-%20Z%7D%7B2%7D"></p>
+<p>This is the key. Anywhere we see <img src="https://latex.codecogs.com/png.latex?x_i"> in our classical equation, we replace it with the operator <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7BI%20-%20Z_i%7D%7B2%7D">.</p>
+</section>
+<section id="step-3d-deriving-the-hamiltonian" class="level3">
+<h3 class="anchored" data-anchor-id="step-3d-deriving-the-hamiltonian">Step 3d: Deriving the Hamiltonian</h3>
+<p>We take our classical cost function (from Section 2) and perform the substitution directly.</p>
+<p><img src="https://latex.codecogs.com/png.latex?(x_i%20-%20x_j)%5E2%20=%20%5Cleft(%20%5Cfrac%7BI%20-%20Z_i%7D%7B2%7D%20-%20%5Cfrac%7BI%20-%20Z_j%7D%7B2%7D%20%5Cright)%5E2"></p>
+<p>We factor out the <img src="https://latex.codecogs.com/png.latex?%5Cfrac%7B1%7D%7B2%7D">: <img src="https://latex.codecogs.com/png.latex?=%20%5Cfrac%7B1%7D%7B4%7D%20%5Cleft(%20(I%20-%20Z_i)%20-%20(I%20-%20Z_j)%20%5Cright)%5E2"></p>
+<p>The <img src="https://latex.codecogs.com/png.latex?I">’s cancel out: <img src="https://latex.codecogs.com/png.latex?=%20%5Cfrac%7B1%7D%7B4%7D%20(Z_j%20-%20Z_i)%5E2"></p>
+<p>Expand the square: <img src="https://latex.codecogs.com/png.latex?=%20%5Cfrac%7B1%7D%7B4%7D%20(Z_j%5E2%20-%20Z_j%20Z_i%20-%20Z_i%20Z_j%20+%20Z_i%5E2)"></p>
+<p>We know that <img src="https://latex.codecogs.com/png.latex?Z%5E2%20=%20I"> (Pauli matrices are their own inverse) and <img src="https://latex.codecogs.com/png.latex?Z_i,%20Z_j"> commute on different qubits (<img src="https://latex.codecogs.com/png.latex?Z_i%20Z_j%20=%20Z_j%20Z_i">): <img src="https://latex.codecogs.com/png.latex?=%20%5Cfrac%7B1%7D%7B4%7D%20(I%20-%202%20Z_i%20Z_j%20+%20I)"> <img src="https://latex.codecogs.com/png.latex?=%20%5Cfrac%7B1%7D%7B2%7D%20(I%20-%20Z_i%20Z_j)"></p>
+<p>This is our final Hamiltonian term for one edge. To <strong>minimize energy</strong> (equivalent to maximizing the cut), we simply flip the sign:</p>
+<p><img src="https://latex.codecogs.com/png.latex?H_%7Bedge%7D%20=%20%5Cfrac%7B1%7D%7B2%7D%20(Z_i%20Z_j%20-%20I)"></p>
+<p>We can construct this <strong>implicitly</strong> for the whole graph by iterating over the edges. We map Node 0 to the first index of our list, Node 1 to the second, and so on.</p>
+<div id="ebccfe18" class="cell" data-execution_count="3">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit.quantum_info <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> SparsePauliOp</span>
+<span id="cb4-2"></span>
+<span id="cb4-3">pauli_list <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb4-4">coeffs <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb4-5"></span>
+<span id="cb4-6"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> u, v <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> edges:</span>
+<span id="cb4-7">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Each edge contributes 0.5 * (Z_i Z_j - I)</span></span>
+<span id="cb4-8">    </span>
+<span id="cb4-9">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1. The Interaction Term (0.5 * Z_i Z_j)</span></span>
+<span id="cb4-10">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Construct the string "IIZIIZ..."</span></span>
+<span id="cb4-11">    op_list <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> [<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"I"</span>] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> num_nodes</span>
+<span id="cb4-12">    op_list[u] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Z"</span></span>
+<span id="cb4-13">    op_list[v] <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Z"</span></span>
+<span id="cb4-14">    </span>
+<span id="cb4-15">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Join directly (Map Node 0 -&gt; Leftmost Char)</span></span>
+<span id="cb4-16">    p_string <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">""</span>.join(op_list)</span>
+<span id="cb4-17">    </span>
+<span id="cb4-18">    pauli_list.append(p_string)</span>
+<span id="cb4-19">    coeffs.append(<span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span>)</span>
+<span id="cb4-20">    </span>
+<span id="cb4-21">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2. The Constant Term (-0.5 * I)</span></span>
+<span id="cb4-22">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># We track this shift separately</span></span>
+<span id="cb4-23"></span>
+<span id="cb4-24"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Create the Operator</span></span>
+<span id="cb4-25">H_quantum <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> SparsePauliOp(pauli_list, coeffs)</span>
+<span id="cb4-26"></span>
+<span id="cb4-27"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Number of Pauli Terms: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(H_quantum)<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb4-28"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(H_quantum)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Number of Pauli Terms: 6
+SparsePauliOp(['ZZIII', 'IZZII', 'IIZZI', 'IIIZZ', 'ZIIIZ', 'ZIZII'],
+              coeffs=[0.5+0.j, 0.5+0.j, 0.5+0.j, 0.5+0.j, 0.5+0.j, 0.5+0.j])</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="solving-with-vqe-noisy-simulation-via-v2-primitives" class="level2">
+<h2 class="anchored" data-anchor-id="solving-with-vqe-noisy-simulation-via-v2-primitives">4. Solving with VQE (Noisy Simulation via V2 Primitives)</h2>
+<p>Now we have the <strong>Implicit Matrix</strong> (<img src="https://latex.codecogs.com/png.latex?H">) and the <strong>Implicit State</strong> (Ansatz). We can solve the problem using VQE without ever storing <img src="https://latex.codecogs.com/png.latex?2%5EN"> numbers.</p>
+<p>To demonstrate robust results, we will use a <strong>Real Backend’s Noise Model</strong>, but execute on a local <strong>Simulator</strong>. We will use the modern <strong>Primitives V2</strong> interface (<code>BackendEstimatorV2</code> and <code>BackendSamplerV2</code>) which allows us to wrap our local simulator and treat it exactly like a cloud device.</p>
+<div id="857b3a58" class="cell" data-execution_count="4">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit.circuit.library <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> real_amplitudes</span>
+<span id="cb6-2"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> scipy.optimize <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> minimize</span>
+<span id="cb6-3"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit.transpiler.preset_passmanagers <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> generate_preset_pass_manager</span>
+<span id="cb6-4"></span>
+<span id="cb6-5"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Imports for the V2 Workflow</span></span>
+<span id="cb6-6"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit_ibm_runtime <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> QiskitRuntimeService</span>
+<span id="cb6-7"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit_ibm_runtime.fake_provider <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> FakeManilaV2</span>
+<span id="cb6-8"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit_aer <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> AerSimulator</span>
+<span id="cb6-9"><span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">from</span> qiskit.primitives <span class="im" style="color: #00769E;
+background-color: null;
+font-style: inherit;">import</span> BackendEstimatorV2, BackendSamplerV2</span>
+<span id="cb6-10"></span>
+<span id="cb6-11"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1. Fetch the Real Backend (Source of Truth)</span></span>
+<span id="cb6-12">service <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> QiskitRuntimeService()</span>
+<span id="cb6-13">real_backend <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> service.least_busy(operational<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>, simulator<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">False</span>, min_num_qubits<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>num_nodes)</span>
+<span id="cb6-14"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Fetching properties from Real Backend: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>real_backend<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>name<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb6-15"></span>
+<span id="cb6-16"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2. Create a Local Simulator based on that Backend</span></span>
+<span id="cb6-17"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># This copies the coupling map, basis gates, and error rates to your local machine</span></span>
+<span id="cb6-18">aer_backend <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> AerSimulator.from_backend(real_backend)</span>
+<span id="cb6-19"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Running on: AerSimulator (mimicking </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>real_backend<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">.</span>name<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">)"</span>)</span>
+<span id="cb6-20"></span>
+<span id="cb6-21"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 3. Ansatz &amp; Transpilation</span></span>
+<span id="cb6-22">ansatz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> real_amplitudes(num_qubits<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>num_nodes, reps<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>)</span>
+<span id="cb6-23">ansatz.measure_all() <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Ensure we have measurements for the Sampler later</span></span>
+<span id="cb6-24"></span>
+<span id="cb6-25"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Transpile against the simulator (which matches the real topology)</span></span>
+<span id="cb6-26">pm <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> generate_preset_pass_manager(optimization_level<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">3</span>, backend<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aer_backend)</span>
+<span id="cb6-27">isa_ansatz <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> pm.run(ansatz)</span>
+<span id="cb6-28">isa_hamiltonian <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> H_quantum.apply_layout(isa_ansatz.layout)</span>
+<span id="cb6-29"></span>
+<span id="cb6-30"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Ansatz Transpiled for Hardware Topology."</span>)</span>
+<span id="cb6-31"></span>
+<span id="cb6-32"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 4. Initialize V2 Primitives</span></span>
+<span id="cb6-33"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># We wrap our local AerSimulator in the generic V2 wrappers</span></span>
+<span id="cb6-34">estimator <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> BackendEstimatorV2(backend<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aer_backend)</span>
+<span id="cb6-35">sampler <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> BackendSamplerV2(backend<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>aer_backend)</span>
+<span id="cb6-36"></span>
+<span id="cb6-37"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Set the shots (precision)</span></span>
+<span id="cb6-38">estimator.options.default_shots <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4000</span></span>
+<span id="cb6-39">sampler.options.default_shots <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">2000</span></span>
+<span id="cb6-40"></span>
+<span id="cb6-41"><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">def</span> cost_function(params):</span>
+<span id="cb6-42">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># V2 Syntax: Pass a list of PUBs (Primitive Unified Blocs)</span></span>
+<span id="cb6-43">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># PUB format: (circuit, observables, parameter_values)</span></span>
+<span id="cb6-44">    pub <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (isa_ansatz, isa_hamiltonian, params)</span>
+<span id="cb6-45">    </span>
+<span id="cb6-46">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Run Estimator</span></span>
+<span id="cb6-47">    job <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> estimator.run([pub])</span>
+<span id="cb6-48">    </span>
+<span id="cb6-49">    <span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Return energy (evs = eigenvalues/expectation values)</span></span>
+<span id="cb6-50">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">return</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">float</span>(job.result()[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>].data.evs)</span>
+<span id="cb6-51"></span>
+<span id="cb6-52"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 5. Optimization</span></span>
+<span id="cb6-53"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Optimizing VQE parameters (local noisy simulation)..."</span>)</span>
+<span id="cb6-54">initial_point <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> np.random.random(ansatz.num_parameters)</span>
+<span id="cb6-55"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># We use COBYLA as it is robust to noisy cost landscapes</span></span>
+<span id="cb6-56">result <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> minimize(cost_function, initial_point, method<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'COBYLA'</span>)</span>
+<span id="cb6-57"></span>
+<span id="cb6-58"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Adjust for the constant shift (-0.5 per edge)</span></span>
+<span id="cb6-59">constant_shift <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span><span class="fl" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0.5</span> <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">*</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">len</span>(edges)</span>
+<span id="cb6-60">vqe_energy <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> result.fun <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">+</span> constant_shift</span>
+<span id="cb6-61"></span>
+<span id="cb6-62"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"VQE Noisy Energy: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>vqe_energy<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.4f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb6-63"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"Classical Ideal:  </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span><span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">-</span>best_energy<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">:.4f}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Fetching properties from Real Backend: ibm_torino
+Running on: AerSimulator (mimicking ibm_torino)
+Ansatz Transpiled for Hardware Topology.
+Optimizing VQE parameters (local noisy simulation)...
+VQE Noisy Energy: -4.6692
+Classical Ideal:  5.0000</code></pre>
+</div>
+</div>
+<section id="decoding-the-solution" class="level3">
+<h3 class="anchored" data-anchor-id="decoding-the-solution">Decoding the Solution</h3>
+<p>The energy tells us the size of the cut, but we need to know <strong>how</strong> to cut the graph. We sample the optimized circuit to find the most probable bitstring.</p>
+<div id="240f0980" class="cell" data-execution_count="5">
+<details open="" class="code-fold">
+<summary>Code</summary>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8" style="background: #f1f3f5;"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 1. Prepare optimized circuit</span></span>
+<span id="cb8-2"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># We assume the parameters from the result, but we must pass them in a PUB</span></span>
+<span id="cb8-3"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># for the Sampler (circuit, parameter_values)</span></span>
+<span id="cb8-4">pub <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> (isa_ansatz, result.x)</span>
+<span id="cb8-5"></span>
+<span id="cb8-6"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 2. Sample</span></span>
+<span id="cb8-7">job <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> sampler.run([pub])</span>
+<span id="cb8-8"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># V2 Result Access: result[0].data.meas.get_counts()</span></span>
+<span id="cb8-9"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Note: 'meas' is the name of the classical register (default is usually 'meas')</span></span>
+<span id="cb8-10">counts <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> job.result()[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">0</span>].data.meas.get_counts()</span>
+<span id="cb8-11"></span>
+<span id="cb8-12"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 3. Display Counts in Decreasing Order</span></span>
+<span id="cb8-13">sorted_counts <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">dict</span>(<span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">sorted</span>(counts.items(), key<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">lambda</span> item: item[<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">1</span>], reverse<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>))</span>
+<span id="cb8-14"></span>
+<span id="cb8-15"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"Top 5 Results (Counts):"</span>)</span>
+<span id="cb8-16"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> bitstring, count <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">list</span>(sorted_counts.items())[:<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">5</span>]:</span>
+<span id="cb8-17">    <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>bitstring<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>count<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb8-18"></span>
+<span id="cb8-19"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># 4. Visualize the Best Cut</span></span>
+<span id="cb8-20">best_bitstring <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> <span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">max</span>(counts, key<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>counts.get)</span>
+<span id="cb8-21"><span class="bu" style="color: null;
+background-color: null;
+font-style: inherit;">print</span>(<span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">f"</span><span class="ch" style="color: #20794D;
+background-color: null;
+font-style: inherit;">\n</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">Winning Configuration: </span><span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">{</span>best_bitstring<span class="sc" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">}</span><span class="ss" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"</span>)</span>
+<span id="cb8-22"></span>
+<span id="cb8-23">colors <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span> []</span>
+<span id="cb8-24"><span class="co" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;"># Map bits directly: Char 0 -&gt; Node 0</span></span>
+<span id="cb8-25"><span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">for</span> bit <span class="kw" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">in</span> best_bitstring: </span>
+<span id="cb8-26">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">if</span> bit <span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">==</span> <span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'0'</span>:</span>
+<span id="cb8-27">        colors.append(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'lightblue'</span>)</span>
+<span id="cb8-28">    <span class="cf" style="color: #003B4F;
+background-color: null;
+font-weight: bold;
+font-style: inherit;">else</span>:</span>
+<span id="cb8-29">        colors.append(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'salmon'</span>)</span>
+<span id="cb8-30"></span>
+<span id="cb8-31">plt.figure(figsize<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>(<span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">6</span>, <span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">4</span>))</span>
+<span id="cb8-32">nx.draw(G, pos, with_labels<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="va" style="color: #111111;
+background-color: null;
+font-style: inherit;">True</span>, node_color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span>colors, edge_color<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'gray'</span>, node_size<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="dv" style="color: #AD0000;
+background-color: null;
+font-style: inherit;">700</span>, font_weight<span class="op" style="color: #5E5E5E;
+background-color: null;
+font-style: inherit;">=</span><span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">'bold'</span>)</span>
+<span id="cb8-33">plt.title(<span class="st" style="color: #20794D;
+background-color: null;
+font-style: inherit;">"VQE Solution (Robust to Noise)"</span>)</span>
+<span id="cb8-34">plt.show()</span></code></pre></div></div>
+</details>
+<div class="cell-output cell-output-stdout">
+<pre><code>Top 5 Results (Counts):
+10010: 926
+11010: 791
+10000: 43
+11110: 32
+11000: 29
+
+Winning Configuration: 10010</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="https://dikranmeliksetian.com/posts/quantum_diagonalization/07-matrix-decomposition_files/figure-html/cell-6-output-2.png" width="595" height="423" class="figure-img"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="understanding-the-results-10010-vs-00101" class="level3">
+<h3 class="anchored" data-anchor-id="understanding-the-results-10010-vs-00101">Understanding the Results: <code>10010</code> vs <code>00101</code></h3>
+<p>You may notice something interesting. Your classical solver might output <code>10010</code>, but your Quantum Sampler outputs <code>00101</code>. Are they different?</p>
+<p>No! They are the <strong>exact same solution</strong>, differing only by representation.</p>
+<ol type="1">
+<li><strong>Qiskit Ordering (Little Endian):</strong> Qiskit reads bitstrings from right-to-left. The string <code>00101</code> means:
+<ul>
+<li>Qubit 0 (Far Right) = 1</li>
+<li>Qubit 1 = 0</li>
+<li>Qubit 2 = 1</li>
+<li>… Standard Python arrays (like our classical solver) are read left-to-right. This often causes the string to look reversed.</li>
+</ul></li>
+<li><strong>Symmetry (Bit Flipping):</strong> Max-Cut cares about <em>differences</em>, not absolute values.
+<ul>
+<li>Partition <code>00101</code> (Groups: A, A, B, A, B)</li>
+<li>Partition <code>11010</code> (Groups: B, B, A, B, A) These are physically identical cuts. Flipping <em>every</em> bit results in the exact same cut value.</li>
+</ul></li>
+</ol>
+</section>
+</section>
+<section id="conclusion-the-end-of-vqe" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion-the-end-of-vqe">5. Conclusion: The End of VQE</h2>
+<p>We have now completed our VQE journey.</p>
+<ol type="1">
+<li><strong>Implicit State:</strong> We replaced the vector with a parameterized circuit (Ansatz).</li>
+<li><strong>Implicit Matrix:</strong> We replaced the matrix with a sum of Pauli strings (Hamiltonian).</li>
+<li><strong>Optimization:</strong> We used a classical loop to find the best parameters.</li>
+</ol>
+<p>This approach allows us to attack problems far larger than our RAM can hold. However, VQE is not perfect. It is an <strong>optimization</strong> algorithm, which means it can get stuck in local minima, and training can be slow.</p>
+<p>In the next series of posts, we will explore <strong>Quantum Krylov Methods</strong>—a completely different approach that uses linear algebra concepts (like power iteration) directly on the quantum computer to find eigenvalues without the messy optimization loop.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Quantum Computing</category>
+  <category>VQE</category>
+  <category>Hamiltonian</category>
+  <guid>https://dikranmeliksetian.com/posts/quantum_diagonalization/07-matrix-decomposition.html</guid>
+  <pubDate>Wed, 21 Jan 2026 05:00:00 GMT</pubDate>
+  <media:content url="https://dikranmeliksetian.com/posts/quantum_diagonalization/img/maxcut_decomposition.png" medium="image" type="image/png"/>
+</item>
 <item>
   <title>Exploring the Ansatz Zoo: Heuristics and the Parameter Gap</title>
   <link>https://dikranmeliksetian.com/posts/quantum_diagonalization/06-exploring-the-ansatz-zoo.html</link>
