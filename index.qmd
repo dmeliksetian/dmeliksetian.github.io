@@ -30,10 +30,12 @@ Throughout my time in the industry, I had the privilege of leading global teams,
 * 3x IBM Outstanding Technical Achievement Awards
 * Senior Member, ACM
 * Life Member, IEEE & Computer Society
+* Qiskit Advocate, IBM Quantum
 :::
 
 ::: {.g-col-12 .g-col-md-6 .text-start}
 ### Certifications
+* IBM Certified Quantum Computation using Qiskit v2.X Developer - Associate
 * Qiskit Global Summer School - Quantum Excellence
 * Quantum Business Foundations
 * Basics of Quantum Information
@@ -137,6 +139,29 @@ Running my first simple algorithm on an IBM quantum simulator was a fascinating 
 ::: {.g-col-12 .g-col-md-4}
 ### The Future is Hybrid
 I believe the near-term future isn't purely quantum. The most exciting potential lies in hybrid systems where classical machines handle data and control flow, offloading specific calculations to quantum co-processors.
+:::
+
+:::
+
+:::
+
+::: {.section-gray .p-5 .rounded-3 .my-5}
+## Research Grants & Awards
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6 .text-start}
+### Quantum Computing Access @ NERSC
+**National Energy Research Scientific Computing Center — June 2026**
+
+Awarded access for the project *"Scaling Landscape Span Compression in QAOA: From Near-Term to Utility-Scale Constrained Binary Optimization on IBM Quantum Hardware."*
+:::
+
+::: {.g-col-12 .g-col-md-6 .text-start}
+### IonQ Research Credits Grant
+**IonQ — May 2026**
+
+Awarded research credits for the project *"Cross-Modality Validation of Landscape Span Compression: QAOA Noise Benchmarking on Trapped-Ion Hardware."*
 :::
 
 :::
