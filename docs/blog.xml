@@ -10,7 +10,177 @@
 <atom:link href="https://dikranmeliksetian.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Personal academic portfolio and research blog exploring Quantum Computing, Qiskit, and Software Architecture.</description>
 <generator>quarto-1.8.26</generator>
-<lastBuildDate>Wed, 21 Jan 2026 05:00:00 GMT</lastBuildDate>
+<lastBuildDate>Sat, 05 Sep 2026 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>The CHSH Game in Rational Quantum Mechanics</title>
+  <dc:creator>Dikran Meliksetian, Ph.D.</dc:creator>
+  <link>https://dikranmeliksetian.com/posts/raqm-chsh/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>After reading Tim Palmer’s recent arXiv paper on <strong>Rational Quantum Mechanics (RaQM)</strong>, I got curious about a concrete question the paper itself doesn’t work out: what happens if you actually try to play the CHSH game — the classic experimental test of Bell’s inequality — inside RaQM’s discretised framework, at different levels of granularity?</p>
+<p>This post walks through the construction and the result.</p>
+<section id="raqm-in-one-paragraph" class="level2">
+<h2 class="anchored" data-anchor-id="raqm-in-one-paragraph">RaQM in one paragraph</h2>
+<p>RaQM proposes that a qubit’s measurement basis, at colatitude θ on the Bloch sphere, is only mathematically defined if</p>
+<p><strong>cos²(θ/2) = m/L</strong></p>
+<p>for integers m ≤ L. Here L is a single granularity parameter: L=∞ recovers ordinary continuum quantum mechanics exactly; smaller L restricts which bases are even definable. Crucially, RaQM doesn’t modify the Schrödinger equation or Born’s rule — it only adds this admissibility filter on top of otherwise-standard quantum mechanics.</p>
+</section>
+<section id="building-the-discretised-riemann-sphere-inductively" class="level2">
+<h2 class="anchored" data-anchor-id="building-the-discretised-riemann-sphere-inductively">Building the discretised Riemann Sphere, inductively</h2>
+<p>Palmer gives an explicit construction only up to L=4, built from a simple axiom: the imaginary unit <em>i</em> acts on a 2-bit string as a permutation-negation operator,</p>
+<p><strong>i{a₁, a₂} = {−a₂, a₁}</strong></p>
+<p>At L=2, this alone generates four points: {1,1}, {−1,1}, {−1,−1}, {1,−1} — north pole, equator (two points), south pole.</p>
+<p>The inductive step doubles the string length at each stage. To build the L=2M sphere from two already-complete L/2 spheres, split the L-bit string into two concatenated L/2-bit halves and apply two <em>different</em> branches of the smaller construction to each:</p>
+<ul>
+<li>For the <strong>upper half</strong> of points (m ≥ L/2, i.e.&nbsp;θ ≤ 90°): hold the first half fixed at its own north pole (all +1s), and let the second half trace out the smaller sphere’s <strong>φ=0</strong> branch, indexed by (m − L/2).</li>
+<li>For the <strong>lower half</strong> of points (m &lt; L/2, θ &gt; 90°): hold the second half fixed at its own south pole (all −1s), and let the first half trace out the smaller sphere’s <strong>φ=π</strong> branch, indexed by m.</li>
+</ul>
+<p>Each application of this rule doubles the resolution: L=2 → L=4 → L=8 → L=16, and so on.</p>
+</section>
+<section id="worked-example-l8" class="level2">
+<h2 class="anchored" data-anchor-id="worked-example-l8">Worked example: L=8</h2>
+<p>Starting from Palmer’s own verified L=4 table (both φ=0 and φ=π branches):</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>m</th>
+<th>θ</th>
+<th>φ=0 string</th>
+<th>φ=π string</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>4</td>
+<td>0°</td>
+<td>[1,1,1,1]</td>
+<td>[1,1,1,1]</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>60°</td>
+<td>[1,1,-1,1]</td>
+<td>[-1,1,1,1]</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>90°</td>
+<td>[1,1,-1,-1]</td>
+<td>[-1,-1,1,1]</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>120°</td>
+<td>[1,-1,-1,-1]</td>
+<td>[-1,-1,1,-1]</td>
+</tr>
+<tr class="odd">
+<td>0</td>
+<td>180°</td>
+<td>[-1,-1,-1,-1]</td>
+<td>[-1,-1,-1,-1]</td>
+</tr>
+</tbody>
+</table>
+<p>applying the doubling rule once gives the L=8 sphere:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>m</th>
+<th>θ</th>
+<th>string</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>8</td>
+<td>0.00°</td>
+<td>[1,1,1,1,1,1,1,1]</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>41.41°</td>
+<td>[1,1,1,1,1,1,-1,1]</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>60.00°</td>
+<td>[1,1,1,1,1,1,-1,-1]</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>75.52°</td>
+<td>[1,1,1,1,1,-1,-1,-1]</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>90.00°</td>
+<td>[1,1,1,1,-1,-1,-1,-1]</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>104.48°</td>
+<td>[-1,1,1,1,-1,-1,-1,-1]</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>120.00°</td>
+<td>[-1,-1,1,1,-1,-1,-1,-1]</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>138.59°</td>
+<td>[-1,-1,1,-1,-1,-1,-1,-1]</td>
+</tr>
+<tr class="odd">
+<td>0</td>
+<td>180.00°</td>
+<td>[-1,-1,-1,-1,-1,-1,-1,-1]</td>
+</tr>
+</tbody>
+</table>
+<p>Note the angles aren’t evenly spaced — they cluster near the poles and spread out near the equator, since θ = 2·arccos(√(m/L)) isn’t linear in m. Also note that 90° and 120° land exactly where continuum QM would put them (both are angles with rational cosine, so they’re exact at <em>every</em> L), while 41.41° and 138.59° are RaQM’s best available approximations to what continuum QM would put at 45° and 135° — angles that, having irrational cosine, are never exactly representable at any finite L.</p>
+</section>
+<section id="formulating-the-chsh-game" class="level2">
+<h2 class="anchored" data-anchor-id="formulating-the-chsh-game">Formulating the CHSH game</h2>
+<p>For an entangled pair, Alice’s own marginal outcome distribution is always exactly 50/50, regardless of her chosen measurement angle — a robust feature of maximal entanglement, not something that needs rounding. What actually carries the physics is the <em>relative</em> angle δ between Alice’s and Bob’s chosen bases: it determines Bob’s outcome distribution conditional on each of Alice’s two possible results. Only this one angle needs to satisfy RaQM’s admissibility condition; everything else follows automatically (in particular, if δ is admissible, so is its complement 180°−δ, guaranteeing Bob’s own marginal also stays exactly 50/50).</p>
+<p>Using the canonical CHSH strategy (Alice measures at 0° or 90°; Bob measures at 45° or −45°), the four required relative angles are −45°, +45°, +45°, and +135°. Since 45° isn’t exactly representable at any finite L, each of these gets rounded to the nearest admissible angle at whatever L we’re testing, and the resulting win probability is computed directly from the rounded, exact quantum-mechanical correlations.</p>
+</section>
+<section id="results" class="level2">
+<h2 class="anchored" data-anchor-id="results">Results</h2>
+<p>Computing the win probability across a wide range of L:</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://dikranmeliksetian.com/posts/raqm-chsh/raqm_chsh_convergence.png" class="img-fluid figure-img"></p>
+<figcaption>RaQM CHSH convergence</figcaption>
+</figure>
+</div>
+<p>The classical bound is 0.75; the true quantum (Tsirelson) optimum is cos²(π/8) ≈ 0.8536.</p>
+<p>A few notable features:</p>
+<ul>
+<li><strong>At L=8, RaQM predicts exactly the classical bound (0.75)</strong> — no observable quantum advantage at all, despite the state being maximally entangled.</li>
+<li><strong>Convergence to the true value is not monotonic.</strong> The curve overshoots, undershoots, and overshoots again as L increases, with the amplitude of these oscillations shrinking steadily.</li>
+<li><strong>Sweeping over every even L</strong> (not just powers of two) reveals a sawtooth structure layered on top of the overall trend — long stretches of gradual improvement punctuated by sharp resets, a direct consequence of how “nearest rational approximation” behaves as its denominator increases one step at a time.</li>
+<li><strong>By L≈1000, the result has settled to 0.85352</strong>, within 0.00004 of the true Tsirelson bound.</li>
+</ul>
+<p>This is a fairly concrete illustration of RaQM’s central claim — that standard quantum mechanics, Bell violation included, is recovered exactly in the L→∞ limit — while also showing a texture the paper’s abstract description doesn’t make obvious: the convergence looks like a form of discretisation noise, oscillating around the true answer rather than approaching it smoothly.</p>
+<p><em>(Caveat: Palmer’s paper gives the explicit discretised-sphere construction only up to L=4; the extension to larger L used here follows the stated inductive rule but is not independently verified beyond that point.)</em></p>
+
+
+</section>
+
+ ]]></description>
+  <category>Quantum Computing</category>
+  <category>Bell Inequality</category>
+  <category>Foundations of QM</category>
+  <guid>https://dikranmeliksetian.com/posts/raqm-chsh/</guid>
+  <pubDate>Sat, 05 Sep 2026 04:00:00 GMT</pubDate>
+  <media:content url="https://dikranmeliksetian.com/posts/raqm-chsh/raqm_chsh_convergence.png" medium="image" type="image/png" height="86" width="144"/>
+</item>
 <item>
   <title>The Implicit Matrix: Scaling Max-Cut with Paulis</title>
   <link>https://dikranmeliksetian.com/posts/quantum_diagonalization/07-matrix-decomposition.html</link>
