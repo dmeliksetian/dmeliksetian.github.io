@@ -1,0 +1,44 @@
+---
+title: "Quantum Technology: A Technical Review"
+description: "A selective technical briefing on quantum computing, sensing, communications, and security: hardware approaches, evidence standards, and conditional engineering roadmaps."
+author: "Dikran Meliksetian, Ph.D."
+date: "2026-10-14"
+categories: [Quantum Computing, Quantum Sensing, Quantum Communications, Technical Review]
+image: "cover.png"
+resources: ["cover.png", "Quantum-Technology-Technical-Review.pdf"]
+---
+
+I have published a 21-page technical briefing that surveys the quantum technology landscape: computing, sensing, communications, and security. Its goal is to separate what has been demonstrated from what has been deployed, and what has been deployed from what has been announced as a roadmap.
+
+::: {.callout-tip appearance="simple"}
+## Download the review
+[<i class="bi bi-file-earmark-pdf"></i> Quantum Technology: A Technical Review (PDF, 21 pages)](Quantum-Technology-Technical-Review.pdf){.btn .btn-primary role="button" download="Quantum-Technology-Technical-Review.pdf"}
+
+Revised 14 October 2026. Evidence cutoff: 14 October 2026.
+:::
+
+## Why quantum technologies need separate timelines
+
+Quantum technologies share components, fabrication methods, control systems, and supply chains, but their engineering maturity differs substantially. Atomic clocks and selected magnetometers already support operational systems. Quantum key distribution is deployed in selected networks, while general entanglement networks remain experimental. Quantum computing has demonstrated increasingly capable devices; turning those demonstrations into useful, scalable fault-tolerant computation is still an engineering objective.
+
+## How to read the review
+
+- **Count useful computation.** State which qubits are counted, which operations are protected, and what error rate and runtime the complete task requires.
+- **Match the evidence to the claim.** A research demonstration, a customer pilot, and a commercially advantageous production workflow establish different things.
+- **Treat roadmaps as targets.** Vendor dates describe intended progress; they do not establish that a capability has been delivered.
+
+## What is inside
+
+1. Technology maturity and a practical evidence ladder
+2. From physical qubits to useful computation: logical qubits, error correction, and error mitigation
+3. Who is building what, and hardware tradeoffs by modality (superconducting, trapped ion, neutral atom, photonic, spin, topological, annealing)
+4. Quantum sensing and the SQUID–transmon connection
+5. Programming languages, SDKs, and how quantum computing is delivered
+6. Candidate application workflows and how performance and advantage are measured
+7. Selected milestones from 2024 to 2026, including an interpretation of the IBM sampling result
+8. Conditional roadmaps, quantum communications, supply chain, standards, security and policy
+9. What could go wrong, evidence discipline, and a source list
+
+The review is a selective technical survey, not an exhaustive vendor inventory or an independent replication of reported experiments. Numerical milestones carry citations to specific papers, announcements, or official documents.
+
+I welcome corrections and comments below.

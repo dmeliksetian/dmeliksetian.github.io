@@ -12,8 +12,13 @@
     ]
   },
   {
+    "listing": "/patents.html",
+    "items": []
+  },
+  {
     "listing": "/blog.html",
     "items": [
+      "/posts/quantum-technology-review/index.html",
       "/posts/raqm-chsh/index.html",
       "/posts/quantum_diagonalization/07-matrix-decomposition.html",
       "/posts/quantum_diagonalization/06-exploring-the-ansatz-zoo.html",
@@ -25,10 +30,6 @@
       "/posts/quantum-pigeonhole/index.html",
       "/posts/welcome/index.html"
     ]
-  },
-  {
-    "listing": "/patents.html",
-    "items": []
   },
   {
     "listing": "/publications.html",

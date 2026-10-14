@@ -10,7 +10,72 @@
 <atom:link href="https://dikranmeliksetian.com/blog.xml" rel="self" type="application/rss+xml"/>
 <description>Personal academic portfolio and research blog exploring Quantum Computing, Qiskit, and Software Architecture.</description>
 <generator>quarto-1.8.26</generator>
-<lastBuildDate>Sat, 05 Sep 2026 04:00:00 GMT</lastBuildDate>
+<lastBuildDate>Wed, 14 Oct 2026 04:00:00 GMT</lastBuildDate>
+<item>
+  <title>Quantum Technology: A Technical Review</title>
+  <dc:creator>Dikran Meliksetian, Ph.D.</dc:creator>
+  <link>https://dikranmeliksetian.com/posts/quantum-technology-review/</link>
+  <description><![CDATA[ 
+
+
+
+
+
+<p>I have published a 21-page technical briefing that surveys the quantum technology landscape: computing, sensing, communications, and security. Its goal is to separate what has been demonstrated from what has been deployed, and what has been deployed from what has been announced as a roadmap.</p>
+<div class="callout callout-style-simple callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tip</span>Download the review
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><a href="Quantum-Technology-Technical-Review.pdf" class="btn btn-primary" download="Quantum-Technology-Technical-Review.pdf"><i class="bi bi-file-earmark-pdf"></i> Quantum Technology: A Technical Review (PDF, 21 pages)</a></p>
+<p>Revised 14 October 2026. Evidence cutoff: 14 October 2026.</p>
+</div>
+</div>
+<section id="why-quantum-technologies-need-separate-timelines" class="level2">
+<h2 class="anchored" data-anchor-id="why-quantum-technologies-need-separate-timelines">Why quantum technologies need separate timelines</h2>
+<p>Quantum technologies share components, fabrication methods, control systems, and supply chains, but their engineering maturity differs substantially. Atomic clocks and selected magnetometers already support operational systems. Quantum key distribution is deployed in selected networks, while general entanglement networks remain experimental. Quantum computing has demonstrated increasingly capable devices; turning those demonstrations into useful, scalable fault-tolerant computation is still an engineering objective.</p>
+</section>
+<section id="how-to-read-the-review" class="level2">
+<h2 class="anchored" data-anchor-id="how-to-read-the-review">How to read the review</h2>
+<ul>
+<li><strong>Count useful computation.</strong> State which qubits are counted, which operations are protected, and what error rate and runtime the complete task requires.</li>
+<li><strong>Match the evidence to the claim.</strong> A research demonstration, a customer pilot, and a commercially advantageous production workflow establish different things.</li>
+<li><strong>Treat roadmaps as targets.</strong> Vendor dates describe intended progress; they do not establish that a capability has been delivered.</li>
+</ul>
+</section>
+<section id="what-is-inside" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-inside">What is inside</h2>
+<ol type="1">
+<li>Technology maturity and a practical evidence ladder</li>
+<li>From physical qubits to useful computation: logical qubits, error correction, and error mitigation</li>
+<li>Who is building what, and hardware tradeoffs by modality (superconducting, trapped ion, neutral atom, photonic, spin, topological, annealing)</li>
+<li>Quantum sensing and the SQUID–transmon connection</li>
+<li>Programming languages, SDKs, and how quantum computing is delivered</li>
+<li>Candidate application workflows and how performance and advantage are measured</li>
+<li>Selected milestones from 2024 to 2026, including an interpretation of the IBM sampling result</li>
+<li>Conditional roadmaps, quantum communications, supply chain, standards, security and policy</li>
+<li>What could go wrong, evidence discipline, and a source list</li>
+</ol>
+<p>The review is a selective technical survey, not an exhaustive vendor inventory or an independent replication of reported experiments. Numerical milestones carry citations to specific papers, announcements, or official documents.</p>
+<p>I welcome corrections and comments below.</p>
+
+
+</section>
+
+ ]]></description>
+  <category>Quantum Computing</category>
+  <category>Quantum Sensing</category>
+  <category>Quantum Communications</category>
+  <category>Technical Review</category>
+  <guid>https://dikranmeliksetian.com/posts/quantum-technology-review/</guid>
+  <pubDate>Wed, 14 Oct 2026 04:00:00 GMT</pubDate>
+  <media:content url="https://dikranmeliksetian.com/posts/quantum-technology-review/cover.png" medium="image" type="image/png" height="186" width="144"/>
+</item>
 <item>
   <title>The CHSH Game in Rational Quantum Mechanics</title>
   <dc:creator>Dikran Meliksetian, Ph.D.</dc:creator>
@@ -3516,37 +3581,6 @@ Figure&nbsp;2: Comparison of computational resource scaling for classical simula
 <h2 class="anchored" data-anchor-id="join-the-conversation">Join the Conversation</h2>
 <p>I intend for this space to foster discussion with fellow researchers, industry practitioners, and anyone fascinated by the capabilities and limitations of computing systems.</p>
 <p>I welcome your insights and feedback on these topics.</p>
-<footer id="contact" class="bg-slate-800 text-slate-100 py-16">
-<div class="container mx-auto px-6 text-center">
-<pre><code>&lt;h2 class="text-3xl font-bold mb-4"&gt;Get In Touch&lt;/h2&gt;
-&lt;p class="max-w-xl mx-auto mb-8"&gt;I am always open to discussing new ideas, research opportunities, or interesting projects in the quantum computing space. Feel free to reach out.&lt;/p&gt;
-
-&lt;div class="flex justify-center items-center flex-wrap gap-x-8 gap-y-4 text-lg mb-8"&gt;
-  &lt;a href="mailto:dsmeliks@gmail.com" class="flex items-center space-x-2 hover:text-brand-light transition-colors"&gt;
-    &lt;i class="fas fa-envelope w-6"&gt;&lt;/i&gt;
-    &lt;span&gt;dikran.s.meliksetian@gmail.com (Personal)&lt;/span&gt;
-  &lt;/a&gt;
-  
-  &lt;a href="mailto:dmeliksetian@newhaven.edu" class="flex items-center space-x-2 hover:text-brand-light transition-colors"&gt;
-    &lt;i class="fas fa-university w-6"&gt;&lt;/i&gt;
-    &lt;span&gt;dmeliksetian@newhaven.edu (Academic)&lt;/span&gt;
-  &lt;/a&gt;
-  
-  &lt;div class="flex items-center space-x-2"&gt;
-    &lt;i class="fas fa-map-marker-alt w-6"&gt;&lt;/i&gt;
-    &lt;span&gt;Newtown, CT&lt;/span&gt;
-  &lt;/div&gt;
-&lt;/div&gt;
-
-&lt;p class="text-sm text-slate-400"&gt;&amp;copy; &lt;span id="year"&gt;&lt;/span&gt; Dikran Meliksetian. All Rights Reserved.&lt;/p&gt;</code></pre>
-</div>
-</footer>
-<script>
-  const yearSpan = document.getElementById('year');
-  if (yearSpan) {
-    yearSpan.textContent = new Date().getFullYear();
-  }
-</script>
 
 
 </section>
