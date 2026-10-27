@@ -1,3 +1,9 @@
+- title: "slurm-qiskit-cluster: A Reproducible Local Testbed for QRMI-Mediated Quantum–HPC Workflows"
+  authors: "Dikran S. Meliksetian"
+  venue: "IEEE High Performance Extreme Computing Conference (IEEE HPEC 2026)"
+  year: "2026"
+  categories: ["Conferences"]
+
 - title: "Noise-Induced Landscape Distortion in QAOA for Constrained Binary Optimization: Empirical Characterization on IBM Quantum Hardware"
   authors: "Dikran S. Meliksetian"
   venue: "arXiv preprint arXiv:2604.19426"
